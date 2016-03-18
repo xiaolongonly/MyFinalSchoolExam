@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">FinalSchoolExam</string>
+    <item name="tag_position" type="id"></item>
+</resources>

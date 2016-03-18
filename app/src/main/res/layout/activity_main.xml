@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f8f8f8" >
+    <android.support.v4.widget.DrawerLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+    <LinearLayout android:id="@+id/activity_my_order_offline_ll"
+        style="@style/fillAll">
+
+        <com.u1city.module.pulltorefresh.PullToRefreshListView
+            xmlns:ptr="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/activity_my_order_ptr_lv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fadingEdge="none"
+            android:divider="@null"
+            android:scrollbars="none"
+            android:listSelector="@android:color/transparent"
+            android:orientation="vertical"
+            android:overScrollMode="never"
+            android:visibility="visible"
+            ptr:ptrAnimationStyle="flip"
+            ptr:ptrShowIndicator="false" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/llytMeDrawer"
+        android:layout_width="250dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="#fff"
+        android:orientation="vertical" >
+        <ScrollView
+            android:id="@+id/sv_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+            <LinearLayout
+                android:id="@+id/llyt_brand_details_drawer_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <RelativeLayout
+                    android:id="@+id/my_info_detail"
+                    android:layout_width="match_parent"
+                    android:layout_height="182dp"
+                    android:background="#f25e55" >
+
+                    <com.u1city.module.widget.RoundedImageView
+                        xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/rivMeUserLogo"
+                        android:layout_width="68dp"
+                        android:layout_height="68dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="35dp"
+                        android:contentDescription=""
+                        android:src="@drawable/ic_default_avatar_guider"
+                        app:cicleOutStrokeCorlor="#fff" />
+
+                    <ImageView
+                        android:id="@+id/ivMeEditInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignRight="@id/rivMeUserLogo"
+                        android:layout_marginRight="-10dp"
+                        android:layout_marginTop="75dp"
+                        android:src="@drawable/me_edit" />
+
+                    <TextView
+                        android:id="@+id/tvMeUserName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/rivMeUserLogo"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="15dp"
+                        android:text=""
+                        android:textColor="#FFFFFF"
+                        android:textSize="15sp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tvMeUserName"
+                        android:layout_marginTop="8dp"
+                        android:textSize="12sp"
+                        android:layout_centerHorizontal="true"
+                        android:id="@+id/tvMeShopName"
+                        android:textColor="#FFFFFF"
+                        android:text=""
+                        />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rlytCustomersOderList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="13dp"
+                    android:paddingTop="23dp" >
+
+                    <TextView
+                        android:id="@+id/textView01"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="55dp"
+                        android:drawableLeft="@drawable/ic_customer_order"
+                        android:drawablePadding="25dp"
+                        android:text="顾客订单"
+                        android:textColor="#505050"
+                        android:textSize="16sp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rlytCustomersBankList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="13dp"
+                    android:paddingTop="23dp" >
+
+                    <TextView
+                        android:id="@+id/textView02"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="55dp"
+                        android:drawableLeft="@drawable/ic_bank_card"
+                        android:drawablePadding="25dp"
+                        android:text="我的银行卡"
+                        android:textColor="#505050"
+                        android:textSize="16sp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rlytMeMsg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="13dp"
+                    android:paddingTop="23dp" >
+
+                    <TextView
+                        android:id="@+id/textView1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="55dp"
+                        android:drawableLeft="@drawable/ic_me_msg"
+                        android:drawablePadding="25dp"
+                        android:text="系统消息"
+                        android:textColor="#505050"
+                        android:textSize="16sp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rlytMeQuestions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="13dp"
+                    android:paddingTop="23dp" >
+
+                    <TextView
+                        android:id="@+id/textView2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="55dp"
+                        android:drawableLeft="@drawable/ic_me_questions"
+                        android:drawablePadding="25dp"
+                        android:text="常见问题"
+                        android:textColor="#505050"
+                        android:textSize="16sp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rlytMeFeedback"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="13dp"
+                    android:paddingTop="23dp" >
+
+                    <TextView
+                        android:id="@+id/textView3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="55dp"
+                        android:drawableLeft="@drawable/ic_me_feedback"
+                        android:drawablePadding="25dp"
+                        android:text="意见反馈"
+                        android:textColor="#505050"
+                        android:textSize="16sp" />
+                </RelativeLayout>
+
+                <View style="@style/ViewSoildLine" />
+
+                <RelativeLayout
+                    android:id="@+id/rlytMeSettings"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="23dp"
+                    android:paddingTop="23dp" >
+
+                    <TextView
+                        android:id="@+id/textView5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="55dp"
+                        android:drawableLeft="@drawable/ic_me_settings"
+                        android:drawablePadding="25dp"
+                        android:text="系统设置"
+                        android:textColor="#505050"
+                        android:textSize="16sp" />
+                </RelativeLayout>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+    </android.support.v4.widget.DrawerLayout>
+</RelativeLayout>

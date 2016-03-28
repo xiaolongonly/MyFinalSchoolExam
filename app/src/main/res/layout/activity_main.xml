@@ -25,8 +25,92 @@
             android:visibility="visible"
             ptr:ptrAnimationStyle="flip"
             ptr:ptrShowIndicator="false" />
-
     </LinearLayout>
+        <RelativeLayout
+            android:id="@+id/rl_baidumap"
+            style="@style/fillAll"
+            >
+
+            <com.baidu.mapapi.map.MapView
+                android:id="@+id/bmapView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clickable="true" />
+            <RelativeLayout
+                android:id="@+id/id_marker_layout"
+                android:clickable="true"
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:visibility="gone"
+                android:layout_alignParentBottom="true"
+                android:background="#cc4e5a6b">
+                <ImageView
+                    android:id="@+id/id_info_img"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginRight="12dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/img_border"
+                    android:src="@drawable/a01"
+                    />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_alignParentBottom="true"
+
+                    android:background="@drawable/bg_map_bottom">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:orientation="vertical"
+                        android:layout_centerVertical="true"
+                        >
+
+                        <TextView
+                            android:id="@+id/id_info_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="老米家泡馍"
+                            android:textColor="#fff5eb"
+                            />
+                        <TextView
+                            android:id="@+id/id_info_distance"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="距离200米"
+                            android:textColor="#fff5eb"/>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="20dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:orientation="horizontal"
+                        >
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/map_zan"
+                            android:clickable="true"
+                            />
+                        <TextView
+                            android:id="@+id/id_info_zan"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="789"
+                            android:layout_gravity="center"
+                            android:textColor="#fff5eb"/>
+
+                    </LinearLayout>
+                </RelativeLayout>
+            </RelativeLayout>
+        </RelativeLayout>
     <LinearLayout
         android:id="@+id/llytMeDrawer"
         android:layout_width="250dp"

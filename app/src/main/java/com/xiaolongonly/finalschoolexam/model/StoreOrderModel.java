@@ -1,4 +1,4 @@
-/*
+        /*
  * 系统: LaiDianYi
  * 文件名: StoreOrderModel.java
  * 版权: U1CITY Corporation 2015
@@ -26,21 +26,6 @@ public class StoreOrderModel implements Serializable
     private String time; // 消费时间
     private String recordId; // 消费记录ID
     private double integralNum; // 获得积分数
-
-    @Override
-    public String toString() {
-        return "StoreOrderModel{" +
-                "tmallShopName='" + tmallShopName + '\'' +
-                ", tmallShopId='" + tmallShopId + '\'' +
-                ", storeName='" + storeName + '\'' +
-                ", consumpMoney=" + consumpMoney +
-                ", useCouponInfo='" + useCouponInfo + '\'' +
-                ", smallTicket='" + smallTicket + '\'' +
-                ", time='" + time + '\'' +
-                ", recordId='" + recordId + '\'' +
-                ", integralNum=" + integralNum +
-                '}';
-    }
 
     public String getTmallShopName()
     {

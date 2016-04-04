@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="50dp" >
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:id="@+id/dialog_single_picker_title_tv"
+            android:textColor="#484848"
+            android:textSize="15sp" />
+
+        <Button
+            android:id="@+id/dialog_single_picker_confirm_btn"
+            android:layout_width="50dp"
+            android:layout_height="25dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"            
+            android:text="确认"           
+            android:textColor="#ffa72d"
+            android:background="#00ffffff" 
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+    <View style="@style/ViewSoildLine"/>
+
+    <com.u1city.module.widget.PickerView
+        android:id="@+id/dialog_single_picker_view"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_width="fill_parent"
+        android:layout_height="150dp" />
+
+</LinearLayout>

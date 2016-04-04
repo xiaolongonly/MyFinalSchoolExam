@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "E:\\finalschoolexam\\u1CityModule\\build\\intermediates\\res\\merged\\androidTest\\debug\\xml\\preferences.xml",
+        "source": "E:\\finalschoolexam\\u1CityModule\\build\\intermediates\\bundles\\debug\\res\\xml\\preferences.xml"
+    },
+    {
+        "merged": "E:\\finalschoolexam\\u1CityModule\\build\\intermediates\\res\\merged\\androidTest\\debug\\xml\\symbols_num.xml",
+        "source": "E:\\finalschoolexam\\u1CityModule\\build\\intermediates\\bundles\\debug\\res\\xml\\symbols_num.xml"
+    },
+    {
+        "merged": "E:\\finalschoolexam\\u1CityModule\\build\\intermediates\\res\\merged\\androidTest\\debug\\xml\\qwerty.xml",
+        "source": "E:\\finalschoolexam\\u1CityModule\\build\\intermediates\\bundles\\debug\\res\\xml\\qwerty.xml"
+    }
+]

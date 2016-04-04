@@ -29,8 +29,8 @@
         android:id="@+id/id_map_mode_compass"
         android:showAsAction="never"
         android:title="罗盘模式" />
-    <item
-        android:id="@+id/id_add_overlay"
-        android:showAsAction="never"
-        android:title="添加覆盖物"/>
+    <!--<item-->
+        <!--android:id="@+id/id_add_overlay"-->
+        <!--android:showAsAction="never"-->
+        <!--android:title="添加覆盖物"/>-->
 </menu>

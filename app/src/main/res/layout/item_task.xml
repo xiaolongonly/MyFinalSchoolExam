@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="150dp"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        >
+    <TextView
+        android:id="@+id/tv_task_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="这里用来显示标题"
+        android:textSize="20sp"
+        />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3">
+    <TextView
+        android:id="@+id/tv_task_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:hint="这里显示文本内容"
+        android:textSize="20sp"
+        />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <TextView
+            android:id="@+id/tv_task_createtime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:textSize="15sp"
+            android:hint="这里显示时间"
+            />
+    <TextView
+        android:id="@+id/tv_task_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="15dp"
+        android:layout_toRightOf="@id/tv_task_createtime"
+        android:hint="这里显示位置信息"
+        android:singleLine="true"
+        android:textSize="15sp"
+        android:layout_centerVertical="true"
+        />
+    </RelativeLayout>
+
+</LinearLayout>

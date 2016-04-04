@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.u1city.module.expandtabview.ExpandContentView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"       
+    android:orientation="vertical" 
+    android:background="@android:color/transparent">
+    <LinearLayout android:id="@+id/popwindow_expand_default_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:orientation="horizontal">
+        
+        <ListView
+            android:id="@+id/popwindow_expand_default_first_lv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"                      
+            android:layout_weight="1"
+            android:scrollbars="none"
+            android:dividerHeight="1px"
+            android:divider="#dcdcdc"
+            android:background="#fff"
+             >
+        </ListView>
+        
+        <ListView
+            android:id="@+id/popwindow_expand_default_second_lv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"   
+            android:layout_weight="1"
+             android:dividerHeight="1px"
+            android:divider="#dcdcdc"
+            android:background="#f8f8f8"> 
+        </ListView>
+    </LinearLayout>
+    <View style="@style/ViewSoildLine"/>
+	<RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" 
+            android:paddingBottom="3dp"
+            android:id="@+id/popwindow_expand_default_footer_rl"
+            android:background="@color/white">
+             <ImageView
+	            android:id="@+id/popwindow_expand_default_footer_iv1"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content" />
+	        <ImageView
+	            android:id="@+id/popwindow_expand_default_footer_iv2"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_below="@+id/imageView1"
+	            android:layout_centerHorizontal="true"
+	            android:layout_marginTop="3dp"	
+	            android:src="@drawable/brand_type" />            
+        </RelativeLayout> 
+</com.u1city.module.expandtabview.ExpandContentView>

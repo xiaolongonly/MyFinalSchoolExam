@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF" >
+
+    <RelativeLayout
+        android:id="@+id/layout_city_choose_button_rl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <Button
+            android:id="@+id/layout_city_choose_cancel_btn"
+            android:layout_width="100dp"
+            android:layout_height="34dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="12dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_my_info_city_cancel"
+            android:text="取消"
+            android:visibility="gone"
+            android:textColor="#FFFFFF"
+            android:textSize="17sp" />
+
+        <Button
+            android:id="@+id/layout_city_choose_confirm_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="34dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="12dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginTop="12dp"
+            android:background="@null"
+            android:text="确定"
+            android:textColor="#f25d56"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/layout_city_choose_title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textColor="#484848"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/layout_city_choose_border_view"
+        style="@style/ViewSoildLine"
+        android:layout_below="@id/layout_city_choose_button_rl" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layout_city_choose_border_view"
+        android:orientation="horizontal" >
+
+        <com.u1city.module.widget.wheelview.WheelView
+            android:id="@+id/layout_city_choose_province_wv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" >
+        </com.u1city.module.widget.wheelview.WheelView>
+
+        <com.u1city.module.widget.wheelview.WheelView
+            android:id="@+id/layout_city_choose_city_wv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" >
+        </com.u1city.module.widget.wheelview.WheelView>
+
+        <com.u1city.module.widget.wheelview.WheelView
+            android:id="@+id/layout_city_choose_district_wv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" >
+        </com.u1city.module.widget.wheelview.WheelView>
+    </LinearLayout>
+
+</RelativeLayout>

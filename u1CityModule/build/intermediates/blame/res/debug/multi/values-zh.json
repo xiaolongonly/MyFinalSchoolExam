@@ -1,0 +1,64 @@
+[
+    {
+        "outputFile": "E:\\finalschoolexam\\u1CityModule\\build\\intermediates\\res\\merged\\debug\\values-zh\\values-zh.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 2,
+                    "startColumn": 4,
+                    "startOffset": 55,
+                    "endColumn": 63,
+                    "endOffset": 114
+                },
+                "from": {
+                    "file": "E:\\finalschoolexam\\u1CityModule\\src\\main\\res\\values-zh\\pull_refresh_strings.xml",
+                    "position": {
+                        "startLine": 2,
+                        "startColumn": 2,
+                        "startOffset": 55,
+                        "endColumn": 61,
+                        "endOffset": 114
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 3,
+                    "startColumn": 4,
+                    "startOffset": 119,
+                    "endColumn": 64,
+                    "endOffset": 179
+                },
+                "from": {
+                    "file": "E:\\finalschoolexam\\u1CityModule\\src\\main\\res\\values-zh\\pull_refresh_strings.xml",
+                    "position": {
+                        "startLine": 4,
+                        "startColumn": 2,
+                        "startOffset": 182,
+                        "endColumn": 62,
+                        "endOffset": 242
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 4,
+                    "startColumn": 4,
+                    "startOffset": 184,
+                    "endColumn": 64,
+                    "endOffset": 244
+                },
+                "from": {
+                    "file": "E:\\finalschoolexam\\u1CityModule\\src\\main\\res\\values-zh\\pull_refresh_strings.xml",
+                    "position": {
+                        "startLine": 3,
+                        "startColumn": 2,
+                        "startOffset": 118,
+                        "endColumn": 62,
+                        "endOffset": 178
+                    }
+                }
+            }
+        ]
+    }
+]

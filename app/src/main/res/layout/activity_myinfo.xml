@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding= "utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F4F4F4"
+    android:overScrollMode="never"
+    android:scrollbars="none">
+
+    <LinearLayout
+        android:id="@+id/my_info_root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/rtlt_nickname"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#FFFFFF">
+
+            <TextView
+                android:id="@+id/tv_nickname"
+                style="@style/PersonInofTvLeft2"
+                android:text="昵称"
+                android:textColor="#343434"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/et_user_nickname"
+                style="@style/PersonInofEtRight2"
+                android:gravity="right"
+                android:hint="请输入您的昵称"
+                android:maxLength="10"
+                android:singleLine="true"
+                android:textColor="#B4B4B4"
+                android:textSize="15sp" />
+
+            <View
+                style="@style/ViewSoildLine"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_user_tel"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#FFFFFF">
+
+            <TextView
+                android:id="@+id/tv_user_tel"
+                style="@style/PersonInofTvLeft2"
+                android:text="手机"
+                android:textColor="#343434"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/et_user_tel"
+                style="@style/PersonInofEtRight2"
+                android:gravity="right"
+                android:hint="留个手机号吧，方便人联系你"
+                android:maxLength="11"
+                android:singleLine="true"
+                android:inputType="phone"
+                android:textColor="#B4B4B4"
+                android:textSize="15sp" />
+        </RelativeLayout>
+
+        <View
+            style="@style/ViewSoildLine"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp" />
+
+        <RelativeLayout
+            android:id="@+id/rl_user_qq"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#FFFFFF">
+
+            <TextView
+                android:id="@+id/tv_user_qq"
+                style="@style/PersonInofTvLeft2"
+                android:text="QQ"
+                android:textColor="#343434"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/et_user_qq"
+                style="@style/PersonInofEtRight2"
+                android:gravity="right"
+                android:hint="留个QQ号吧，方便人联系你"
+                android:maxLength="15"
+                android:singleLine="true"
+                android:inputType="number"
+                android:textColor="#B4B4B4"
+                android:textSize="15sp" />
+
+            <View
+                style="@style/ViewSoildLine"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp" />
+        </RelativeLayout>
+    </LinearLayout>
+</ScrollView>

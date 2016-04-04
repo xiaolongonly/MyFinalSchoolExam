@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding= "utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F4F4F4"
+    android:overScrollMode="never"
+    android:scrollbars="none">
+
+    <LinearLayout
+        android:id="@+id/my_info_root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/rl_task_title"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#FFFFFF">
+
+            <TextView
+                style="@style/PersonInofTvLeft2"
+                android:text="标题："
+                android:textColor="#343434"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_task_title"
+                style="@style/PersonInofEtRight2"
+                android:gravity="right"
+                android:hint=""
+                android:maxLength="10"
+                android:singleLine="true"
+                android:textColor="#B4B4B4"
+                android:textSize="15sp" />
+
+            <View
+                style="@style/ViewSoildLine"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_tsak_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:background="#FFFFFF">
+
+            <TextView
+                style="@style/PersonInofTvLeft2"
+                android:text="内容："
+                android:textColor="#343434"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_task_content"
+                style="@style/PersonInofEtRight2"
+                android:gravity="right"
+                android:hint="这特么是内容"
+                android:inputType="phone"
+                android:textColor="#B4B4B4"
+                android:textSize="15sp" />
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/rl_tsak_location"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#FFFFFF">
+            <View
+                style="@style/ViewSoildLine"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp" />
+            <TextView
+                style="@style/PersonInofTvLeft2"
+                android:text="任务地点"
+                android:textColor="#343434"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_task_location"
+                style="@style/PersonInofEtRight2"
+                android:gravity="right"
+                android:hint="这特么是任务地点"
+                android:inputType="phone"
+                android:textColor="#B4B4B4"
+                android:textSize="15sp" />
+
+            <View
+                style="@style/ViewSoildLine"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/rl_task_createtime"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#FFFFFF">
+            <TextView
+                style="@style/PersonInofTvLeft2"
+                android:text="创建时间："
+                android:textColor="#343434"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_task_createtime"
+                style="@style/PersonInofEtRight2"
+                android:gravity="right"
+                android:hint="这特么是创建时间"
+                android:maxLength="15"
+                android:singleLine="true"
+                android:inputType="number"
+                android:textColor="#B4B4B4"
+                android:textSize="15sp" />
+
+            <View
+                style="@style/ViewSoildLine"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/rl_task_endtime"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#FFFFFF">
+
+            <TextView
+                style="@style/PersonInofTvLeft2"
+                android:text="结束时间："
+                android:textColor="#343434"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_task_endtime"
+                style="@style/PersonInofEtRight2"
+                android:gravity="right"
+                android:hint="这特么是结束时间"
+                android:maxLength="15"
+                android:singleLine="true"
+                android:inputType="number"
+                android:textColor="#B4B4B4"
+                android:textSize="15sp" />
+
+            <View
+                style="@style/ViewSoildLine"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/rl_get_cancle"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#FFFFFF"
+            >
+            <TextView
+                android:id="@+id/tv_task_statu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="任务状态"
+                android:layout_centerVertical="true"
+                android:textSize="16sp"
+                android:layout_marginLeft="27dp"
+                android:layout_alignParentLeft="true"
+                />
+            <TextView
+                android:id="@+id/tv_gettask"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:textSize="16sp"
+                android:layout_marginRight="27dp"
+                android:layout_centerVertical="true"
+                android:textColor="@android:color/holo_green_dark"
+                android:text="接取任务"
+                android:layout_toLeftOf="@+id/tv_canceltask"
+                />
+            <TextView
+                android:id="@+id/tv_canceltask"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:textSize="16sp"
+                android:layout_marginRight="27dp"
+                android:layout_centerVertical="true"
+                android:textColor="@android:color/darker_gray"
+                android:visibility="invisible"
+                android:layout_alignParentRight="true"
+                />
+        </RelativeLayout>
+    </LinearLayout>
+</ScrollView>

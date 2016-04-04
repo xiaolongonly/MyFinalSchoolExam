@@ -1,11 +1,12 @@
-package com.xiaolongonly.finalschoolexam.Activity;
+package com.xiaolongonly.finalschoolexam.activity;
 
-import android.graphics.PixelFormat;
-import android.graphics.Point;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.view.MotionEvent;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ZoomControls;
 
@@ -13,10 +14,11 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
-import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
+import com.baidu.mapapi.map.InfoWindow;
+import com.baidu.mapapi.map.MapPoi;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
@@ -24,7 +26,6 @@ import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
-import com.baidu.mapapi.map.Overlay;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.search.core.SearchResult;
@@ -33,11 +34,10 @@ import com.baidu.mapapi.search.geocode.GeoCoder;
 import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
-import com.u1city.module.base.BaseActivity;
-import com.u1city.module.util.DimensUtil;
-import com.xiaolongonly.finalschoolexam.Info;
-import com.xiaolongonly.finalschoolexam.MyOrientationListener;
+import com.baidu.mapapi.utils.DistanceUtil;
+import com.xiaolongonly.finalschoolexam.Listener.MyOrientationListener;
 import com.xiaolongonly.finalschoolexam.R;
+import com.xiaolongonly.finalschoolexam.model.TaskModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,8 +70,12 @@ public class BaseBitmapActivity extends RealBaseActivity {
     //覆盖物相关
     protected BitmapDescriptor mMarker;
     protected RelativeLayout mMarkerLy;
-    private List<Overlay> overlayList = new ArrayList<Overlay>();
+    //这个用来控制是不是在获取当前位置
+    protected boolean isGetLocationOn;
+    //用来存放task的Latlng
+    protected LatLng taskLatLng;
 
+    private List<TaskModel> taskModels= new ArrayList<TaskModel>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,33 +86,111 @@ public class BaseBitmapActivity extends RealBaseActivity {
         //获取地图控件引用
         mMapView = (MapView) findViewById(R.id.bmapView);
         myBaiduMap = mMapView.getMap();
+        setMapListener();//设置地图事件监听
         // 隐藏缩放控件
-
         int childCount = mMapView.getChildCount();
-
         View zoom = null;
-
         for (int i = 0; i < childCount; i++) {
-
             View child = mMapView.getChildAt(i);
-
             if (child instanceof ZoomControls) {
-
                 zoom = child;
-
                 break;
-
             }
-
         }
         zoom.setVisibility(View.GONE);
-        MapStatusUpdate msu = MapStatusUpdateFactory.zoomTo(15.0f);
+        MapStatusUpdate msu = MapStatusUpdateFactory.zoomTo(18.0f);
         myBaiduMap.setMapStatus(msu);
         //初始化定位
         initLocation();
+    }
+    private void setMapListener() {
+        myBaiduMap.setOnMapClickListener(new BaiduMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                mMarkerLy.setVisibility(View.GONE);
+                myBaiduMap.hideInfoWindow();
+                if (isGetLocationOn) {
+//                    Point point = new Point((int) motionEvent.getX(), (int) motionEvent.getY());// - DimensUtil.dpToPixels(BaseBitmapActivity.this, 44f)
+//                    LatLng latLng = myBaiduMap.getProjection().fromScreenLocation(point);
+                    addEmdLocationTip(latLng);
+                } else {
+                }
+            }
+
+            @Override
+            public boolean onMapPoiClick(MapPoi mapPoi) {
+                return false;
+            }
+        });
+        myBaiduMap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+
+                Bundle ExtraInfo = marker.getExtraInfo();
+                if(ExtraInfo==null)
+                {
+                    return false;
+                }
+                final TaskModel taskModel = (TaskModel) ExtraInfo.getSerializable("taskModel");
+                TextView taskContent = (TextView) mMarkerLy.findViewById(R.id.tv_task_content);
+                TextView distance = (TextView) mMarkerLy.findViewById(R.id.id_info_distance);
+                TextView dname = (TextView) mMarkerLy.findViewById(R.id.id_info_name);
+                TextView createTime = (TextView) mMarkerLy.findViewById(R.id.id_info_zan);
+                RelativeLayout relativeLayout= (RelativeLayout) findViewById(R.id.rl_task_info);
+                relativeLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        goDetail(taskModel.getTask_id());
+                    }
+                });
+//              iv.setImageResource(taskModel.getImgId());
+                taskContent.setText(taskModel.getTask_content());
+                LatLng taskLatLng = new LatLng(Double.valueOf(taskModel.getTask_locationx()),Double.valueOf(taskModel.getTask_locationy()));
+                LatLng myLatLng = getMyLocation();
+                int intDistance = (int)(DistanceUtil.getDistance(myLatLng,taskLatLng));
+                if((intDistance/1000) >0)
+                {
+                    float floatDistance = (float)intDistance/1000;
+                    distance.setText("离你"+(floatDistance)+"公里");
+                }else
+                {
+                    distance.setText("离你"+(intDistance)+"米");
+                }
+                dname.setText(taskModel.getTask_title());
+                createTime.setText(taskModel.getTask_createtime());
+                InfoWindow infoWindow;
+                TextView tv = new TextView(BaseBitmapActivity.this);
+                switch (Integer.valueOf(taskModel.getTask_statu()))
+                {
+                    case TaskModel.STATU_UNTAKE:
+                        findViewById(R.id.get_this_task).setVisibility(View.VISIBLE);
+
+                        findViewById(R.id.task_havebeen_take).setVisibility(View.GONE);
+
+                        break;
+                    case  TaskModel.STATU_HAVETAKE:
+                        findViewById(R.id.get_this_task).setVisibility(View.GONE);
+                        findViewById(R.id.task_havebeen_take).setVisibility(View.VISIBLE);
+                        break;
+                }
+                tv.setBackgroundResource(R.drawable.location_tips);
+                tv.setPadding(30, 20, 30, 50);
+                tv.setText(taskModel.getTask_title());
+                tv.setTextColor(Color.parseColor("#ffffff"));
+                final LatLng latLng = marker.getPosition();
+                infoWindow = new InfoWindow(tv, latLng, -47);
+                myBaiduMap.showInfoWindow(infoWindow);
+                mMarkerLy.setVisibility(View.VISIBLE);
+                return true;
+            }
+        });
 
     }
-
+    private void goDetail(int task_id) {
+        Intent intent = new Intent(BaseBitmapActivity.this,TaskDetailActivity.class);
+        intent.putExtra("task_id", task_id);
+        startActivity(intent, false);
+    }
     @Override
     protected void onResume() {
         super.onResume();
@@ -223,21 +305,22 @@ public class BaseBitmapActivity extends RealBaseActivity {
     /**
      * 添加覆盖物
      *
-     * @param infos
+     * @param taskModels
      */
-    protected void addOverlays(List<Info> infos) {
+    protected void addOverlays(List<TaskModel> taskModels) {
         myBaiduMap.clear();
+        this.taskModels = taskModels;
         LatLng latLng = null;
         Marker marker = null;
         OverlayOptions options;
-        for (Info info : infos) {
+        for (TaskModel taskModel : taskModels) {
             //经纬度
-            latLng = new LatLng(info.getLatitude(), info.getLongitude());
+            latLng = new LatLng(Double.valueOf(taskModel.getTask_locationx()),Double.valueOf(taskModel.getTask_locationy()));
             //图标
             options = new MarkerOptions().position(latLng).icon(mMarker).zIndex(5);//设置显示在地图上的图标信息，需要坐标和图片
             marker = (Marker) myBaiduMap.addOverlay(options);//设置显示在地图上的图标
             Bundle mBundle = new Bundle();
-            mBundle.putSerializable("info", info);
+            mBundle.putSerializable("taskModel", taskModel);
             marker.setExtraInfo(mBundle);//为marker设置Bundle
         }
         MapStatusUpdate msu = MapStatusUpdateFactory.newLatLng(latLng);
@@ -254,18 +337,9 @@ public class BaseBitmapActivity extends RealBaseActivity {
         return new LatLng(mLatitude, mLongitude);
     }
 
-    //重写onTouchEcent来获取到地点
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        Point point = new Point((int) event.getX(), (int) event.getY() - DimensUtil.dpToPixels(BaseBitmapActivity.this,44f));
-        LatLng latLng = myBaiduMap.getProjection().fromScreenLocation(point);
-        addEmdLocationTip(latLng);
-        return super.onTouchEvent(event);
-    }
 
-    private void addEmdLocationTip(LatLng latLng) {
-        //        myBaiduMap.clear();
-        addOverlays(Info.infos);
+    private void addEmdLocationTip(final LatLng latLng) {
+        addOverlays(taskModels);
         OverlayOptions options;
         //图标
         options = new MarkerOptions().position(latLng).icon(mMarker).zIndex(5); //设置显示在地图上的图标信息，需要坐标和图片
@@ -287,7 +361,10 @@ public class BaseBitmapActivity extends RealBaseActivity {
                 }
                 //获取反向地理编码结果
                 if (!result.getAddress().trim().equals("")) {
-                    Toast.makeText(BaseBitmapActivity.this, result.getAddress(), Toast.LENGTH_LONG).show();
+//                    Toast.makeText(BaseBitmapActivity.this, result.getAddress(), Toast.LENGTH_LONG).show();
+                    EditText et_location = (EditText) findViewById(R.id.et_newtask_location);
+                    et_location.setText(result.getAddress());
+                    taskLatLng=latLng;
                 }
             }
         };
@@ -296,5 +373,4 @@ public class BaseBitmapActivity extends RealBaseActivity {
         MapStatusUpdate msu = MapStatusUpdateFactory.newLatLng(latLng);
         myBaiduMap.setMapStatus(msu);
     }
-
 }

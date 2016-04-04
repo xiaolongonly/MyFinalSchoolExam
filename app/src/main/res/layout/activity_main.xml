@@ -2,50 +2,65 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f8f8f8" >
-    <android.support.v4.widget.DrawerLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="#f8f8f8">
+
+    <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-    <LinearLayout android:id="@+id/activity_my_order_offline_ll"
-        style="@style/fillAll">
+        android:layout_height="match_parent">
 
-        <com.u1city.module.pulltorefresh.PullToRefreshListView
-            xmlns:ptr="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/activity_my_order_ptr_lv"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fadingEdge="none"
-            android:divider="@null"
-            android:scrollbars="none"
-            android:listSelector="@android:color/transparent"
-            android:orientation="vertical"
-            android:overScrollMode="never"
-            android:visibility="visible"
-            ptr:ptrAnimationStyle="flip"
-            ptr:ptrShowIndicator="false" />
-    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/activity_tasklist"
+            style="@style/fillAll">
+            <com.u1city.module.pulltorefresh.PullToRefreshListView
+                xmlns:ptr="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/activity_tasklist_ptr_lv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@null"
+                android:dividerPadding="0dp"
+                android:fadingEdge="none"
+                android:listSelector="@android:color/transparent"
+                android:orientation="vertical"
+                android:scrollbars="none"
+                android:overScrollMode="never"
+                ptr:ptrShowIndicator="false"
+                ptr:ptrAnimationStyle="flip" />
+        </LinearLayout>
+
         <RelativeLayout
             android:id="@+id/rl_baidumap"
             style="@style/fillAll"
-            >
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
             <com.baidu.mapapi.map.MapView
                 android:id="@+id/bmapView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clickable="true" />
+
             <RelativeLayout
                 android:id="@+id/id_marker_layout"
-                android:clickable="true"
                 android:layout_width="match_parent"
                 android:layout_height="220dp"
-                android:visibility="gone"
                 android:layout_alignParentBottom="true"
-                android:background="#cc4e5a6b">
-                <ImageView
-                    android:id="@+id/id_info_img"
+                android:background="#cc4e5a6b"
+                android:clickable="true"
+                android:visibility="gone">
+
+                <!--<ImageView-->
+                    <!--android:id="@+id/id_info_img"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="150dp"-->
+                    <!--android:layout_marginBottom="10dp"-->
+                    <!--android:layout_marginLeft="12dp"-->
+                    <!--android:layout_marginRight="12dp"-->
+                    <!--android:layout_marginTop="10dp"-->
+                    <!--android:background="@drawable/img_border"-->
+                    <!--android:src="@drawable/a01" />-->
+                <TextView
+                    android:id="@+id/tv_task_content"
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
                     android:layout_marginBottom="10dp"
@@ -53,86 +68,190 @@
                     android:layout_marginRight="12dp"
                     android:layout_marginTop="10dp"
                     android:background="@drawable/img_border"
-                    android:src="@drawable/a01"
                     />
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_alignParentBottom="true"
-
+                    android:id="@+id/rl_task_info"
                     android:background="@drawable/bg_map_bottom">
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:orientation="vertical"
                         android:layout_centerVertical="true"
-                        >
+                        android:layout_marginLeft="20dp"
+                        android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/id_info_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="老米家泡馍"
-                            android:textColor="#fff5eb"
-                            />
+                            android:textColor="#fff5eb" />
+
                         <TextView
                             android:id="@+id/id_info_distance"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="距离200米"
-                            android:textColor="#fff5eb"/>
+                            android:textColor="#fff5eb" />
 
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="20dp"
-                        android:layout_centerVertical="true"
                         android:layout_alignParentRight="true"
-                        android:orientation="horizontal"
-                        >
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="20dp"
+                        android:orientation="horizontal">
 
-                        <ImageView
+                        <!--<ImageView-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:background="@drawable/map_zan"-->
+                            <!--android:clickable="true" />-->
+                        <TextView
+                            android:id="@+id/task_havebeen_take"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/map_zan"
-                            android:clickable="true"
+                            android:text="已接取"
+                            android:textColor="@android:color/holo_red_light"
+                            />
+                        <TextView
+                            android:id="@+id/get_this_task"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="接取这个任务"
+                            android:textColor="@android:color/holo_green_light"
+                            android:visibility="gone"
                             />
                         <TextView
                             android:id="@+id/id_info_zan"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="789"
                             android:layout_gravity="center"
-                            android:textColor="#fff5eb"/>
+                            android:text="789"
+                            android:textColor="#fff5eb" />
 
                     </LinearLayout>
+
                 </RelativeLayout>
+
+
             </RelativeLayout>
+            <LinearLayout
+                android:id="@+id/ll_newtask"
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:layout_alignParentBottom="true"
+                android:orientation="vertical"
+                android:background="#fff"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_cancel"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:paddingBottom="5dp"
+                        android:paddingLeft="5dp"
+                        android:paddingTop="5dp"
+                        android:text="取消"
+                        android:textSize="20sp" />
+
+                    <EditText
+                        android:id="@+id/et_newtask_title"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="3"
+                        android:hint="在这里输入标题"
+                        android:singleLine="true"
+                        android:background="@color/white"
+                        android:paddingLeft="5dp"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/tv_submit"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="确定"
+                        android:textSize="20sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="3">
+
+                    <EditText
+                        android:id="@+id/et_newtask_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/white"
+                        android:hint="在这里输入内容" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_location"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:text="任务位置:"
+                        android:background="@color/white"
+                        android:textColor="@color/contents_text"
+                        android:textSize="20sp" />
+
+                    <EditText
+                        android:id="@+id/et_newtask_location"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/white"
+                        android:hint="点击地图选择任务位置"
+                        android:paddingLeft="5dp" />
+                </LinearLayout>
+            </LinearLayout>
         </RelativeLayout>
-    <LinearLayout
-        android:id="@+id/llytMeDrawer"
-        android:layout_width="250dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:background="#fff"
-        android:orientation="vertical" >
-        <ScrollView
-            android:id="@+id/sv_info"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:id="@+id/llytMeDrawer"
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:background="#fff"
+            android:orientation="vertical">
+
             <LinearLayout
                 android:id="@+id/llyt_brand_details_drawer_title"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" >
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
                 <RelativeLayout
                     android:id="@+id/my_info_detail"
                     android:layout_width="match_parent"
                     android:layout_height="182dp"
-                    android:background="#f25e55" >
+                    android:background="#f25e55">
 
                     <com.u1city.module.widget.RoundedImageView
                         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -145,129 +264,36 @@
                         android:src="@drawable/ic_default_avatar_guider"
                         app:cicleOutStrokeCorlor="#fff" />
 
-                    <ImageView
-                        android:id="@+id/ivMeEditInfo"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignRight="@id/rivMeUserLogo"
-                        android:layout_marginRight="-10dp"
-                        android:layout_marginTop="75dp"
-                        android:src="@drawable/me_edit" />
-
                     <TextView
-                        android:id="@+id/tvMeUserName"
+                        android:id="@+id/tv_my_username"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/rivMeUserLogo"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="15dp"
-                        android:text=""
+                        android:text="用户名"
                         android:textColor="#FFFFFF"
-                        android:textSize="15sp" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/tvMeUserName"
-                        android:layout_marginTop="8dp"
-                        android:textSize="12sp"
-                        android:layout_centerHorizontal="true"
-                        android:id="@+id/tvMeShopName"
-                        android:textColor="#FFFFFF"
-                        android:text=""
+                        android:textSize="15sp"
                         />
                 </RelativeLayout>
 
+                <View style="@style/ViewSoildLine" />
+
                 <RelativeLayout
-                    android:id="@+id/rlytCustomersOderList"
+                    android:id="@+id/rl_publish_newtask"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingBottom="13dp"
-                    android:paddingTop="23dp" >
+                    android:paddingTop="23dp">
 
                     <TextView
                         android:id="@+id/textView01"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="55dp"
-                        android:drawableLeft="@drawable/ic_customer_order"
                         android:drawablePadding="25dp"
-                        android:text="顾客订单"
-                        android:textColor="#505050"
-                        android:textSize="16sp" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/rlytCustomersBankList"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="13dp"
-                    android:paddingTop="23dp" >
-
-                    <TextView
-                        android:id="@+id/textView02"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="55dp"
-                        android:drawableLeft="@drawable/ic_bank_card"
-                        android:drawablePadding="25dp"
-                        android:text="我的银行卡"
-                        android:textColor="#505050"
-                        android:textSize="16sp" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/rlytMeMsg"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="13dp"
-                    android:paddingTop="23dp" >
-
-                    <TextView
-                        android:id="@+id/textView1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="55dp"
-                        android:drawableLeft="@drawable/ic_me_msg"
-                        android:drawablePadding="25dp"
-                        android:text="系统消息"
-                        android:textColor="#505050"
-                        android:textSize="16sp" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/rlytMeQuestions"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="13dp"
-                    android:paddingTop="23dp" >
-
-                    <TextView
-                        android:id="@+id/textView2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="55dp"
-                        android:drawableLeft="@drawable/ic_me_questions"
-                        android:drawablePadding="25dp"
-                        android:text="常见问题"
-                        android:textColor="#505050"
-                        android:textSize="16sp" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/rlytMeFeedback"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="13dp"
-                    android:paddingTop="23dp" >
-
-                    <TextView
-                        android:id="@+id/textView3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="55dp"
-                        android:drawableLeft="@drawable/ic_me_feedback"
-                        android:drawablePadding="25dp"
-                        android:text="意见反馈"
+                        android:gravity="center"
+                        android:text="发布新任务"
                         android:textColor="#505050"
                         android:textSize="16sp" />
                 </RelativeLayout>
@@ -275,25 +301,103 @@
                 <View style="@style/ViewSoildLine" />
 
                 <RelativeLayout
-                    android:id="@+id/rlytMeSettings"
+                    android:id="@+id/rl_mytaketask"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="23dp"
-                    android:paddingTop="23dp" >
+                    android:paddingBottom="13dp"
+                    android:paddingTop="23dp">
 
                     <TextView
-                        android:id="@+id/textView5"
+                        android:id="@+id/textView02"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="55dp"
-                        android:drawableLeft="@drawable/ic_me_settings"
                         android:drawablePadding="25dp"
-                        android:text="系统设置"
+                        android:text="我接收的任务"
                         android:textColor="#505050"
                         android:textSize="16sp" />
                 </RelativeLayout>
+
+                <View style="@style/ViewSoildLine" />
+
+                <RelativeLayout
+                    android:id="@+id/rl_mypublishtask"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="13dp"
+                    android:paddingTop="23dp">
+
+                    <TextView
+                        android:id="@+id/textView1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="55dp"
+                        android:drawablePadding="25dp"
+                        android:text="我发布的任务"
+                        android:textColor="#505050"
+                        android:textSize="16sp" />
+                </RelativeLayout>
+
+                <View style="@style/ViewSoildLine" />
+
+                <RelativeLayout
+                    android:id="@+id/rl_logout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="13dp"
+                    android:paddingTop="23dp">
+
+                    <TextView
+                        android:id="@+id/textView2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="55dp"
+                        android:drawablePadding="25dp"
+                        android:text="退出登录"
+                        android:textColor="#505050"
+                        android:textSize="16sp" />
+                </RelativeLayout>
+
+                <View style="@style/ViewSoildLine" />
+
+                <RelativeLayout
+                    android:id="@+id/rlytMeFeedback"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="13dp"
+                    android:paddingTop="23dp">
+
+                    <TextView
+                        android:id="@+id/textView3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="55dp"
+                        android:drawablePadding="25dp"
+                        android:text="意见反馈"
+                        android:textColor="#505050"
+                        android:textSize="16sp" />
+                </RelativeLayout>
+
+                <!--<View style="@style/ViewSoildLine" />-->
+
+                <!--<RelativeLayout-->
+                <!--android:id="@+id/rlytMeSettings"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:paddingBottom="23dp"-->
+                <!--android:paddingTop="23dp" >-->
+
+                <!--<TextView-->
+                <!--android:id="@+id/textView5"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginLeft="55dp"-->
+                <!--android:drawablePadding="25dp"-->
+                <!--android:text="系统设置"-->
+                <!--android:textColor="#505050"-->
+                <!--android:textSize="16sp" />-->
+                <!--</RelativeLayout>-->
             </LinearLayout>
-        </ScrollView>
-    </LinearLayout>
+        </LinearLayout>
     </android.support.v4.widget.DrawerLayout>
 </RelativeLayout>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <Button
+        android:id="@+id/dialog_modify_photo_camera_btn"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/white"
+        android:text="拍摄新照片"
+        android:textColor="#484848"
+        android:textSize="15dp" />
+
+    <View style="@style/ViewSoildLine" />
+
+    <Button
+        android:id="@+id/dialog_modify_photo_gallery_btn"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/white"
+        android:text="从照片库选取"
+        android:textColor="#484848"
+        android:textSize="15dp" />
+
+    <Button
+        android:id="@+id/dialog_modify_photo_cancel_btn"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/white"
+        android:text="取消"
+        android:textColor="#484848"
+        android:textSize="15dp" />
+
+</LinearLayout>

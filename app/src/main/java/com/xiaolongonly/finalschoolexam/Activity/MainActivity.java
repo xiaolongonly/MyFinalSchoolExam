@@ -1,51 +1,47 @@
-package com.xiaolongonly.finalschoolexam.Activity;
+package com.xiaolongonly.finalschoolexam.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.baidu.mapapi.SDKInitializer;
-import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
-import com.baidu.mapapi.map.InfoWindow;
-import com.baidu.mapapi.map.MapPoi;
-import com.baidu.mapapi.map.MapStatusUpdate;
-import com.baidu.mapapi.map.MapStatusUpdateFactory;
-import com.baidu.mapapi.map.Marker;
-import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationConfiguration;
-import com.baidu.mapapi.map.OverlayOptions;
-import com.baidu.mapapi.model.LatLng;
-import com.baidu.mapapi.search.core.SearchResult;
-import com.baidu.mapapi.search.geocode.GeoCodeResult;
-import com.baidu.mapapi.search.geocode.GeoCoder;
-import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
-import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
-import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
-import com.u1city.module.base.U1CityAdapter;
+
 import com.u1city.module.common.Debug;
+import com.u1city.module.common.JsonAnalysis;
 import com.u1city.module.pulltorefresh.DataLoader;
 import com.u1city.module.pulltorefresh.PullToRefreshListView;
-import com.xiaolongonly.finalschoolexam.Info;
+import com.u1city.module.util.ToastUtil;
+import com.u1city.module.widget.LoadingDialog;
 import com.xiaolongonly.finalschoolexam.R;
-import com.xiaolongonly.finalschoolexam.model.StoreOrderModel;
+import com.xiaolongonly.finalschoolexam.adapter.MyTaskListAdapter;
+import com.xiaolongonly.finalschoolexam.model.TaskModel;
+import com.xiaolongonly.finalschoolexam.model.UserModel;
+import com.xiaolongonly.finalschoolexam.utils.MyAnalysis;
+import com.xiaolongonly.finalschoolexam.utils.MyStandardCallback;
+import com.xiaolongonly.finalschoolexam.utils.RequestApi;
+import com.xiaolongonly.finalschoolexam.utils.SqlStringUtil;
 import com.xiaolongonly.finalschoolexam.utils.StringConstantUtils;
-import java.text.DecimalFormat;
+
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.List;
 
 public class MainActivity extends BaseBitmapActivity {
 
@@ -55,10 +51,9 @@ public class MainActivity extends BaseBitmapActivity {
     private TextView leftTabTv;
     private TextView rightTabTv;
 
-    private PullToRefreshListView offLineListView;
-    private View headView;
-    private DataLoader offLineDataLoader;
-    private TextView noticeTv;
+    //列表相关
+    private PullToRefreshListView taskListListView;
+    private DataLoader taskListDataLoader;
     private LinearLayout listInfo;
     /**
      * DrawerLayout控件
@@ -72,42 +67,55 @@ public class MainActivity extends BaseBitmapActivity {
      * 百度地图的relativeLayout用来切换
      */
     private RelativeLayout rl_baidumap;
-
+    private LinearLayout ll_newTask;
+    //先把publisherId默认为1后期有做登录再做关联
+    public int publisherId;
+    //新任务相关
+    private EditText etTitle;
+    private EditText etContent;
+    private EditText etLocation;
+    private LoadingDialog loadingDialog;//加载弹窗
+    private List<TaskModel> allTaskModels = new ArrayList<TaskModel>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //在使用SDK各组件之前初始化context信息，传入ApplicationContext
         //注意该方法要再setContentView方法之前实现
         SDKInitializer.initialize(getApplicationContext());
         super.onCreate(savedInstanceState, R.layout.activity_main, R.layout.title_double_tab_grey);
-        initMark();
-    }
-    /**初始化百度地图信息*/
-    public void initMark()
-    {
+        //初始化百度地图信息
         initBaiduMap();
         initMarker();//父类的初始化覆盖物类
-        setMapListener();//设置地图事件监听
     }
-
-
-
 
     @Override
-    public void onReceiveBroadCast(Context context, Intent intent) {
-        super.onReceiveBroadCast(context, intent);
-
-//        String action = intent.getAction();
-//        /**
-//         * 判断接受到的广播意图，执行相应操作
-//         */
-//        if(StringConstantUtils.ACTION_CHANGE_ORDER_TAB.equals(action)){
-//            int tabId = intent.getIntExtra(StringConstantUtils.EXTRA_ORDER_TAB_ID, -1);
-//
-//            if(tabId >= 0 && tabId < titles.length){
-//                onLineViewPager.setCurrentItem(tabId);
-//            }
-//        }
+    protected void onResumeFragments() {
+        super.onResumeFragments();
+        publisherId = StringConstantUtils.getInstance().getUser_id();
+        TextView textView = (TextView) findViewById(R.id.tv_my_username);
+        textView.setText(StringConstantUtils.getInstance().getUser_name());
     }
+
+    /**
+     * 初始化侧拉栏
+     */
+    private void initDrawerLayout() {
+        //发布新任务
+        findViewById(R.id.rl_publish_newtask).setOnClickListener(clickListener);
+        //我接收的任务
+        findViewById(R.id.rl_mytaketask).setOnClickListener(clickListener);
+        //我发布的任务
+        findViewById(R.id.rl_mypublishtask).setOnClickListener(clickListener);
+        //退出登录
+        findViewById(R.id.rl_logout).setOnClickListener(clickListener);
+        //发布新任务的确定和取消
+        findViewById(R.id.tv_cancel).setOnClickListener(clickListener);
+        findViewById(R.id.tv_submit).setOnClickListener(clickListener);
+        etTitle = (EditText) findViewById(R.id.et_newtask_title);
+        etContent = (EditText) findViewById(R.id.et_newtask_content);
+        etLocation = (EditText) findViewById(R.id.et_newtask_location);
+
+    }
+
 
     @Override
     public void initView() {
@@ -119,126 +127,132 @@ public class MainActivity extends BaseBitmapActivity {
         mDrawerLayout.requestDisallowInterceptTouchEvent(true);
         llytMeDrawer = (LinearLayout) findViewById(R.id.llytMeDrawer);
         rl_baidumap = (RelativeLayout) findViewById(R.id.rl_baidumap);
+        ll_newTask = (LinearLayout) findViewById(R.id.ll_newtask);
         findViewById(R.id.iv_head_btn).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mDrawerLayout.isDrawerOpen(llytMeDrawer))
-                {
+                if (mDrawerLayout.isDrawerOpen(llytMeDrawer)) {
                     mDrawerLayout.closeDrawer(llytMeDrawer);
-                }
-                else {
+                } else {
                     mDrawerLayout.openDrawer(llytMeDrawer);
                 }
             }
         });
+        findViewById(R.id.my_info_detail).setOnClickListener(clickListener);
         toggleTab(StringConstantUtils.Show_By_BaiduMap);
-        //设置广播
-//        setIntentFilter(new IntentFilter(StringConstantUtils.ACTION_CHANGE_ORDER_TAB));
+        initDrawerLayout();
+        getAllTaskInfo();
     }
-
-    private void setMapListener() {
-        myBaiduMap.setOnMapClickListener(new BaiduMap.OnMapClickListener() {
+    //获取全部的任务信息
+    public void getAllTaskInfo()
+    {
+        RequestApi.getInstance(this).execSQL(SqlStringUtil.getTaskList(TaskModel.STATU_HAVETAKE), new MyStandardCallback(this) {
             @Override
-            public void onMapClick(LatLng latLng) {
-                mMarkerLy.setVisibility(View.GONE);
-                myBaiduMap.hideInfoWindow();
+            public void onResult(MyAnalysis analysis) throws Exception {
+                String jsonList = analysis.getResult();
+                JsonAnalysis<TaskModel> jsonAnalysis = new JsonAnalysis<TaskModel>();
+                allTaskModels = jsonAnalysis.listFromJson(jsonList, TaskModel.class);
+                addOverlays(allTaskModels);
             }
 
             @Override
-            public boolean onMapPoiClick(MapPoi mapPoi) {
-                return false;
+            public void onError(int type) {
+
             }
         });
-        myBaiduMap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-
-                Bundle ExtraInfo = marker.getExtraInfo();
-                if(ExtraInfo==null)
-                {
-                    return false;
-                }
-                Info info = (Info) ExtraInfo.getSerializable("info");
-                ImageView iv = (ImageView) mMarkerLy.findViewById(R.id.id_info_img);
-                TextView distance = (TextView) mMarkerLy.findViewById(R.id.id_info_distance);
-                TextView dname = (TextView) mMarkerLy.findViewById(R.id.id_info_name);
-                TextView zan = (TextView) mMarkerLy.findViewById(R.id.id_info_zan);
-                iv.setImageResource(info.getImgId());
-                distance.setText(info.getDistance());
-                dname.setText(info.getName());
-                zan.setText(info.getZan() + "");
-                InfoWindow infoWindow;
-                TextView tv = new TextView(MainActivity.this);
-                tv.setBackgroundResource(R.drawable.location_tips);
-                tv.setPadding(30, 20, 30, 50);
-                tv.setText(info.getName());
-                tv.setTextColor(Color.parseColor("#ffffff"));
-
-                final LatLng latLng = marker.getPosition();
-                infoWindow = new InfoWindow(tv, latLng, -47);
-                myBaiduMap.showInfoWindow(infoWindow);
-                mMarkerLy.setVisibility(View.VISIBLE);
-                return true;
-            }
-        });
-
     }
-
     /**
      * 初始化覆盖物
      */
     private void initMarker() {
-        mMarker =BitmapDescriptorFactory.fromResource(R.mipmap.maker);
-        mMarkerLy =(RelativeLayout)findViewById(R.id.id_marker_layout);
+        mMarker = BitmapDescriptorFactory.fromResource(R.mipmap.maker);
+        mMarkerLy = (RelativeLayout) findViewById(R.id.id_marker_layout);
     }
+
     /**
      * 无数据提示
      *
      * @author zhengjb
      */
-    private void initNoneDataView()
-    {
-        ImageView ivNoGoods = (ImageView)findViewById(R.id.empty_view_iv);
-        ivNoGoods.setImageResource(R.mipmap.ic_launcher);
-        TextView textNoneData = (TextView)findViewById(R.id.empty_view_tv);
+    private void initNoneDataView() {
+        TextView textNoneData = (TextView) findViewById(R.id.empty_view_tv);
         textNoneData.setText("你身边暂时没人使用哦，赶紧去邀请小伙伴来玩吧！");
     }
+
     /**
      * 初始化第二个页面的DataLoader
      */
     private void initDataLoader() {
-        listInfo = (LinearLayout) findViewById(R.id.activity_my_order_offline_ll);
-        offLineListView = (PullToRefreshListView) findViewById(R.id.activity_my_order_ptr_lv);
-        headView = LayoutInflater.from(this).inflate(R.layout.head_off_line_order, null);
-        offLineListView.getRefreshableView().addHeaderView(headView);
-        offLineDataLoader = new DataLoader(this, offLineListView);
-        offLineDataLoader.setEmptyView(R.layout.empty_view_custom_default);
-        offLineDataLoader.setAdapter(new OffLineOrderAdapter(this));
-        offLineDataLoader.setDataSource(new DataLoader.DataSource() {
+        listInfo = (LinearLayout) findViewById(R.id.activity_tasklist);
+        taskListListView = (PullToRefreshListView) findViewById(R.id.activity_tasklist_ptr_lv);
+        taskListDataLoader = new DataLoader(this, taskListListView);
+        taskListDataLoader.setEmptyView(R.layout.empty_view_custom_default);
+        final MyTaskListAdapter taskListadapter = new MyTaskListAdapter(MainActivity.this);
+        taskListDataLoader.setAdapter(taskListadapter);
+        taskListDataLoader.setDataSource(new DataLoader.DataSource() {
             @Override
             public void onDataPrepare(boolean isDrawDown) {
-//                MainActivity.this.isDrawDown = isDrawDown;
-//                int customerId = Constants.cust.getCustomerId();
-//                RequestApi.getInstance().getCustomerStoreOrderList(customerId, offLineDataLoader.getIndexPage(), offLineDataLoader.getPageSize(), offLineCallBack);
-                offLineDataLoader.executeOnLoadDataSuccess(null, 0, false);
+                RequestApi.getInstance(MainActivity.this).execSQL(SqlStringUtil.pageindex(SqlStringUtil.getTaskList(TaskModel.STATU_HAVETAKE), taskListDataLoader.getIndexPage(), taskListDataLoader.getPageSize()), taskListStandardCallback);
             }
         });
-        noticeTv = (TextView) headView.findViewById(R.id.activity_my_order_notice_tv);
+        taskListListView.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (taskListadapter.getCount() == position - 1) {
+                    return;
+                }
+                TaskModel taskModel = (TaskModel) taskListadapter.getItem(position - 1);
+                if (taskModel == null) {
+                    return;
+                }
+                goDetail(taskModel.getTask_id());
+//                ToastUtil.showToastLong(MainActivity.this, taskModel.toString());
+            }
+        });
+    }
+    private void goDetail(int task_id) {
+        Intent intent = new Intent(MainActivity.this,TaskDetailActivity.class);
+        intent.putExtra("task_id", task_id);
+//        ToastUtil.showToast(this,task_id+"");
+        startActivity(intent, false);
     }
 
+    private MyStandardCallback taskListStandardCallback = new MyStandardCallback(MainActivity.this) {
+        @Override
+        public void onResult(MyAnalysis analysis) throws Exception {
+            String jsonList = analysis.getResult();
+            JsonAnalysis<TaskModel> jsonAnalysis = new JsonAnalysis<TaskModel>();
+            List<TaskModel> taskModels = jsonAnalysis.listFromJson(jsonList, TaskModel.class);
+            int total = 1;
+            if (taskModels.size() > 0) {
+                total = Integer.valueOf(taskModels.get(0).getTotal());
+                Collections.sort(taskModels);
+            }
+            // 该对象需要implements Serializable，如果对象中包含子对象，则需要包含有子对象数组的属性，详情请点击ActivityNewsModel
+            Log.e(TAG, taskModels.toString());
+            taskListDataLoader.executeOnLoadDataSuccess(taskModels, total, taskListDataLoader.isDrawDown());
+        }
+        @Override
+        public void onError(MyAnalysis analysis) {
+            taskListListView.onRefreshComplete();
+        }
+
+        @Override
+        public void onError(int type) {
+        }
+    };
     private void initTitleBar() {
         leftTabTv = (TextView) findViewById(R.id.left_tab_tv);
         leftTabTv.setText("地图查看");
         leftTabTv.setOnClickListener(clickListener);
-
         rightTabTv = (TextView) findViewById(R.id.right_tab_tv);
         rightTabTv.setText("列表查看");
         rightTabTv.setOnClickListener(clickListener);
     }
-
     private OnClickListener clickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
+            Intent it;
             switch (v.getId()) {
                 case R.id.left_tab_tv:
                     Debug.i(TAG, "left_tab_tv is click");
@@ -249,78 +263,112 @@ public class MainActivity extends BaseBitmapActivity {
                     Debug.i(TAG, "right_tab_tv is click");
                     toggleTab(StringConstantUtils.Show_By_List);
                     break;
+                case R.id.rl_publish_newtask:
+                    //这边需要显示一个正在发布的dialog而且旁边不能被点击在取消或者finish之前isGetLocationOn这个参数都要设置为true
+                    ll_newTask.setVisibility(View.VISIBLE);//将其置为可见
+                    closeDrawer();
+                    isGetLocationOn = true;//可以点击地图获取位置信息
+                    break;
+                case R.id.rl_mytaketask:
+                    //我接取的任务
+                    it = new Intent(MainActivity.this,TaskGetListActivity.class);
+                    startActivity(it,false);
+                    closeDrawer();
+                    break;
+                case R.id.rl_mypublishtask:
+                    //我发布的任务
+                    it = new Intent(MainActivity.this,TaskListActivity.class);
+                    startActivity(it,false);
+                    closeDrawer();
+                    break;
+                case R.id.tv_cancel:
+                    ll_newTask.setVisibility(View.GONE);//将其置为不可见
+                    isGetLocationOn = false;//可以点击地图获取位置信息
+                    break;
+                case R.id.tv_submit:
+                    publishNewTask();
+                    break;
+                case R.id.my_info_detail:
+                    //到个人中心页面
+                    it = new Intent(MainActivity.this,MyInfoActivity.class);
+                    startActivity(it,false);
+                    break;
+                case R.id.rl_logout:
+                    it = new Intent(MainActivity.this,LoginActivity.class);
+                    StringConstantUtils.setUserModel(new UserModel());//清空缓存数据
+                    it.putExtra("logout","logout");
+                    startActivity(it, true);
+                    break;
                 default:
                     break;
             }
         }
     };
-    /**
-     * 门店消费数据适配器
-     */
-    private class OffLineOrderAdapter extends U1CityAdapter<StoreOrderModel> {
-        private DecimalFormat df = new DecimalFormat("0.00");
 
-        /**
-         * 门店消费数据适配器
-         */
-        public OffLineOrderAdapter(Context context) {
-            super(context);
+    private void publishNewTask() {
+        if (etTitle.getText().toString().trim().equals("")) {
+            ToastUtil.showToast(MainActivity.this, "标题不能为空！");
+            return;
         }
-
+        if (etContent.getText().toString().trim().equals("")) {
+            ToastUtil.showToast(MainActivity.this, "写点任务内容呗！");
+            return;
+        }
+        if (etLocation.getText().toString().trim().equals("")) {
+            ToastUtil.showToast(MainActivity.this, "描述一下地点啊，方便人家找！");
+            return;
+        }
+        TaskModel taskModel = new TaskModel();
+        taskModel.setPublisher_id(publisherId);
+        taskModel.setTask_title(etTitle.getText().toString());//标题
+        taskModel.setTask_content(etContent.getText().toString());//内容
+        taskModel.setTask_location(etLocation.getText().toString());//地点
+        Log.i(TAG, taskModel.getTask_location());
+        if(taskLatLng==null)
+        {
+            ToastUtil.showToast(MainActivity.this,"选个地址吧！");
+            return;
+        }
+        taskModel.setTask_locationx(String.valueOf(taskLatLng.latitude));//设置纬度
+        taskModel.setTask_locationy(String.valueOf(taskLatLng.longitude));//设置经度
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Calendar nowTime = Calendar.getInstance();
+        String startTime = sdf.format(nowTime.getTime());
+        nowTime.add(Calendar.HOUR, 5);
+        String endTime = sdf.format(nowTime.getTime());
+//        System.out.println(sdf.format(nowTime.getTime()));
+        taskModel.setTask_createtime(startTime);//起止时间
+        taskModel.setTask_endtime(endTime);
+        RequestApi.getInstance(MainActivity.this).execSQL(SqlStringUtil.insertIntoTableTask(taskModel), myStandardCallback);
+        loadingDialog = new LoadingDialog(MainActivity.this);
+        loadingDialog.setLoadingText("正在发布...");
+        loadingDialog.show();
+    }
+    private MyStandardCallback myStandardCallback = new MyStandardCallback(this) {
+        @Override
+        public void onResult(MyAnalysis analysis) throws Exception {
+            ll_newTask.setVisibility(View.GONE);//将其置为不可见
+            //清空已输入的数据
+            etTitle.setText("");
+            etContent.setText("");
+            etLocation.setText("");
+            ToastUtil.showToast(MainActivity.this, "发布成功！！");
+            isGetLocationOn = false;//可以点击地图获取位置信息
+            loadingDialog.dismiss();
+            getAllTaskInfo();
+        }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            final StoreOrderModel storeOrderModel = (StoreOrderModel) getItem(position);
-            if (convertView == null) {
-                //设置item的view
-                convertView = inflater.inflate(R.layout.item_surround, null);
-            }
-
-            convertView.setTag(R.id.tag_position, position);
-            convertView.setOnClickListener(actionListener);
-
-            //绑定item上的控件
-//            TextView storeTv = ViewHolder.get(convertView, R.id.item_order_offline_store_tv);
-//            TextView dateTv = ViewHolder.get(convertView, R.id.item_order_offline_date_tv);
-//            TextView priceTv = ViewHolder.get(convertView, R.id.item_order_offline_price_tv);
-//            Button actionBtn = ViewHolder.get(convertView, R.id.item_order_offline_action_btn);
-
-//            StringUtils.setText(storeTv, storeOrderModel.getStoreName());
-//            StringUtils.setCreated(storeOrderModel.getTime(), dateTv);
-
-//            String time = storeOrderModel.getTime();
-//
-//            if(time.length() > 10){
-//                time = time.substring(0, 10);
-//            }
-//            dateTv.setText(time);
-//
-//            String price = df.format(storeOrderModel.getConsumpMoney());
-//            String text = "消费金额：￥" + price;
-//            SpannableStringBuilder spannableStringBuilder = StringUtils.getColoredText(text, "#ff6464", 5);//着色
-//            spannableStringBuilder = StringUtils.getBoldText(spannableStringBuilder, 5, text.length());//设置部分粗体
-//            priceTv.setText(spannableStringBuilder);
-//
-//            actionBtn.setTag(R.id.tag_position, position);
-//            actionBtn.setOnClickListener(actionListener);
-
-            return convertView;
+        public void onError(MyAnalysis baseAnalysis) {
+            ToastUtil.showToast(MainActivity.this, "发布失败！！");
+            loadingDialog.dismiss();
         }
 
-        private OnClickListener actionListener = new OnClickListener() {
+        @Override
+        public void onError(int type) {
 
-            @Override
-            public void onClick(View v) {
-                int position = (Integer) v.getTag(R.id.tag_position);
-                final StoreOrderModel storeOrderModel = (StoreOrderModel) getItem(position);
-                Debug.i("storeOrderModel", storeOrderModel.toString());
-
-//                Intent it = new Intent(MainActivity.this, ConsumeDetailActivity.class);
-//                it.putExtra(StringConstantUtils.MODEL_STORE_ORDER, storeOrderModel);
-//                MyOrderActivity.this.startActivity(it);
-            }
-        };
-    }
+        }
+    };
 
     /**
      * 点击标签，选择地图显示还是ListView列表显示
@@ -344,16 +392,13 @@ public class MainActivity extends BaseBitmapActivity {
     }
 
 
+    public void closeDrawer() {
 
-//    public void closeDrawer()
-//    {
-//
-//        if (mDrawerLayout != null)
-//        {
-//            mDrawerLayout.closeDrawer(llytMeDrawer);
-//        }
-//
-//    }
+        if (mDrawerLayout != null) {
+            mDrawerLayout.closeDrawer(llytMeDrawer);
+        }
+
+    }
 
     @Override
     protected void onResume() {
@@ -363,9 +408,9 @@ public class MainActivity extends BaseBitmapActivity {
 //            initData();
 //        }
     }
-
     /**
      * 菜单
+     *
      * @param menu
      * @return
      */
@@ -405,9 +450,9 @@ public class MainActivity extends BaseBitmapActivity {
             case R.id.id_map_mode_compass:
                 mLocationMode = MyLocationConfiguration.LocationMode.COMPASS;
                 break;
-            case R.id.id_add_overlay:
-                addOverlays(Info.infos);
-                break;
+//            case R.id.id_add_overlay:
+//                addOverlays(allTaskModels);
+//                break;
             default:
                 break;
         }

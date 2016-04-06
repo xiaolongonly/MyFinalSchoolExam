@@ -29,7 +29,6 @@
                 style="@style/PersonInofEtRight2"
                 android:gravity="right"
                 android:hint=""
-                android:maxLength="10"
                 android:singleLine="true"
                 android:textColor="#B4B4B4"
                 android:textSize="15sp" />
@@ -95,6 +94,34 @@
                 android:layout_marginRight="8dp" />
         </RelativeLayout>
         <RelativeLayout
+            android:id="@+id/rl_task_creator"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#FFFFFF">
+
+            <TextView
+                style="@style/PersonInofTvLeft2"
+                android:text="创建者信息："
+                android:textColor="#343434"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_task_creator"
+                style="@style/PersonInofEtRight2"
+                android:gravity="right"
+                android:hint="创建者"
+                android:singleLine="true"
+                android:inputType="number"
+                android:textColor="#B4B4B4"
+                android:textSize="15sp" />
+
+            <View
+                style="@style/ViewSoildLine"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp" />
+        </RelativeLayout>
+        <RelativeLayout
             android:id="@+id/rl_task_createtime"
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -110,7 +137,6 @@
                 style="@style/PersonInofEtRight2"
                 android:gravity="right"
                 android:hint="这特么是创建时间"
-                android:maxLength="15"
                 android:singleLine="true"
                 android:inputType="number"
                 android:textColor="#B4B4B4"
@@ -122,6 +148,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp" />
         </RelativeLayout>
+
         <RelativeLayout
             android:id="@+id/rl_task_endtime"
             android:layout_width="match_parent"
@@ -129,6 +156,7 @@
             android:background="#FFFFFF">
 
             <TextView
+                android:id="@+id/tv_endtime_tip"
                 style="@style/PersonInofTvLeft2"
                 android:text="结束时间："
                 android:textColor="#343434"
@@ -139,12 +167,10 @@
                 style="@style/PersonInofEtRight2"
                 android:gravity="right"
                 android:hint="这特么是结束时间"
-                android:maxLength="15"
                 android:singleLine="true"
                 android:inputType="number"
                 android:textColor="#B4B4B4"
                 android:textSize="15sp" />
-
             <View
                 style="@style/ViewSoildLine"
                 android:layout_alignParentBottom="true"
@@ -191,6 +217,34 @@
                 android:visibility="invisible"
                 android:layout_alignParentRight="true"
                 />
+            <View
+                style="@style/ViewSoildLine"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/rl_task_getter"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#FFFFFF">
+
+            <TextView
+                style="@style/PersonInofTvLeft2"
+                android:text="接取者信息："
+                android:textColor="#343434"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_task_getter"
+                style="@style/PersonInofEtRight2"
+                android:gravity="right"
+                android:hint="接取者信息"
+                android:maxLength="15"
+                android:singleLine="true"
+                android:inputType="number"
+                android:textColor="#B4B4B4"
+                android:textSize="15sp" />
         </RelativeLayout>
     </LinearLayout>
 </ScrollView>

@@ -55,9 +55,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         loadingDialog =new LoadingDialog(LoginActivity.this);
         loadingDialog.setLoadingText("正在登录...");
         initTitle();
+        String useraccount = PreferencesUtils.getStringValue(LoginActivity.this, "account");
+        String userpassword = PreferencesUtils.getStringValue(LoginActivity.this, "password");
         if(isLogout==null) {
-            String useraccount = PreferencesUtils.getStringValue(LoginActivity.this, "account");
-            String userpassword = PreferencesUtils.getStringValue(LoginActivity.this, "password");
             if (!useraccount.equals("") && !userpassword.equals("")) {
                 account.setText(useraccount);
                 password.setText(userpassword
@@ -65,6 +65,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 RequestApi.getInstance(LoginActivity.this).execSQL(SqlStringUtil.getuserInfoByAP(useraccount, userpassword), myStandardCallback);
                 loadingDialog.show();
             }
+        }else
+        {
+            account.setText(useraccount);
+            PreferencesUtils.putStringPreferences(LoginActivity.this,"password","");
         }
     }
 

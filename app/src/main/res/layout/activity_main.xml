@@ -337,7 +337,25 @@
                         android:textColor="#505050"
                         android:textSize="16sp" />
                 </RelativeLayout>
+                <View style="@style/ViewSoildLine" />
 
+                <RelativeLayout
+                    android:id="@+id/rl_modifypassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="13dp"
+                    android:paddingTop="23dp">
+
+                    <TextView
+                        android:id="@+id/textView3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="55dp"
+                        android:drawablePadding="25dp"
+                        android:text="修改密码"
+                        android:textColor="#505050"
+                        android:textSize="16sp" />
+                </RelativeLayout>
                 <View style="@style/ViewSoildLine" />
 
                 <RelativeLayout
@@ -358,25 +376,7 @@
                         android:textSize="16sp" />
                 </RelativeLayout>
 
-                <View style="@style/ViewSoildLine" />
 
-                <RelativeLayout
-                    android:id="@+id/rlytMeFeedback"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="13dp"
-                    android:paddingTop="23dp">
-
-                    <TextView
-                        android:id="@+id/textView3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="55dp"
-                        android:drawablePadding="25dp"
-                        android:text="意见反馈"
-                        android:textColor="#505050"
-                        android:textSize="16sp" />
-                </RelativeLayout>
 
                 <!--<View style="@style/ViewSoildLine" />-->
 

@@ -18,7 +18,8 @@ public class TaskModel implements Comparable<TaskModel>,Serializable {
     private String task_content;
     private String task_locationx;//纬度
     private String task_locationy;//经度
-    private String task_endtime;
+
+    private String task_finishtime;
     private String task_statu;
     private String task_location;
     private String task_createtime;
@@ -64,13 +65,15 @@ public class TaskModel implements Comparable<TaskModel>,Serializable {
         this.task_content = task_content;
     }
 
-    public String getTask_endtime() {
-        return task_endtime;
+
+    public String getTask_finishtime() {
+        return task_finishtime;
     }
 
-    public void setTask_endtime(String task_end_time) {
-        this.task_endtime = task_end_time;
+    public void setTask_finishtime(String task_finishtime) {
+        this.task_finishtime = task_finishtime;
     }
+
 
     public int getTask_id() {
         return task_id;
@@ -131,7 +134,7 @@ public class TaskModel implements Comparable<TaskModel>,Serializable {
                 ", task_content='" + task_content + '\'' +
                 ", task_locationx='" + task_locationx + '\'' +
                 ", task_locationy='" + task_locationy + '\'' +
-                ", task_endtime='" + task_endtime + '\'' +
+                ", task_finishtime='" + task_finishtime + '\'' +
                 ", task_statu='" + task_statu + '\'' +
                 ", task_location='" + task_location + '\'' +
                 ", task_createtime='" + task_createtime + '\'' +

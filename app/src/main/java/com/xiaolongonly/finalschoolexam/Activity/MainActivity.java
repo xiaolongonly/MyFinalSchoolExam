@@ -110,6 +110,7 @@ public class MainActivity extends BaseBitmapActivity {
         //发布新任务的确定和取消
         findViewById(R.id.tv_cancel).setOnClickListener(clickListener);
         findViewById(R.id.tv_submit).setOnClickListener(clickListener);
+        findViewById(R.id.rl_modifypassword).setOnClickListener(clickListener);
         etTitle = (EditText) findViewById(R.id.et_newtask_title);
         etContent = (EditText) findViewById(R.id.et_newtask_content);
         etLocation = (EditText) findViewById(R.id.et_newtask_location);
@@ -293,10 +294,14 @@ public class MainActivity extends BaseBitmapActivity {
                     it = new Intent(MainActivity.this,MyInfoActivity.class);
                     startActivity(it,false);
                     break;
+                case R.id.rl_modifypassword:
+                    it = new Intent(MainActivity.this,ModifyPswActivity.class);
+                    startActivity(it,false);
+                    break;
                 case R.id.rl_logout:
                     it = new Intent(MainActivity.this,LoginActivity.class);
                     StringConstantUtils.setUserModel(new UserModel());//清空缓存数据
-                    it.putExtra("logout","logout");
+                    it.putExtra("logout", "logout");
                     startActivity(it, true);
                     break;
                 default:
@@ -334,11 +339,11 @@ public class MainActivity extends BaseBitmapActivity {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Calendar nowTime = Calendar.getInstance();
         String startTime = sdf.format(nowTime.getTime());
-        nowTime.add(Calendar.HOUR, 5);
-        String endTime = sdf.format(nowTime.getTime());
+//        nowTime.add(Calendar.HOUR, 5);
+//        String endTime = sdf.format(nowTime.getTime());
 //        System.out.println(sdf.format(nowTime.getTime()));
         taskModel.setTask_createtime(startTime);//起止时间
-        taskModel.setTask_endtime(endTime);
+//        taskModel.setTask_endtime(endTime);
         RequestApi.getInstance(MainActivity.this).execSQL(SqlStringUtil.insertIntoTableTask(taskModel), myStandardCallback);
         loadingDialog = new LoadingDialog(MainActivity.this);
         loadingDialog.setLoadingText("正在发布...");

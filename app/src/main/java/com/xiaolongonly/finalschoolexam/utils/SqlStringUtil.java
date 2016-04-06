@@ -18,9 +18,9 @@ public class SqlStringUtil {
      */
     public static String insertIntoTableTask(TaskModel taskModel) {
         String sql = "insert into task ( publisher_id , task_title , task_content ," +
-                " task_locationx , task_locationy ,task_createtime , task_endtime , task_location) " +
+                " task_locationx , task_locationy ,task_createtime , task_finishtime , task_location) " +
                 "values( " + appendValue(String.valueOf(taskModel.getPublisher_id())) + " ," + appendValue(taskModel.getTask_title()) + " ," + appendValue(taskModel.getTask_content()) + " ," + appendValue(taskModel.getTask_locationx()) +
-                " ," + appendValue(taskModel.getTask_locationy()) + " ," + appendValue(taskModel.getTask_createtime()) + " ," + appendValue(taskModel.getTask_endtime())+ " ," + appendValue(taskModel.getTask_location()) + " )";
+                " ," + appendValue(taskModel.getTask_locationy()) + " ," + appendValue(taskModel.getTask_createtime()) + " ," + appendValue(taskModel.getTask_finishtime())+ " ," + appendValue(taskModel.getTask_location()) + " )";
         return sql;
     }
 //    public static String insertIntoTableTask(TaskModel taskModel) {
@@ -88,8 +88,8 @@ public class SqlStringUtil {
      * @param task_statu statu:1.未接取，2.已接取，3.已关闭，4.已完成
      * @return
      */
-    public static String modifyTaskStatu(int task_id, int task_statu) {
-        String sql = "update task set task_statu =" + appendValue(String.valueOf(task_statu)) + "where task_id=" + appendValue(String.valueOf(task_id));
+    public static String modifyTaskStatu(int task_id, int task_statu,String task_finishtime) {
+        String sql = "update task set task_statu =" + appendValue(String.valueOf(task_statu)) +", task_finishtime ="+appendValue(task_finishtime)+ "where task_id=" + appendValue(String.valueOf(task_id));
         return sql;
     }
 
@@ -210,6 +210,11 @@ public class SqlStringUtil {
 //            case 2:
 //                sql= "update "+tablename+ " set " + rows +where;
 //        }
+    public static String isAccountRegister(String user_account)
+    {
+        String sql = "select * from user where user_account =" + appendValue(user_account);
+        return sql;
+    }
 
     /**
      * 有数目限制的SQL语句
@@ -223,5 +228,4 @@ public class SqlStringUtil {
         Log.i(TAG, pageindexsql);
         return pageindexsql;
     }
-
 }

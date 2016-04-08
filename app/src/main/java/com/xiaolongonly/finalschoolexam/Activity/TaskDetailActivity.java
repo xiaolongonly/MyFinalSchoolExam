@@ -1,9 +1,8 @@
-package com.xiaolongonly.finalschoolexam.activity;
+package com.xiaolongonly.finalschoolexam.Activity;
 
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -16,14 +15,11 @@ import com.u1city.module.widget.LoadingDialog;
 import com.xiaolongonly.finalschoolexam.R;
 import com.xiaolongonly.finalschoolexam.model.TaskModel;
 import com.xiaolongonly.finalschoolexam.model.UserModel;
+import com.xiaolongonly.finalschoolexam.utils.ConstantUtil;
 import com.xiaolongonly.finalschoolexam.utils.MyAnalysis;
 import com.xiaolongonly.finalschoolexam.utils.MyStandardCallback;
-import com.xiaolongonly.finalschoolexam.utils.RequestApi;
+import com.xiaolongonly.finalschoolexam.api.RequestApi;
 import com.xiaolongonly.finalschoolexam.utils.SqlStringUtil;
-import com.xiaolongonly.finalschoolexam.utils.StringConstantUtils;
-
-
-import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -44,6 +40,7 @@ public class TaskDetailActivity extends BaseActivity implements View.OnClickList
     private int task_id;
     private LoadingDialog loadingDialog;
     private TextView tv_canceltask;
+    //接取者创建者信息相关
     private TextView tv_task_getterName;
     private TextView tv_task_creatorName;
     private RelativeLayout rl_task_getterInfo;
@@ -154,7 +151,7 @@ public class TaskDetailActivity extends BaseActivity implements View.OnClickList
                         tv_task_statu.setTextColor(Color.RED);
                         tv_getthistask.setVisibility(View.VISIBLE);
                         rl_task_endtime.setVisibility(View.GONE);
-                        if (StringConstantUtils.getInstance().getUser_id() == taskModel.getPublisher_id()) {
+                        if (ConstantUtil.getInstance().getUser_id() == taskModel.getPublisher_id()) {
                             //当前用户的任务
                             tv_getthistask.setText("关闭任务");
                             tv_getthistask.setOnClickListener(new View.OnClickListener() {
@@ -189,7 +186,7 @@ public class TaskDetailActivity extends BaseActivity implements View.OnClickList
                                 @Override
                                 public void onClick(View view) {
                                     loadingDialog.show();
-                                    RequestApi.getInstance(TaskDetailActivity.this).execSQL(SqlStringUtil.modifySP(task_id, TaskModel.STATU_HAVETAKE, StringConstantUtils.getInstance().getUser_id()), new MyStandardCallback(TaskDetailActivity.this) {
+                                    RequestApi.getInstance(TaskDetailActivity.this).execSQL(SqlStringUtil.modifySP(task_id, TaskModel.STATU_HAVETAKE, ConstantUtil.getInstance().getUser_id()), new MyStandardCallback(TaskDetailActivity.this) {
                                         @Override
                                         public void onResult(MyAnalysis analysis) throws Exception {
                                             ToastUtil.showToast(TaskDetailActivity.this, "接取成功！！");
@@ -213,7 +210,7 @@ public class TaskDetailActivity extends BaseActivity implements View.OnClickList
                         //当前用户的任务
                         tv_task_statu.setText("已接取");
                         rl_task_endtime.setVisibility(View.GONE);
-                        if (StringConstantUtils.getInstance().getUser_id() == taskModel.getPublisher_id())//当前用户发布的任务
+                        if (ConstantUtil.getInstance().getUser_id() == taskModel.getPublisher_id())//当前用户发布的任务
                         {
                             tv_getthistask.setVisibility(View.VISIBLE);
                             tv_getthistask.setText("关闭任务");
@@ -240,7 +237,7 @@ public class TaskDetailActivity extends BaseActivity implements View.OnClickList
                             });
 
                         } else {
-                            if (StringConstantUtils.getInstance().getUser_id() == taskModel.getPicker_id())//当前用户接取的任务
+                            if (ConstantUtil.getInstance().getUser_id() == taskModel.getPicker_id())//当前用户接取的任务
                             {
                                 tv_getthistask.setVisibility(View.VISIBLE);//完成任务可见
                                 tv_canceltask.setVisibility(View.VISIBLE);//放弃任务可见
@@ -341,13 +338,13 @@ public class TaskDetailActivity extends BaseActivity implements View.OnClickList
                 break;
             case R.id.rl_task_getter:
                 //携带getterid的intent
-                it =new Intent(TaskDetailActivity.this,UserInfoActivity.class);
+                it =new Intent(TaskDetailActivity.this, UserInfoActivity.class);
                 it.putExtra("user_id",String.valueOf(taskModel.getPicker_id()));
                 startActivity(it,false);
                 break;
             case R.id.rl_task_creator:
                 //携带creatorid的intent
-                it =new Intent(TaskDetailActivity.this,UserInfoActivity.class);
+                it =new Intent(TaskDetailActivity.this, UserInfoActivity.class);
                 it.putExtra("user_id",String.valueOf(taskModel.getPublisher_id()));
                 startActivity(it,false);
                 break;

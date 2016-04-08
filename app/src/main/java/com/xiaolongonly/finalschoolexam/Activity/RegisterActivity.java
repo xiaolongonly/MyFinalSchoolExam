@@ -1,4 +1,4 @@
-package com.xiaolongonly.finalschoolexam.activity;
+package com.xiaolongonly.finalschoolexam.Activity;
 
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -7,25 +7,20 @@ import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.u1city.module.base.BaseActivity;
-import com.u1city.module.common.JsonAnalysis;
 import com.u1city.module.util.PreferencesUtils;
 import com.u1city.module.util.ToastUtil;
 import com.xiaolongonly.finalschoolexam.R;
 import com.xiaolongonly.finalschoolexam.model.UserModel;
 import com.xiaolongonly.finalschoolexam.utils.MyAnalysis;
 import com.xiaolongonly.finalschoolexam.utils.MyStandardCallback;
-import com.xiaolongonly.finalschoolexam.utils.RequestApi;
+import com.xiaolongonly.finalschoolexam.api.RequestApi;
 import com.xiaolongonly.finalschoolexam.utils.SqlStringUtil;
-import com.xiaolongonly.finalschoolexam.utils.StringConstantUtils;
-
-import java.util.List;
 
 /**
  * Created by Xiaolong on 4/4/2016.

@@ -1,6 +1,5 @@
-package com.xiaolongonly.finalschoolexam.activity;
+package com.xiaolongonly.finalschoolexam.Activity;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,13 +14,12 @@ import com.u1city.module.util.PreferencesUtils;
 import com.u1city.module.util.ToastUtil;
 import com.u1city.module.widget.LoadingDialog;
 import com.xiaolongonly.finalschoolexam.R;
-import com.xiaolongonly.finalschoolexam.model.TaskModel;
 import com.xiaolongonly.finalschoolexam.model.UserModel;
+import com.xiaolongonly.finalschoolexam.utils.ConstantUtil;
 import com.xiaolongonly.finalschoolexam.utils.MyAnalysis;
 import com.xiaolongonly.finalschoolexam.utils.MyStandardCallback;
-import com.xiaolongonly.finalschoolexam.utils.RequestApi;
+import com.xiaolongonly.finalschoolexam.api.RequestApi;
 import com.xiaolongonly.finalschoolexam.utils.SqlStringUtil;
-import com.xiaolongonly.finalschoolexam.utils.StringConstantUtils;
 
 import java.util.List;
 
@@ -114,9 +112,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 PreferencesUtils.putStringPreferences(LoginActivity.this, "password", userModels.get(0).getUser_password());
 //                Log.i(TAG, json);
 //                Log.i(TAG, userModels.get(0).getUser_account() + "------" + userModels.get(0).getUser_password());
-                StringConstantUtils.setUserModel(userModels.get(0));
-                Log.i(TAG, StringConstantUtils.getInstance().toString());
-                Intent it = new Intent(LoginActivity.this,MainActivity.class);
+                ConstantUtil.setUserModel(userModels.get(0));
+                Log.i(TAG, ConstantUtil.getInstance().toString());
+                Intent it = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(it, true);
                 loadingDialog.dismiss();
             }

@@ -1,10 +1,10 @@
-package com.xiaolongonly.finalschoolexam.activity;
+package com.xiaolongonly.finalschoolexam.Activity;
 
 import android.os.Bundle;
 
 import com.u1city.module.base.BaseActivity;
 import com.u1city.module.common.Debug;
-import com.xiaolongonly.finalschoolexam.utils.RequestApi;
+import com.xiaolongonly.finalschoolexam.api.RequestApi;
 
 /**
  * @author guoxl

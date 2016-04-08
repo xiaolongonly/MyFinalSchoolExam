@@ -1,4 +1,4 @@
-package com.xiaolongonly.finalschoolexam.activity;
+package com.xiaolongonly.finalschoolexam.Activity;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -45,7 +45,7 @@ import java.util.List;
 /**
  * Created by Administrator on 3/26/2016.
  */
-public class BaseBitmapActivity extends RealBaseActivity {
+public class BaseBitmapActivity extends com.xiaolongonly.finalschoolexam.Activity.RealBaseActivity {
 
     /* 地图页面 */
     private MapView mMapView = null;
@@ -187,7 +187,7 @@ public class BaseBitmapActivity extends RealBaseActivity {
 
     }
     private void goDetail(int task_id) {
-        Intent intent = new Intent(BaseBitmapActivity.this,TaskDetailActivity.class);
+        Intent intent = new Intent(BaseBitmapActivity.this, TaskDetailActivity.class);
         intent.putExtra("task_id", task_id);
         startActivity(intent, false);
     }

@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F4F4F4"
+    android:background="@color/white"
     android:overScrollMode="never"
     android:scrollbars="none">
 
@@ -65,7 +65,7 @@
 
         </RelativeLayout>
         <RelativeLayout
-            android:id="@+id/rl_tsak_location"
+            android:id="@+id/rl_task_location"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="#FFFFFF">
@@ -88,11 +88,12 @@
                 android:textColor="#B4B4B4"
                 android:textSize="15sp" />
 
-            <View
-                style="@style/ViewSoildLine"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp" />
+
         </RelativeLayout>
+        <View
+            style="@style/ViewSoildLine"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp" />
         <RelativeLayout
             android:id="@+id/rl_task_creator"
             android:layout_width="match_parent"

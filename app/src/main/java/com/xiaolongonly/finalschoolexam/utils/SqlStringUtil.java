@@ -148,9 +148,9 @@ public class SqlStringUtil {
      * @param user_qq
      * @return
      */
-    public static String modifyUserInfo(int user_id, String user_name, String user_tel, String user_qq) {
+    public static String modifyUserInfo(int user_id, String user_name, String user_tel, String user_qq ,String user_imageurl) {
         String sql = "update user set user_name = " + appendValue(user_name) + " ," + "user_tel =" + appendValue(user_tel) + " ," + "user_qq =" + appendValue(user_qq) +
-                "where user_id = " + appendValue(String.valueOf(user_id));
+                " ," + "user_imageurl =" + appendValue(user_imageurl) +"where user_id = " + appendValue(String.valueOf(user_id));
         return sql;
     }
 

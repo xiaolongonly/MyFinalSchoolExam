@@ -1,4 +1,5 @@
-package com.xiaolongonly.finalschoolexam.activity;
+package com.xiaolongonly.finalschoolexam.Activity;
+
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -11,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+
 import com.u1city.module.base.BaseActivity;
 import com.u1city.module.common.JsonAnalysis;
 import com.u1city.module.pulltorefresh.DataLoader;
@@ -19,11 +21,11 @@ import com.u1city.module.util.ToastUtil;
 import com.xiaolongonly.finalschoolexam.R;
 import com.xiaolongonly.finalschoolexam.adapter.MyTaskListAdapter;
 import com.xiaolongonly.finalschoolexam.model.TaskModel;
+import com.xiaolongonly.finalschoolexam.utils.ConstantUtil;
 import com.xiaolongonly.finalschoolexam.utils.MyAnalysis;
 import com.xiaolongonly.finalschoolexam.utils.MyStandardCallback;
-import com.xiaolongonly.finalschoolexam.utils.RequestApi;
+import com.xiaolongonly.finalschoolexam.api.RequestApi;
 import com.xiaolongonly.finalschoolexam.utils.SqlStringUtil;
-import com.xiaolongonly.finalschoolexam.utils.StringConstantUtils;
 
 import java.util.List;
 
@@ -35,7 +37,7 @@ public class TaskGetListActivity extends BaseActivity implements View.OnClickLis
     private TextView title;
     // 券类型
     private int level = 0;
-    private int pickerid = StringConstantUtils.getInstance().getUser_id();
+    private int pickerid = ConstantUtil.getInstance().getUser_id();
     private DataLoader dataLoader;
     private PullToRefreshListView pullToRefreshListView;
 
@@ -84,7 +86,7 @@ public class TaskGetListActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void goDetail(int task_id) {
-        Intent intent = new Intent(TaskGetListActivity.this,TaskDetailActivity.class);
+        Intent intent = new Intent(TaskGetListActivity.this, TaskDetailActivity.class);
         intent.putExtra("task_id", task_id);
         startActivity(intent,false);
     }

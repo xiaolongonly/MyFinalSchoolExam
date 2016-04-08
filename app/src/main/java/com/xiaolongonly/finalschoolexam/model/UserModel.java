@@ -12,7 +12,7 @@ public class UserModel implements Serializable {
     private String user_tel;
     private String user_qq;
     private String user_name;
-
+    private String user_imageurl;
     @Override
     public String toString() {
         return "UserModel{" +
@@ -34,7 +34,7 @@ public class UserModel implements Serializable {
         this.user_imageurl = user_imageurl;
     }
 
-    private String user_imageurl;
+
     public String getUser_account() {
         return user_account;
     }

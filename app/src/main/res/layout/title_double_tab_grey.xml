@@ -4,7 +4,7 @@
     android:layout_height="44dp"
     android:background="#f8f8f8">
 
-        <ImageButton
+        <com.u1city.module.widget.RoundedImageView
             android:id="@+id/iv_head_btn"
             android:layout_width="35dp"
             android:layout_height="35dp"

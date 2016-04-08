@@ -1,18 +1,24 @@
-package com.xiaolongonly.finalschoolexam.activity;
+package com.xiaolongonly.finalschoolexam.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.u1city.module.base.BaseActivity;
 import com.u1city.module.common.JsonAnalysis;
+import com.u1city.module.util.SimpleImageOption;
+import com.u1city.module.util.ToastUtil;
 import com.xiaolongonly.finalschoolexam.R;
+import com.xiaolongonly.finalschoolexam.api.RequestApi;
 import com.xiaolongonly.finalschoolexam.model.UserModel;
+import com.xiaolongonly.finalschoolexam.utils.ImageLoaderConfig;
 import com.xiaolongonly.finalschoolexam.utils.MyAnalysis;
 import com.xiaolongonly.finalschoolexam.utils.MyStandardCallback;
-import com.xiaolongonly.finalschoolexam.utils.RequestApi;
 import com.xiaolongonly.finalschoolexam.utils.SqlStringUtil;
 
 import java.util.List;
@@ -26,6 +32,8 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
     private TextView tv_tel;
     private String userid;
     private TextView title;
+    private ImageView useImage;
+    private DisplayImageOptions imageOptions = SimpleImageOption.create(R.drawable.ic_default_avatar_guider);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState , R.layout.activity_userinfo, R.layout.title_default);
@@ -37,6 +45,10 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
             case R.id.ibt_back:
                 finishAnimation();
                 break;
+            case R.id.user_info_image:
+                //弹窗显示大图~~
+                ToastUtil.showToast(UserInfoActivity.this,"这里弹窗显示头像大图");
+                break;
         }
     }
 
@@ -46,6 +58,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
         tv_nickname= (TextView) findViewById(R.id.tv_nickname);
         tv_qq= (TextView) findViewById(R.id.tv_user_qq);
         tv_tel= (TextView) findViewById(R.id.tv_user_tel);
+        useImage.setOnClickListener(this);
         initTitle();
         Intent it =getIntent();
         userid = it.getStringExtra("user_id");
@@ -66,6 +79,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
     @Override
     public void initData() {
         super.initData();
+        ImageLoaderConfig.setConfig(this);// 此句在正常使用中不需要
         RequestApi.getInstance(this).execSQL(SqlStringUtil.getuserInfoByUserid(Integer.valueOf(userid)), new MyStandardCallback(this) {
             @Override
             public void onResult(MyAnalysis analysis) throws Exception {
@@ -77,6 +91,8 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
                 tv_tel.setText(userModel.getUser_tel());
                 tv_qq.setText(userModel.getUser_qq());
                 title.setText(userModel.getUser_name()+"的个人信息");
+                useImage = (ImageView) findViewById(R.id.user_info_image);
+                ImageLoader.getInstance().displayImage(userModel.getUser_imageurl(),useImage, imageOptions);
             }
             @Override
             public void onError(int type) {

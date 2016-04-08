@@ -1,6 +1,5 @@
-package com.xiaolongonly.finalschoolexam.activity;
+package com.xiaolongonly.finalschoolexam.Activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -12,6 +11,8 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -19,23 +20,26 @@ import android.widget.TextView;
 import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.MyLocationConfiguration;
-
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.u1city.module.common.Debug;
 import com.u1city.module.common.JsonAnalysis;
 import com.u1city.module.pulltorefresh.DataLoader;
 import com.u1city.module.pulltorefresh.PullToRefreshListView;
+import com.u1city.module.util.SimpleImageOption;
 import com.u1city.module.util.ToastUtil;
 import com.u1city.module.widget.LoadingDialog;
 import com.xiaolongonly.finalschoolexam.R;
 import com.xiaolongonly.finalschoolexam.adapter.MyTaskListAdapter;
+import com.xiaolongonly.finalschoolexam.api.RequestApi;
 import com.xiaolongonly.finalschoolexam.model.TaskModel;
 import com.xiaolongonly.finalschoolexam.model.UserModel;
+import com.xiaolongonly.finalschoolexam.utils.ConstantUtil;
+import com.xiaolongonly.finalschoolexam.utils.ImageLoaderConfig;
 import com.xiaolongonly.finalschoolexam.utils.MyAnalysis;
 import com.xiaolongonly.finalschoolexam.utils.MyStandardCallback;
-import com.xiaolongonly.finalschoolexam.utils.RequestApi;
 import com.xiaolongonly.finalschoolexam.utils.SqlStringUtil;
 import com.xiaolongonly.finalschoolexam.utils.StringConstantUtils;
-
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -43,7 +47,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
-public class MainActivity extends BaseBitmapActivity {
+public class MainActivity extends com.xiaolongonly.finalschoolexam.Activity.BaseBitmapActivity {
 
     /**
      * actionBar的圆角按钮
@@ -76,6 +80,8 @@ public class MainActivity extends BaseBitmapActivity {
     private EditText etLocation;
     private LoadingDialog loadingDialog;//加载弹窗
     private List<TaskModel> allTaskModels = new ArrayList<TaskModel>();
+
+    private ImageView iv_head_btn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //在使用SDK各组件之前初始化context信息，传入ApplicationContext
@@ -85,14 +91,19 @@ public class MainActivity extends BaseBitmapActivity {
         //初始化百度地图信息
         initBaiduMap();
         initMarker();//父类的初始化覆盖物类
+        publisherId = ConstantUtil.getInstance().getUser_id();
     }
 
     @Override
     protected void onResumeFragments() {
         super.onResumeFragments();
-        publisherId = StringConstantUtils.getInstance().getUser_id();
         TextView textView = (TextView) findViewById(R.id.tv_my_username);
-        textView.setText(StringConstantUtils.getInstance().getUser_name());
+        textView.setText(ConstantUtil.getInstance().getUser_name());
+        ImageView iv_my_logo= (ImageView) findViewById(R.id.iv_my_logo);
+        ImageLoaderConfig.setConfig(this );
+        DisplayImageOptions imageOptions = SimpleImageOption.create(R.drawable.ic_default_avatar_guider);
+        ImageLoader.getInstance().displayImage(ConstantUtil.getInstance().getUser_imageurl(), iv_my_logo, imageOptions);
+        ImageLoader.getInstance().displayImage(ConstantUtil.getInstance().getUser_imageurl(), iv_head_btn, imageOptions);
     }
 
     /**
@@ -129,7 +140,8 @@ public class MainActivity extends BaseBitmapActivity {
         llytMeDrawer = (LinearLayout) findViewById(R.id.llytMeDrawer);
         rl_baidumap = (RelativeLayout) findViewById(R.id.rl_baidumap);
         ll_newTask = (LinearLayout) findViewById(R.id.ll_newtask);
-        findViewById(R.id.iv_head_btn).setOnClickListener(new OnClickListener() {
+        iv_head_btn= (ImageView) findViewById(R.id.iv_head_btn);
+        iv_head_btn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (mDrawerLayout.isDrawerOpen(llytMeDrawer)) {
@@ -155,7 +167,6 @@ public class MainActivity extends BaseBitmapActivity {
                 allTaskModels = jsonAnalysis.listFromJson(jsonList, TaskModel.class);
                 addOverlays(allTaskModels);
             }
-
             @Override
             public void onError(int type) {
 
@@ -212,7 +223,7 @@ public class MainActivity extends BaseBitmapActivity {
         });
     }
     private void goDetail(int task_id) {
-        Intent intent = new Intent(MainActivity.this,TaskDetailActivity.class);
+        Intent intent = new Intent(MainActivity.this, TaskDetailActivity.class);
         intent.putExtra("task_id", task_id);
 //        ToastUtil.showToast(this,task_id+"");
         startActivity(intent, false);
@@ -272,7 +283,7 @@ public class MainActivity extends BaseBitmapActivity {
                     break;
                 case R.id.rl_mytaketask:
                     //我接取的任务
-                    it = new Intent(MainActivity.this,TaskGetListActivity.class);
+                    it = new Intent(MainActivity.this, TaskGetListActivity.class);
                     startActivity(it,false);
                     closeDrawer();
                     break;
@@ -291,16 +302,16 @@ public class MainActivity extends BaseBitmapActivity {
                     break;
                 case R.id.my_info_detail:
                     //到个人中心页面
-                    it = new Intent(MainActivity.this,MyInfoActivity.class);
+                    it = new Intent(MainActivity.this, MyInfoActivity.class);
                     startActivity(it,false);
                     break;
                 case R.id.rl_modifypassword:
-                    it = new Intent(MainActivity.this,ModifyPswActivity.class);
+                    it = new Intent(MainActivity.this, ModifyPswActivity.class);
                     startActivity(it,false);
                     break;
                 case R.id.rl_logout:
-                    it = new Intent(MainActivity.this,LoginActivity.class);
-                    StringConstantUtils.setUserModel(new UserModel());//清空缓存数据
+                    it = new Intent(MainActivity.this, LoginActivity.class);
+                    ConstantUtil.setUserModel(new UserModel());//清空缓存数据
                     it.putExtra("logout", "logout");
                     startActivity(it, true);
                     break;

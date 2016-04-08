@@ -11,7 +11,33 @@ android:scrollbars="none">
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+    <RelativeLayout
+        android:id="@+id/rl_my_logo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:background="#FFFFFF" >
 
+    <com.u1city.module.widget.RoundedImageView
+        android:id="@+id/my_info_image"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ic_default_avatar_guider" />
+
+    <ImageView
+        android:id="@+id/iv_guiderLogo"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignRight="@+id/my_info_image"
+        android:layout_alignBottom="@+id/my_info_image"
+        android:layout_marginRight="5dp"
+        android:src="@drawable/ic_myinfo_camera" />
+    </RelativeLayout>
+    <View
+        style="@style/fillX"
+        android:layout_marginTop="10dp" />
     <RelativeLayout
         android:id="@+id/rtlt_nickname"
         android:layout_width="match_parent"

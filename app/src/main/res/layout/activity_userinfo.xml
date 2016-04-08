@@ -13,6 +13,25 @@
         android:orientation="vertical">
 
         <RelativeLayout
+            android:id="@+id/rl_user_logo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            android:padding="15dp">
+
+            <com.u1city.module.widget.RoundedImageView
+                android:id="@+id/user_info_image"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_default_avatar_guider" />
+
+        </RelativeLayout>
+        <View
+            style="@style/fillX"
+            android:layout_marginTop="10dp" />
+        <RelativeLayout
             android:id="@+id/rtlt_nickname"
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -58,9 +77,9 @@
                 style="@style/PersonInofEtRight2"
                 android:gravity="right"
                 android:hint="留个手机号吧，方便人联系你"
+                android:inputType="phone"
                 android:maxLength="11"
                 android:singleLine="true"
-                android:inputType="phone"
                 android:textColor="#B4B4B4"
                 android:textSize="15sp" />
         </RelativeLayout>
@@ -87,9 +106,9 @@
                 style="@style/PersonInofEtRight2"
                 android:gravity="right"
                 android:hint="留个QQ号吧，方便人联系你"
+                android:inputType="number"
                 android:maxLength="15"
                 android:singleLine="true"
-                android:inputType="number"
                 android:textColor="#B4B4B4"
                 android:textSize="15sp" />
 

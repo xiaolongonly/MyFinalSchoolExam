@@ -1,4 +1,4 @@
-package com.xiaolongonly.finalschoolexam.activity;
+package com.xiaolongonly.finalschoolexam.Activity;
 
 import android.os.Bundle;
 import android.view.View;
@@ -11,11 +11,11 @@ import com.u1city.module.util.StringUtils;
 import com.u1city.module.util.ToastUtil;
 import com.u1city.module.widget.LoadingDialog;
 import com.xiaolongonly.finalschoolexam.R;
+import com.xiaolongonly.finalschoolexam.utils.ConstantUtil;
 import com.xiaolongonly.finalschoolexam.utils.MyAnalysis;
 import com.xiaolongonly.finalschoolexam.utils.MyStandardCallback;
-import com.xiaolongonly.finalschoolexam.utils.RequestApi;
+import com.xiaolongonly.finalschoolexam.api.RequestApi;
 import com.xiaolongonly.finalschoolexam.utils.SqlStringUtil;
-import com.xiaolongonly.finalschoolexam.utils.StringConstantUtils;
 
 /**
  * Created by Administrator on 4/5/2016.
@@ -118,13 +118,13 @@ public class ModifyPswActivity extends BaseActivity implements View.OnClickListe
             ToastUtil.showToast(this,"两次输入的新密码不一致");
             return;
         }
-        if(!etOldPassword.getText().toString().equals(StringConstantUtils.getInstance().getUser_password()))
+        if(!etOldPassword.getText().toString().equals(ConstantUtil.getInstance().getUser_password()))
         {
             ToastUtil.showToast(this,"旧密码验证错误");
             return;
         }
         loadingDialog.show();
-        RequestApi.getInstance(this).execSQL(SqlStringUtil.modifyUserPswByIP(StringConstantUtils.getInstance().getUser_id(), etOldPassword.getText().toString(), etNewPassword.getText().toString()), new MyStandardCallback(this) {
+        RequestApi.getInstance(this).execSQL(SqlStringUtil.modifyUserPswByIP(ConstantUtil.getInstance().getUser_id(), etOldPassword.getText().toString(), etNewPassword.getText().toString()), new MyStandardCallback(this) {
             @Override
             public void onResult(MyAnalysis analysis) throws Exception {
                 ToastUtil.showToast(ModifyPswActivity.this,"密码修改成功");

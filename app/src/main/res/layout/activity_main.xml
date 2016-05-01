@@ -12,8 +12,8 @@
         <LinearLayout
             android:id="@+id/activity_tasklist"
             style="@style/fillAll">
-            <com.u1city.module.pulltorefresh.PullToRefreshListView
-                xmlns:ptr="http://schemas.android.com/apk/res-auto"
+
+            <com.u1city.module.pulltorefresh.PullToRefreshListView xmlns:ptr="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/activity_tasklist_ptr_lv"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -22,10 +22,10 @@
                 android:fadingEdge="none"
                 android:listSelector="@android:color/transparent"
                 android:orientation="vertical"
-                android:scrollbars="none"
                 android:overScrollMode="never"
-                ptr:ptrShowIndicator="false"
-                ptr:ptrAnimationStyle="flip" />
+                android:scrollbars="none"
+                ptr:ptrAnimationStyle="flip"
+                ptr:ptrShowIndicator="false" />
         </LinearLayout>
 
         <RelativeLayout
@@ -50,15 +50,15 @@
                 android:visibility="gone">
 
                 <!--<ImageView-->
-                    <!--android:id="@+id/id_info_img"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="150dp"-->
-                    <!--android:layout_marginBottom="10dp"-->
-                    <!--android:layout_marginLeft="12dp"-->
-                    <!--android:layout_marginRight="12dp"-->
-                    <!--android:layout_marginTop="10dp"-->
-                    <!--android:background="@drawable/img_border"-->
-                    <!--android:src="@drawable/a01" />-->
+                <!--android:id="@+id/id_info_img"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="150dp"-->
+                <!--android:layout_marginBottom="10dp"-->
+                <!--android:layout_marginLeft="12dp"-->
+                <!--android:layout_marginRight="12dp"-->
+                <!--android:layout_marginTop="10dp"-->
+                <!--android:background="@drawable/img_border"-->
+                <!--android:src="@drawable/a01" />-->
                 <TextView
                     android:id="@+id/tv_task_content"
                     android:layout_width="match_parent"
@@ -67,14 +67,13 @@
                     android:layout_marginLeft="12dp"
                     android:layout_marginRight="12dp"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/img_border"
-                    />
+                    android:background="@drawable/img_border" />
 
                 <RelativeLayout
+                    android:id="@+id/rl_task_info"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_alignParentBottom="true"
-                    android:id="@+id/rl_task_info"
                     android:background="@drawable/bg_map_bottom">
 
                     <LinearLayout
@@ -109,25 +108,25 @@
                         android:orientation="horizontal">
 
                         <!--<ImageView-->
-                            <!--android:layout_width="wrap_content"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:background="@drawable/map_zan"-->
-                            <!--android:clickable="true" />-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:background="@drawable/map_zan"-->
+                        <!--android:clickable="true" />-->
                         <TextView
                             android:id="@+id/task_havebeen_take"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="已接取"
-                            android:textColor="@android:color/holo_red_light"
-                            />
+                            android:textColor="@android:color/holo_red_light" />
+
                         <TextView
                             android:id="@+id/get_this_task"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="接取这个任务"
                             android:textColor="@android:color/holo_green_light"
-                            android:visibility="gone"
-                            />
+                            android:visibility="gone" />
+
                         <TextView
                             android:id="@+id/id_info_zan"
                             android:layout_width="wrap_content"
@@ -142,19 +141,21 @@
 
 
             </RelativeLayout>
+
             <LinearLayout
                 android:id="@+id/ll_newtask"
                 android:layout_width="match_parent"
                 android:layout_height="220dp"
                 android:layout_alignParentBottom="true"
+                android:background="#80ffffff"
                 android:orientation="vertical"
-                android:background="#fff"
                 android:visibility="gone">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
+                    android:background="#80ffffff"
                     android:orientation="horizontal">
 
                     <TextView
@@ -163,10 +164,12 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_weight="1"
-                        android:gravity="center_vertical"
+                        android:background="@drawable/new_task_btn"
+                        android:gravity="center"
                         android:paddingBottom="5dp"
-                        android:paddingLeft="5dp"
+                        android:layout_marginLeft="5dp"
                         android:paddingTop="5dp"
+                        android:textColor="@color/white"
                         android:text="取消"
                         android:textSize="20sp" />
 
@@ -176,10 +179,10 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_weight="3"
+                        android:background="@color/transparent"
                         android:hint="在这里输入标题"
-                        android:singleLine="true"
-                        android:background="@color/white"
                         android:paddingLeft="5dp"
+                        android:singleLine="true"
                         android:textSize="20sp" />
 
                     <TextView
@@ -188,7 +191,12 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_weight="1"
+                        android:background="@drawable/new_task_btn"
+                        android:paddingBottom="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:paddingTop="5dp"
                         android:gravity="center"
+                        android:textColor="@color/white"
                         android:text="确定"
                         android:textSize="20sp" />
                 </LinearLayout>
@@ -202,7 +210,7 @@
                         android:id="@+id/et_newtask_content"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@color/white"
+                        android:background="#80ffffff"
                         android:hint="在这里输入内容" />
                 </LinearLayout>
 
@@ -216,9 +224,9 @@
                         android:id="@+id/tv_location"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
+                        android:background="#80ffffff"
                         android:gravity="center_vertical"
                         android:text="任务位置:"
-                        android:background="@color/white"
                         android:textColor="@color/contents_text"
                         android:textSize="20sp" />
 
@@ -226,11 +234,23 @@
                         android:id="@+id/et_newtask_location"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@color/white"
+                        android:background="#80ffffff"
                         android:hint="点击地图选择任务位置"
-                        android:paddingLeft="5dp" />
+                        android:paddingLeft="5dp"
+                        android:textSize="20sp"
+                        />
                 </LinearLayout>
             </LinearLayout>
+            <ImageView
+                android:id="@+id/iv_center_tomyloc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/indoor_loc"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="15dp"
+                />
         </RelativeLayout>
 
         <LinearLayout
@@ -251,10 +271,9 @@
                     android:id="@+id/my_info_detail"
                     android:layout_width="match_parent"
                     android:layout_height="182dp"
-                    android:background="#f25e55">
+                    android:background="#299BF7">
 
-                    <com.u1city.module.widget.RoundedImageView
-                        xmlns:app="http://schemas.android.com/apk/res-auto"
+                    <com.u1city.module.widget.RoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                         android:id="@+id/iv_my_logo"
                         android:layout_width="68dp"
                         android:layout_height="68dp"
@@ -273,8 +292,7 @@
                         android:layout_marginTop="15dp"
                         android:text="用户名"
                         android:textColor="#FFFFFF"
-                        android:textSize="15sp"
-                        />
+                        android:textSize="15sp" />
                 </RelativeLayout>
 
                 <View style="@style/ViewSoildLine" />
@@ -337,6 +355,7 @@
                         android:textColor="#505050"
                         android:textSize="16sp" />
                 </RelativeLayout>
+
                 <View style="@style/ViewSoildLine" />
 
                 <RelativeLayout
@@ -356,6 +375,7 @@
                         android:textColor="#505050"
                         android:textSize="16sp" />
                 </RelativeLayout>
+
                 <View style="@style/ViewSoildLine" />
 
                 <RelativeLayout
@@ -375,7 +395,6 @@
                         android:textColor="#505050"
                         android:textSize="16sp" />
                 </RelativeLayout>
-
 
 
                 <!--<View style="@style/ViewSoildLine" />-->

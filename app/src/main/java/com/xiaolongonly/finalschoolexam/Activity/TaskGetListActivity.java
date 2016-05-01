@@ -27,6 +27,7 @@ import com.xiaolongonly.finalschoolexam.utils.MyStandardCallback;
 import com.xiaolongonly.finalschoolexam.api.RequestApi;
 import com.xiaolongonly.finalschoolexam.utils.SqlStringUtil;
 
+import java.util.Collections;
 import java.util.List;
 
 public class TaskGetListActivity extends BaseActivity implements View.OnClickListener {
@@ -64,8 +65,7 @@ public class TaskGetListActivity extends BaseActivity implements View.OnClickLis
         pullToRefreshListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(adapter.getCount()==position-1)
-                {
+                if (adapter.getCount() == position - 1) {
                     return;
                 }
                 TaskModel taskModel = (TaskModel) adapter.getItem(position - 1);
@@ -79,10 +79,10 @@ public class TaskGetListActivity extends BaseActivity implements View.OnClickLis
         dataLoader.setDataSource(new DataLoader.DataSource() {
             @Override
             public void onDataPrepare(boolean b) {
-                RequestApi.getInstance(TaskGetListActivity.this).execSQL(SqlStringUtil.pageindex(SqlStringUtil.getTaskListByPickerid(pickerid, level),dataLoader.getIndexPage(),dataLoader.getPageSize()), myStandardCallback);
+                RequestApi.getInstance(TaskGetListActivity.this).execSQL(SqlStringUtil.pageindex(SqlStringUtil.getTaskListByPickerid(pickerid, level), dataLoader.getIndexPage(), dataLoader.getPageSize()), myStandardCallback);
             }
         });
-//        dataLoader.setFooterViewBgColor(android.R.color.black); // 设置footer的背景色，常用于实现背景色的一致
+        dataLoader.setFooter(new View(TaskGetListActivity.this));
     }
 
     private void goDetail(int task_id) {
@@ -314,6 +314,7 @@ public class TaskGetListActivity extends BaseActivity implements View.OnClickLis
             int total=1;
             if(taskModels.size()>0) {
                 total = Integer.valueOf(taskModels.get(0).getTotal());
+                Collections.sort(taskModels);
             }
             // 该对象需要implements Serializable，如果对象中包含子对象，则需要包含有子对象数组的属性，详情请点击ActivityNewsModel
             dataLoader.executeOnLoadDataSuccess(taskModels, total, dataLoader.isDrawDown());

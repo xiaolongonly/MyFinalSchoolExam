@@ -13,10 +13,10 @@
         android:id="@+id/id_map_traffic"
         android:showAsAction="never"
         android:title="实时交通" />
-    <item
-        android:id="@+id/id_map_mylocation"
-        android:showAsAction="never"
-        android:title="我的位置" />
+    <!--<item-->
+        <!--android:id="@+id/id_map_mylocation"-->
+        <!--android:showAsAction="never"-->
+        <!--android:title="我的位置" />-->
     <item
         android:id="@+id/id_map_mode_common"
         android:showAsAction="never"

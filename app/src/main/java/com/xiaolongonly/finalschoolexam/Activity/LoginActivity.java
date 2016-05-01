@@ -36,7 +36,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private LoadingDialog loadingDialog;//加载弹窗
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState, R.layout.activity_login, R.layout.title_default);
+        super.onCreate(savedInstanceState, R.layout.activity_login, 0);
     }
 
     @Override
@@ -52,7 +52,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         login.setOnClickListener(this);
         loadingDialog =new LoadingDialog(LoginActivity.this);
         loadingDialog.setLoadingText("正在登录...");
-        initTitle();
         String useraccount = PreferencesUtils.getStringValue(LoginActivity.this, "account");
         String userpassword = PreferencesUtils.getStringValue(LoginActivity.this, "password");
         if(isLogout==null) {
@@ -89,11 +88,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         loadingDialog.show();
     }
 
-    private void initTitle() {
-        TextView title = (TextView) findViewById(R.id.tv_title);
-        title.setText("用户登陆");
-        findViewById(R.id.ibt_back).setVisibility(View.GONE);//返回按钮不可见
-    }
+
 
     private MyStandardCallback myStandardCallback = new MyStandardCallback(this) {
         @Override
@@ -130,6 +125,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         @Override
         public void onError(int type) {
             loadingDialog.dismiss();
+            Log.i(TAG,String.valueOf(type));
         }
     };
 

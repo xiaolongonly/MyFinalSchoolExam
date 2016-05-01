@@ -11,7 +11,6 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -26,6 +25,7 @@ import com.u1city.module.common.Debug;
 import com.u1city.module.common.JsonAnalysis;
 import com.u1city.module.pulltorefresh.DataLoader;
 import com.u1city.module.pulltorefresh.PullToRefreshListView;
+import com.u1city.module.util.PreferencesUtils;
 import com.u1city.module.util.SimpleImageOption;
 import com.u1city.module.util.ToastUtil;
 import com.u1city.module.widget.LoadingDialog;
@@ -80,8 +80,8 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.Activity.Base
     private EditText etLocation;
     private LoadingDialog loadingDialog;//加载弹窗
     private List<TaskModel> allTaskModels = new ArrayList<TaskModel>();
-
     private ImageView iv_head_btn;
+    private ImageView ivCenterToMyLoc;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //在使用SDK各组件之前初始化context信息，传入ApplicationContext
@@ -91,19 +91,43 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.Activity.Base
         //初始化百度地图信息
         initBaiduMap();
         initMarker();//父类的初始化覆盖物类
-        publisherId = ConstantUtil.getInstance().getUser_id();
     }
 
     @Override
     protected void onResumeFragments() {
         super.onResumeFragments();
-        TextView textView = (TextView) findViewById(R.id.tv_my_username);
-        textView.setText(ConstantUtil.getInstance().getUser_name());
-        ImageView iv_my_logo= (ImageView) findViewById(R.id.iv_my_logo);
-        ImageLoaderConfig.setConfig(this );
-        DisplayImageOptions imageOptions = SimpleImageOption.create(R.drawable.ic_default_avatar_guider);
-        ImageLoader.getInstance().displayImage(ConstantUtil.getInstance().getUser_imageurl(), iv_my_logo, imageOptions);
-        ImageLoader.getInstance().displayImage(ConstantUtil.getInstance().getUser_imageurl(), iv_head_btn, imageOptions);
+        final ImageView iv_my_logo = (ImageView) findViewById(R.id.iv_my_logo);
+        final TextView tv_user_name = (TextView) findViewById(R.id.tv_my_username);
+        ImageLoaderConfig.setConfig(this);
+        final  DisplayImageOptions imageOptions = SimpleImageOption.create(R.drawable.ic_default_avatar_guider);
+        if(ConstantUtil.getInstance().getUser_id()==0)
+        {
+            //说明用户信息已经被清除
+            String useraccount = PreferencesUtils.getStringValue(MainActivity.this, "account");
+            String userpassword = PreferencesUtils.getStringValue(MainActivity.this, "password");
+            RequestApi.getInstance(MainActivity.this).execSQL(SqlStringUtil.getuserInfoByAP(useraccount, userpassword), new MyStandardCallback(this) {
+                @Override
+                public void onResult(MyAnalysis analysis) throws Exception {
+                    String json = analysis.getResult();
+                    JsonAnalysis<UserModel> jsonAnalysis = new JsonAnalysis<UserModel>();
+                    List<UserModel> userModels = jsonAnalysis.listFromJson(json, UserModel.class);
+                    ConstantUtil.setUserModel(userModels.get(0));
+                    tv_user_name.setText(ConstantUtil.getInstance().getUser_name());
+                    publisherId = ConstantUtil.getInstance().getUser_id();
+                    ImageLoader.getInstance().displayImage(ConstantUtil.getInstance().getUser_imageurl(), iv_my_logo, imageOptions);
+                    ImageLoader.getInstance().displayImage(ConstantUtil.getInstance().getUser_imageurl(), iv_head_btn, imageOptions);
+                }
+                @Override
+                public void onError(int type) {
+
+                }
+            });
+        }else {
+            tv_user_name.setText(ConstantUtil.getInstance().getUser_name());
+            ImageLoader.getInstance().displayImage(ConstantUtil.getInstance().getUser_imageurl(), iv_my_logo, imageOptions);
+            ImageLoader.getInstance().displayImage(ConstantUtil.getInstance().getUser_imageurl(), iv_head_btn, imageOptions);
+            publisherId = ConstantUtil.getInstance().getUser_id();
+        }
     }
 
     /**
@@ -141,6 +165,13 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.Activity.Base
         rl_baidumap = (RelativeLayout) findViewById(R.id.rl_baidumap);
         ll_newTask = (LinearLayout) findViewById(R.id.ll_newtask);
         iv_head_btn= (ImageView) findViewById(R.id.iv_head_btn);
+        ivCenterToMyLoc = (ImageView) findViewById(R.id.iv_center_tomyloc);
+        ivCenterToMyLoc.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                centerToMyLocation();
+            }
+        });
         iv_head_btn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -149,6 +180,8 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.Activity.Base
                 } else {
                     mDrawerLayout.openDrawer(llytMeDrawer);
                 }
+                mMarkerLy.setVisibility(View.GONE);
+                ll_newTask.setVisibility(View.GONE);
             }
         });
         findViewById(R.id.my_info_detail).setOnClickListener(clickListener);
@@ -207,6 +240,7 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.Activity.Base
                 RequestApi.getInstance(MainActivity.this).execSQL(SqlStringUtil.pageindex(SqlStringUtil.getTaskList(TaskModel.STATU_HAVETAKE), taskListDataLoader.getIndexPage(), taskListDataLoader.getPageSize()), taskListStandardCallback);
             }
         });
+        taskListDataLoader.setFooter(new View(MainActivity.this));
         taskListListView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -278,8 +312,9 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.Activity.Base
                 case R.id.rl_publish_newtask:
                     //这边需要显示一个正在发布的dialog而且旁边不能被点击在取消或者finish之前isGetLocationOn这个参数都要设置为true
                     ll_newTask.setVisibility(View.VISIBLE);//将其置为可见
-                    closeDrawer();
+                    toggleTab(StringConstantUtils.Show_By_BaiduMap);
                     isGetLocationOn = true;//可以点击地图获取位置信息
+                    closeDrawer();
                     break;
                 case R.id.rl_mytaketask:
                     //我接取的任务
@@ -296,6 +331,7 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.Activity.Base
                 case R.id.tv_cancel:
                     ll_newTask.setVisibility(View.GONE);//将其置为不可见
                     isGetLocationOn = false;//可以点击地图获取位置信息
+                    getAllTaskInfo();
                     break;
                 case R.id.tv_submit:
                     publishNewTask();
@@ -393,15 +429,17 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.Activity.Base
         if (type == StringConstantUtils.Show_By_BaiduMap) {
             listInfo.setVisibility(View.GONE);
             rl_baidumap.setVisibility(View.VISIBLE);
+            ivCenterToMyLoc.setVisibility(View.VISIBLE);
             leftTabTv.setBackgroundResource(R.drawable.brand_mytrace_title_left_select);
             leftTabTv.setTextColor(0xffffffff);
             rightTabTv.setBackgroundResource(R.drawable.brand_mytrace_title_right);
-            rightTabTv.setTextColor(0xff7b7b7b);
+            rightTabTv.setTextColor(0xff499BF7);
         } else {
             listInfo.setVisibility(View.VISIBLE);
             rl_baidumap.setVisibility(View.GONE);
+            ivCenterToMyLoc.setVisibility(View.GONE);
             leftTabTv.setBackgroundResource(R.drawable.brand_mytrace_title_left);
-            leftTabTv.setTextColor(0xff7b7b7b);
+            leftTabTv.setTextColor(0xff499BF7);
             rightTabTv.setBackgroundResource(R.drawable.brand_mytrace_title_right_select);
             rightTabTv.setTextColor(0xffffffff);
         }
@@ -454,9 +492,9 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.Activity.Base
                     item.setTitle("实时交通(on)");
                 }
                 break;
-            case R.id.id_map_mylocation:
-                centerToMyLocation();
-                break;
+//            case R.id.id_map_mylocation:
+//                centerToMyLocation();
+//                break;
             case R.id.id_map_mode_common:
                 mLocationMode = MyLocationConfiguration.LocationMode.NORMAL;
                 break;
@@ -472,6 +510,7 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.Activity.Base
             default:
                 break;
         }
+        toggleTab(StringConstantUtils.Show_By_BaiduMap);
         return super.onOptionsItemSelected(item);
     }
 }

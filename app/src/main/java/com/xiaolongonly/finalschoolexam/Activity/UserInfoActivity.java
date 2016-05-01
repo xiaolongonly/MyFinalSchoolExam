@@ -58,6 +58,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
         tv_nickname= (TextView) findViewById(R.id.tv_nickname);
         tv_qq= (TextView) findViewById(R.id.tv_user_qq);
         tv_tel= (TextView) findViewById(R.id.tv_user_tel);
+        useImage = (ImageView) findViewById(R.id.user_info_image);
         useImage.setOnClickListener(this);
         initTitle();
         Intent it =getIntent();
@@ -91,7 +92,6 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
                 tv_tel.setText(userModel.getUser_tel());
                 tv_qq.setText(userModel.getUser_qq());
                 title.setText(userModel.getUser_name()+"的个人信息");
-                useImage = (ImageView) findViewById(R.id.user_info_image);
                 ImageLoader.getInstance().displayImage(userModel.getUser_imageurl(),useImage, imageOptions);
             }
             @Override

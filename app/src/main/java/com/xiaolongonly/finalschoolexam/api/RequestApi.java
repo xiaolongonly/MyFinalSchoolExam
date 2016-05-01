@@ -13,7 +13,7 @@ import org.json.JSONObject;
 public class RequestApi {
     private static final String TAG = "RequestApi";
     private static RequestApi requestApi = null;
-    private static final String SERVER_URL="http://120.27.45.196/xiaolong/index.php/sql/";
+        private static final String SERVER_URL="http://120.27.45.196/xiaolong/index.php/sql/";
 
     private static MyRequest myRequest;
     public static RequestApi getInstance(Context context)

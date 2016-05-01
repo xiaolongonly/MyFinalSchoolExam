@@ -4,10 +4,10 @@
 	<!-- 边框 圆角 -->
 	<item>  
         <shape>  
-            <solid android:color="#7b7b7b" />  
+            <solid android:color="@color/blue" />
             <corners android:topLeftRadius="4dp" android:topRightRadius="0dp"  
                 android:bottomRightRadius="0dp" android:bottomLeftRadius="4dp" />  
-        </shape>  
+        </shape>
     </item>  
     
 </layer-list> 

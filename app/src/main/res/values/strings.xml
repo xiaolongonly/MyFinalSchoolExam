@@ -6,18 +6,8 @@
     <string name="hello_world">Hello world!</string>
 
     <item name="tag_position" type="id"></item>
-
-    <string name="title_activity_base_example">BaseActivity</string>
-    <string name="title_activity_remote_client">RemoteClientActivity</string>
-    <string name="title_activity_base_abs_example">BaseAbsExampleActivity</string>
-    <string name="title_activity_data_loader">DataLoaderActivity</string>
-    <string name="title_activity_psts">PstsActivity</string>
-    <string name="title_activity_scan_code">ScanCodeActivity</string>
-    <string name="title_activity_picture_taker">PictureTakerActivity</string>
-    <string name="title_activity_wheel_view">WheelViewActivity</string>
-    <string name="title_activity_tools">ToolsActivity</string>
-    <string name="title_activity_views">ViewsActivity</string>
-    <string name="title_activity_common_dialog">CommonDialogActivity</string>
-    <string name="title_activity_expand_tab">ExpandTabActivity</string>
-
+    <string name="et_account_hint">帐号/邮箱</string>
+    <string name="et_password_hint">密码</string>
+    <string name="register">新用户</string>
+    <string name="login">登陆</string>
 </resources>

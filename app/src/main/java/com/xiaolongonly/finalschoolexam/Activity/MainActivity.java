@@ -1,6 +1,16 @@
 package com.xiaolongonly.finalschoolexam.Activity;
 
+import android.annotation.TargetApi;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
@@ -25,6 +35,7 @@ import com.u1city.module.common.Debug;
 import com.u1city.module.common.JsonAnalysis;
 import com.u1city.module.pulltorefresh.DataLoader;
 import com.u1city.module.pulltorefresh.PullToRefreshListView;
+import com.u1city.module.util.ImageUtils;
 import com.u1city.module.util.PreferencesUtils;
 import com.u1city.module.util.SimpleImageOption;
 import com.u1city.module.util.ToastUtil;
@@ -34,10 +45,12 @@ import com.xiaolongonly.finalschoolexam.adapter.MyTaskListAdapter;
 import com.xiaolongonly.finalschoolexam.api.RequestApi;
 import com.xiaolongonly.finalschoolexam.model.TaskModel;
 import com.xiaolongonly.finalschoolexam.model.UserModel;
+import com.xiaolongonly.finalschoolexam.service.ChatService;
 import com.xiaolongonly.finalschoolexam.utils.ConstantUtil;
 import com.xiaolongonly.finalschoolexam.utils.ImageLoaderConfig;
 import com.xiaolongonly.finalschoolexam.utils.MyAnalysis;
 import com.xiaolongonly.finalschoolexam.utils.MyStandardCallback;
+import com.xiaolongonly.finalschoolexam.utils.ServiceUtil;
 import com.xiaolongonly.finalschoolexam.utils.SqlStringUtil;
 import com.xiaolongonly.finalschoolexam.utils.StringConstantUtils;
 
@@ -48,7 +61,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class MainActivity extends com.xiaolongonly.finalschoolexam.Activity.BaseBitmapActivity {
-
+    public static int Notification_ID = 1001;
     /**
      * actionBar的圆角按钮
      */
@@ -80,8 +93,11 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.Activity.Base
     private EditText etLocation;
     private LoadingDialog loadingDialog;//加载弹窗
     private List<TaskModel> allTaskModels = new ArrayList<TaskModel>();
-    private ImageView iv_head_btn;
-    private ImageView ivCenterToMyLoc;
+    private ImageView iv_head_btn;//
+    private ImageView ivCenterToMyLoc;//定位到自身位置图标显示
+    private Intent serviceIntent;//服务Intent
+    private DataReceiver dataReceiver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //在使用SDK各组件之前初始化context信息，传入ApplicationContext
@@ -112,7 +128,6 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.Activity.Base
                     JsonAnalysis<UserModel> jsonAnalysis = new JsonAnalysis<UserModel>();
                     List<UserModel> userModels = jsonAnalysis.listFromJson(json, UserModel.class);
                     ConstantUtil.setUserModel(userModels.get(0));
-                    tv_user_name.setText(ConstantUtil.getInstance().getUser_name());
                     publisherId = ConstantUtil.getInstance().getUser_id();
                     ImageLoader.getInstance().displayImage(ConstantUtil.getInstance().getUser_imageurl(), iv_my_logo, imageOptions);
                     ImageLoader.getInstance().displayImage(ConstantUtil.getInstance().getUser_imageurl(), iv_head_btn, imageOptions);
@@ -128,6 +143,16 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.Activity.Base
             ImageLoader.getInstance().displayImage(ConstantUtil.getInstance().getUser_imageurl(), iv_head_btn, imageOptions);
             publisherId = ConstantUtil.getInstance().getUser_id();
         }
+        //判断服务是不是在启动状态
+        if(!ServiceUtil.isServiceWork(this, ChatService.class.getName())) {
+            serviceIntent = new Intent(MainActivity.this, ChatService.class);
+            ServiceUtil.startService(this, serviceIntent, ConstantUtil.getInstance().getUser_id() + "");
+        }
+        //注册广播
+        dataReceiver = new DataReceiver();
+        IntentFilter filter = new IntentFilter();//创建IntentFilter对象
+        filter.addAction("Chatmsg"); //接收该频道的广播= = ~
+        registerReceiver(dataReceiver, filter);//注册Broadcast Receiver
     }
 
     /**
@@ -152,16 +177,18 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.Activity.Base
 
     }
 
-
+    /**
+     * 初始化页面布局
+     */
     @Override
     public void initView() {
         super.initView();
-        initTitleBar();
-        initDataLoader();
-        initNoneDataView();
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        initTitleBar();//初始化标题栏
+        initDataLoader();//初始化数据加载器
+        initNoneDataView();//初始化空页面
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);///侧拉栏控件
         mDrawerLayout.requestDisallowInterceptTouchEvent(true);
-        llytMeDrawer = (LinearLayout) findViewById(R.id.llytMeDrawer);
+        llytMeDrawer = (LinearLayout) findViewById(R.id.llytMeDrawer);//侧拉栏布局
         rl_baidumap = (RelativeLayout) findViewById(R.id.rl_baidumap);
         ll_newTask = (LinearLayout) findViewById(R.id.ll_newtask);
         iv_head_btn= (ImageView) findViewById(R.id.iv_head_btn);
@@ -189,7 +216,10 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.Activity.Base
         initDrawerLayout();
         getAllTaskInfo();
     }
-    //获取全部的任务信息
+
+    /**
+     * 获取全部的任务信息
+     */
     public void getAllTaskInfo()
     {
         RequestApi.getInstance(this).execSQL(SqlStringUtil.getTaskList(TaskModel.STATU_HAVETAKE), new MyStandardCallback(this) {
@@ -215,9 +245,7 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.Activity.Base
     }
 
     /**
-     * 无数据提示
-     *
-     * @author zhengjb
+     * 无数据提示页
      */
     private void initNoneDataView() {
         TextView textNoneData = (TextView) findViewById(R.id.empty_view_tv);
@@ -256,6 +284,11 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.Activity.Base
             }
         });
     }
+
+    /**
+     * 跳转到详情页
+     * @param task_id
+     */
     private void goDetail(int task_id) {
         Intent intent = new Intent(MainActivity.this, TaskDetailActivity.class);
         intent.putExtra("task_id", task_id);
@@ -263,6 +296,9 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.Activity.Base
         startActivity(intent, false);
     }
 
+    /**
+     * 网络请求回调
+     */
     private MyStandardCallback taskListStandardCallback = new MyStandardCallback(MainActivity.this) {
         @Override
         public void onResult(MyAnalysis analysis) throws Exception {
@@ -298,7 +334,7 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.Activity.Base
     private OnClickListener clickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            Intent it;
+            Intent it;//统一用一个intent
             switch (v.getId()) {
                 case R.id.left_tab_tv:
                     Debug.i(TAG, "left_tab_tv is click");
@@ -454,6 +490,56 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.Activity.Base
 
     }
 
+    /**
+     * 内部广播类，接收数据信息并发通知
+     */
+    private class DataReceiver extends BroadcastReceiver {//继承自BroadcastReceiver的子类
+
+        @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+        @Override
+        public void onReceive(Context context, Intent intent) {//重写onReceive方法
+            String data = intent.getStringExtra("Chatdata");//获取广播返回数据
+            final int useId = Integer.valueOf(data.substring(1, 8));
+            final String msgcontent = data.substring(16, data.length() - 11);//获取内容
+            RequestApi.getInstance(MainActivity.this).execSQL(SqlStringUtil.getuserInfoByUserid(useId), new MyStandardCallback(MainActivity.this) {
+                @Override
+                public void onResult(MyAnalysis analysis) throws Exception {
+                    String json = analysis.getResult();
+                    JsonAnalysis<UserModel> jsonAnalysis = new JsonAnalysis<UserModel>();
+                    List<UserModel> userModels = jsonAnalysis.listFromJson(json, UserModel.class);
+                    Intent intent = new Intent(MainActivity.this, ChatActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    intent.putExtra("userinfo", userModels.get(0));
+                    //PendingIntent为一个特殊的Intent,通过getBroadcast或者getActivity或者getService得到.
+                    PendingIntent pendingIntent = PendingIntent.getActivity(MainActivity.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                    Notification notification = new Notification.Builder(MainActivity.this)
+                            .setContentTitle("收到新消息了")
+                            .setContentText(userModels.get(0).getUser_name() + ":" + msgcontent)
+                            .setSmallIcon(R.drawable.login_default_avatar)
+                            .setLargeIcon(ImageUtils.zoomBitmap(ImageLoader.getInstance().loadImageSync(userModels.get(0).getUser_imageurl()),40,40))
+                            .setContentIntent(pendingIntent)
+                            .build();
+                    notification.defaults |= Notification.DEFAULT_SOUND;
+                    notification.defaults |= Notification.DEFAULT_VIBRATE;
+                    nm.notify(Notification_ID, notification);
+                }
+                @Override
+                public void onError(int type) {
+
+                }
+            });
+            //发出状态栏通知
+
+        }
+    }
+
+    @Override
+    protected void onStop() {
+//        unregisterReceiver(dataReceiver);//取消注册Broadcast Receiver
+        super.onStop();
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -513,4 +599,12 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.Activity.Base
         toggleTab(StringConstantUtils.Show_By_BaiduMap);
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    protected void onDestroy() {
+//        ServiceUtil.stopService(this, serviceIntent);//需要在退出时结束服务
+        super.onDestroy();
+    }
+
+
 }

@@ -2,6 +2,7 @@ package com.xiaolongonly.finalschoolexam.utils;
 
 import android.util.Log;
 
+import com.xiaolongonly.finalschoolexam.model.ChatModel;
 import com.xiaolongonly.finalschoolexam.model.TaskModel;
 import com.xiaolongonly.finalschoolexam.model.UserModel;
 
@@ -227,5 +228,29 @@ public class SqlStringUtil {
         String pageindexsql="select * , (select count(*)"+sql.substring(8)+") as total from ("+sql+") as result limit " +((page-1)*pagesize)+" ,"+pagesize;
         Log.i(TAG, pageindexsql);
         return pageindexsql;
+    }
+
+    /**
+     * 插入聊天数据。
+     * @param chatModel
+     * @return
+     */
+    public static String insertIntoTableChat(ChatModel chatModel)
+    {
+        String sql = "insert into chat ( fromuser_id , touser_id , message , receive_time) " +
+                "values( " + appendValue(String.valueOf(chatModel.getFromuser_id())) + " ," + appendValue(chatModel.getTouser_id()) + " ," + appendValue(chatModel.getMessage()) + " ," + appendValue(chatModel.getReceive_time()) + " )";
+        return sql;
+    }
+
+    /**
+     * 获取与两个用户之间的聊天数据信息
+     * @param fromUserId
+     * @param toUserId
+     * @return
+     */
+    public static String getChatMessageData(String fromUserId,String toUserId)
+    {
+        String sql = "select * from chat where (fromuser_id = " +fromUserId +" and touser_id = "+toUserId+") or (fromuser_id = " +toUserId +" and touser_id = "+fromUserId+")";
+        return sql;
     }
 }

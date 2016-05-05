@@ -27,13 +27,14 @@ import java.util.List;
  * Created by Administrator on 4/5/2016.
  */
 public class UserInfoActivity extends BaseActivity implements View.OnClickListener{
-    private TextView tv_nickname;
-    private TextView tv_qq;
-    private TextView tv_tel;
-    private String userid;
-    private TextView title;
-    private ImageView useImage;
+    private TextView tv_nickname;//昵称
+    private TextView tv_qq; //QQ
+    private TextView tv_tel;//手机
+    private String userid;//用户id
+    private TextView title;//标题信息
+    private ImageView useImage;//用户头像
     private DisplayImageOptions imageOptions = SimpleImageOption.create(R.drawable.ic_default_avatar_guider);
+    private UserModel userModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState , R.layout.activity_userinfo, R.layout.title_default);
@@ -48,6 +49,12 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
             case R.id.user_info_image:
                 //弹窗显示大图~~
                 ToastUtil.showToast(UserInfoActivity.this,"这里弹窗显示头像大图");
+                break;
+            case R.id.rl_dochat:
+                Intent it = new Intent();
+                it.putExtra("userinfo",userModel);
+                it.setClass(this,ChatActivity.class);
+                startActivity(it,false);
                 break;
         }
     }
@@ -87,16 +94,16 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
                 String info = analysis.getResult();
                 JsonAnalysis<UserModel> jsonAnalysis = new JsonAnalysis<UserModel>();
                 List<UserModel> userModels = jsonAnalysis.listFromJson(info, UserModel.class);
-                UserModel userModel = userModels.get(0);
+                userModel = userModels.get(0);
                 tv_nickname.setText(userModel.getUser_name());
                 tv_tel.setText(userModel.getUser_tel());
                 tv_qq.setText(userModel.getUser_qq());
                 title.setText(userModel.getUser_name()+"的个人信息");
-                ImageLoader.getInstance().displayImage(userModel.getUser_imageurl(),useImage, imageOptions);
+                ImageLoader.getInstance().displayImage(userModel.getUser_imageurl(), useImage, imageOptions);
+                findViewById(R.id.rl_dochat).setOnClickListener(UserInfoActivity.this);
             }
             @Override
             public void onError(int type) {
-
             }
         });
     }

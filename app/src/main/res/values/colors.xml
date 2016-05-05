@@ -34,4 +34,12 @@
 
         <color name="remote_connect_text">#FFe78018</color>
         <color name="remote_disconnect_text">#FF901821</color>
+
+        <color name="whilte">#ffffff</color>
+
+        <color name="home_bg">#daf7fc</color>
+        <color name="home_title_bg">#b9f2fd</color>
+        <color name="home_title_bg2">#50b9f2fd</color>
+        <color name="title_bg">#0cc4e5</color>
+
 </resources>

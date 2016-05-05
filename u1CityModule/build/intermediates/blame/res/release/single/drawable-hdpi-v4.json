@@ -4,28 +4,28 @@
         "source": "E:\\final\\u1CityModule\\src\\main\\res\\drawable-hdpi\\vpi__tab_selected_holo.9.png"
     },
     {
-        "merged": "E:\\final\\u1CityModule\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ic_title_back.png",
-        "source": "E:\\final\\u1CityModule\\src\\main\\res\\drawable-hdpi\\ic_title_back.png"
-    },
-    {
         "merged": "E:\\final\\u1CityModule\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\default_ptr_flip.png",
         "source": "E:\\final\\u1CityModule\\src\\main\\res\\drawable-hdpi\\default_ptr_flip.png"
+    },
+    {
+        "merged": "E:\\final\\u1CityModule\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\ic_title_back.png",
+        "source": "E:\\final\\u1CityModule\\src\\main\\res\\drawable-hdpi\\ic_title_back.png"
     },
     {
         "merged": "E:\\final\\u1CityModule\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\brand_type.png",
         "source": "E:\\final\\u1CityModule\\src\\main\\res\\drawable-hdpi\\brand_type.png"
     },
     {
-        "merged": "E:\\final\\u1CityModule\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\wheel_val.xml",
-        "source": "E:\\final\\u1CityModule\\src\\main\\res\\drawable-hdpi\\wheel_val.xml"
+        "merged": "E:\\final\\u1CityModule\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\vpi__tab_unselected_focused_holo.9.png",
+        "source": "E:\\final\\u1CityModule\\src\\main\\res\\drawable-hdpi\\vpi__tab_unselected_focused_holo.9.png"
     },
     {
         "merged": "E:\\final\\u1CityModule\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\brand_type_bg.png",
         "source": "E:\\final\\u1CityModule\\src\\main\\res\\drawable-hdpi\\brand_type_bg.png"
     },
     {
-        "merged": "E:\\final\\u1CityModule\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\vpi__tab_unselected_focused_holo.9.png",
-        "source": "E:\\final\\u1CityModule\\src\\main\\res\\drawable-hdpi\\vpi__tab_unselected_focused_holo.9.png"
+        "merged": "E:\\final\\u1CityModule\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\wheel_val.xml",
+        "source": "E:\\final\\u1CityModule\\src\\main\\res\\drawable-hdpi\\wheel_val.xml"
     },
     {
         "merged": "E:\\final\\u1CityModule\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\vpi__tab_unselected_holo.9.png",
@@ -40,12 +40,12 @@
         "source": "E:\\final\\u1CityModule\\src\\main\\res\\drawable-hdpi\\icon_quxiao_white.png"
     },
     {
-        "merged": "E:\\final\\u1CityModule\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\icon_quxiao_focused.png",
-        "source": "E:\\final\\u1CityModule\\src\\main\\res\\drawable-hdpi\\icon_quxiao_focused.png"
-    },
-    {
         "merged": "E:\\final\\u1CityModule\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\dialog_scancode_close.png",
         "source": "E:\\final\\u1CityModule\\src\\main\\res\\drawable-hdpi\\dialog_scancode_close.png"
+    },
+    {
+        "merged": "E:\\final\\u1CityModule\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\icon_quxiao_focused.png",
+        "source": "E:\\final\\u1CityModule\\src\\main\\res\\drawable-hdpi\\icon_quxiao_focused.png"
     },
     {
         "merged": "E:\\final\\u1CityModule\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\icon_quxiao_unfocused.png",
@@ -76,12 +76,12 @@
         "source": "E:\\final\\u1CityModule\\src\\main\\res\\drawable-hdpi\\brand_type_line.png"
     },
     {
-        "merged": "E:\\final\\u1CityModule\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\vpi__tab_selected_focused_holo.9.png",
-        "source": "E:\\final\\u1CityModule\\src\\main\\res\\drawable-hdpi\\vpi__tab_selected_focused_holo.9.png"
-    },
-    {
         "merged": "E:\\final\\u1CityModule\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\vpi__tab_selected_pressed_holo.9.png",
         "source": "E:\\final\\u1CityModule\\src\\main\\res\\drawable-hdpi\\vpi__tab_selected_pressed_holo.9.png"
+    },
+    {
+        "merged": "E:\\final\\u1CityModule\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\vpi__tab_selected_focused_holo.9.png",
+        "source": "E:\\final\\u1CityModule\\src\\main\\res\\drawable-hdpi\\vpi__tab_selected_focused_holo.9.png"
     },
     {
         "merged": "E:\\final\\u1CityModule\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\wheel_bg.xml",

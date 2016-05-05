@@ -50,14 +50,32 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void register() {
-        if(account.getText().equals(""))
-        {
-            ToastUtil.showToast(RegisterActivity.this,"请输入帐号！");
+        if (account.getText().toString().trim().equals("")) {
+            ToastUtil.showToast(RegisterActivity.this, "请输入帐号！");
             return;
         }
-        if(password.getText().equals(""))
+        if (password.getText().toString().trim().equals("")) {
+            ToastUtil.showToast(RegisterActivity.this, "请输入密码！");
+            return;
+        }
+        if(account.getText().toString().trim().length()>15)
         {
-            ToastUtil.showToast(RegisterActivity.this,"请输入密码！");
+            ToastUtil.showToast(RegisterActivity.this, "帐号过长！");
+            return;
+        }
+        if(account.getText().toString().trim().length()<5)
+        {
+            ToastUtil.showToast(RegisterActivity.this, "帐号过短！");
+            return;
+        }
+        if(password.getText().toString().trim().length()>15)
+        {
+            ToastUtil.showToast(RegisterActivity.this, "密码过长！！");
+            return;
+        }
+        if(password.getText().toString().trim().length()<6)
+        {
+            ToastUtil.showToast(RegisterActivity.this, "密码过短！！");
             return;
         }
         RequestApi.getInstance(this).execSQL(SqlStringUtil.isAccountRegister(account.getText().toString()), new MyStandardCallback(this) {

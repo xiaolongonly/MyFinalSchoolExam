@@ -148,11 +148,6 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.Activity.Base
             serviceIntent = new Intent(MainActivity.this, ChatService.class);
             ServiceUtil.startService(this, serviceIntent, ConstantUtil.getInstance().getUser_id() + "");
         }
-        //注册广播
-        dataReceiver = new DataReceiver();
-        IntentFilter filter = new IntentFilter();//创建IntentFilter对象
-        filter.addAction("Chatmsg"); //接收该频道的广播= = ~
-        registerReceiver(dataReceiver, filter);//注册Broadcast Receiver
     }
 
     /**
@@ -215,6 +210,11 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.Activity.Base
         toggleTab(StringConstantUtils.Show_By_BaiduMap);
         initDrawerLayout();
         getAllTaskInfo();
+        //注册广播
+        dataReceiver = new DataReceiver();
+        IntentFilter filter = new IntentFilter();//创建IntentFilter对象
+        filter.addAction("Chatmsg"); //接收该频道的广播= = ~
+        registerReceiver(dataReceiver, filter);//注册Broadcast Receiver
     }
 
     /**

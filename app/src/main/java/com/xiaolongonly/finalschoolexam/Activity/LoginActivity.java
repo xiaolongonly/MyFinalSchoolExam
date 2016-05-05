@@ -76,12 +76,32 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private void login() {
-        if (account.getText().equals("")) {
+        if (account.getText().toString().trim().equals("")) {
             ToastUtil.showToast(LoginActivity.this, "请输入帐号！");
             return;
         }
-        if (password.getText().equals("")) {
+        if (password.getText().toString().trim().equals("")) {
             ToastUtil.showToast(LoginActivity.this, "请输入密码！");
+            return;
+        }
+        if(account.getText().toString().trim().length()>15)
+        {
+            ToastUtil.showToast(LoginActivity.this, "帐号过长！");
+            return;
+        }
+        if(account.getText().toString().trim().length()<5)
+        {
+            ToastUtil.showToast(LoginActivity.this, "帐号过短！");
+            return;
+        }
+        if(password.getText().toString().trim().length()>15)
+        {
+            ToastUtil.showToast(LoginActivity.this, "密码过长！！");
+            return;
+        }
+        if(password.getText().toString().trim().length()<6)
+        {
+            ToastUtil.showToast(LoginActivity.this, "密码过短！！");
             return;
         }
         RequestApi.getInstance(LoginActivity.this).execSQL(SqlStringUtil.getuserInfoByAP(account.getText().toString(), password.getText().toString()), myStandardCallback);

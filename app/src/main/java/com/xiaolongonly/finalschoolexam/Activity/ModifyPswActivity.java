@@ -1,4 +1,4 @@
-package com.xiaolongonly.finalschoolexam.Activity;
+package com.xiaolongonly.finalschoolexam.activity;
 
 import android.os.Bundle;
 import android.view.View;

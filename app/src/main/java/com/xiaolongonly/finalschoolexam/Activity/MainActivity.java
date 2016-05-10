@@ -1,19 +1,18 @@
-package com.xiaolongonly.finalschoolexam.Activity;
+package com.xiaolongonly.finalschoolexam.activity;
 
 import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,7 +27,10 @@ import android.widget.TextView;
 
 import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
+import com.baidu.mapapi.map.MapStatusUpdate;
+import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MyLocationConfiguration;
+import com.baidu.mapapi.model.LatLng;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.u1city.module.common.Debug;
@@ -60,7 +62,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
-public class MainActivity extends com.xiaolongonly.finalschoolexam.Activity.BaseBitmapActivity {
+public class MainActivity extends com.xiaolongonly.finalschoolexam.activity.BaseBitmapActivity {
     public static int Notification_ID = 1001;
     /**
      * actionBar的圆角按钮
@@ -92,12 +94,14 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.Activity.Base
     private EditText etContent;
     private EditText etLocation;
     private LoadingDialog loadingDialog;//加载弹窗
-    private List<TaskModel> allTaskModels = new ArrayList<TaskModel>();
+    //    private List<TaskModel> allTaskModels = new ArrayList<TaskModel>();
     private ImageView iv_head_btn;//
     private ImageView ivCenterToMyLoc;//定位到自身位置图标显示
     private Intent serviceIntent;//服务Intent
-    private DataReceiver dataReceiver;
-
+    private DataReceiver dataReceiver;//广播接收器
+    private List<TaskModel> taskModels = new ArrayList<TaskModel>();//用来存放当前集合
+    private List<UserModel> userModels = new ArrayList<UserModel>();//用来存放当前集合
+    private int tooglePosition;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //在使用SDK各组件之前初始化context信息，传入ApplicationContext
@@ -115,9 +119,8 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.Activity.Base
         final ImageView iv_my_logo = (ImageView) findViewById(R.id.iv_my_logo);
         final TextView tv_user_name = (TextView) findViewById(R.id.tv_my_username);
         ImageLoaderConfig.setConfig(this);
-        final  DisplayImageOptions imageOptions = SimpleImageOption.create(R.drawable.ic_default_avatar_guider);
-        if(ConstantUtil.getInstance().getUser_id()==0)
-        {
+        final DisplayImageOptions imageOptions = SimpleImageOption.create(R.drawable.ic_default_avatar_guider);
+        if (ConstantUtil.getInstance().getUser_id() == 0) {
             //说明用户信息已经被清除
             String useraccount = PreferencesUtils.getStringValue(MainActivity.this, "account");
             String userpassword = PreferencesUtils.getStringValue(MainActivity.this, "password");
@@ -132,22 +135,24 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.Activity.Base
                     ImageLoader.getInstance().displayImage(ConstantUtil.getInstance().getUser_imageurl(), iv_my_logo, imageOptions);
                     ImageLoader.getInstance().displayImage(ConstantUtil.getInstance().getUser_imageurl(), iv_head_btn, imageOptions);
                 }
+
                 @Override
                 public void onError(int type) {
 
                 }
             });
-        }else {
+        } else {
             tv_user_name.setText(ConstantUtil.getInstance().getUser_name());
             ImageLoader.getInstance().displayImage(ConstantUtil.getInstance().getUser_imageurl(), iv_my_logo, imageOptions);
             ImageLoader.getInstance().displayImage(ConstantUtil.getInstance().getUser_imageurl(), iv_head_btn, imageOptions);
             publisherId = ConstantUtil.getInstance().getUser_id();
         }
         //判断服务是不是在启动状态
-        if(!ServiceUtil.isServiceWork(this, ChatService.class.getName())) {
+        if (!ServiceUtil.isServiceWork(this, ChatService.class.getName())) {
             serviceIntent = new Intent(MainActivity.this, ChatService.class);
             ServiceUtil.startService(this, serviceIntent, ConstantUtil.getInstance().getUser_id() + "");
         }
+
     }
 
     /**
@@ -186,7 +191,7 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.Activity.Base
         llytMeDrawer = (LinearLayout) findViewById(R.id.llytMeDrawer);//侧拉栏布局
         rl_baidumap = (RelativeLayout) findViewById(R.id.rl_baidumap);
         ll_newTask = (LinearLayout) findViewById(R.id.ll_newtask);
-        iv_head_btn= (ImageView) findViewById(R.id.iv_head_btn);
+        iv_head_btn = (ImageView) findViewById(R.id.iv_head_btn);
         ivCenterToMyLoc = (ImageView) findViewById(R.id.iv_center_tomyloc);
         ivCenterToMyLoc.setOnClickListener(new OnClickListener() {
             @Override
@@ -204,12 +209,14 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.Activity.Base
                 }
                 mMarkerLy.setVisibility(View.GONE);
                 ll_newTask.setVisibility(View.GONE);
+                isGetLocationOn = false;//可以点击地图获取位置信息
             }
         });
         findViewById(R.id.my_info_detail).setOnClickListener(clickListener);
         toggleTab(StringConstantUtils.Show_By_BaiduMap);
         initDrawerLayout();
         getAllTaskInfo();
+        getAllUserInfo();
         //注册广播
         dataReceiver = new DataReceiver();
         IntentFilter filter = new IntentFilter();//创建IntentFilter对象
@@ -220,27 +227,49 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.Activity.Base
     /**
      * 获取全部的任务信息
      */
-    public void getAllTaskInfo()
-    {
+    public void getAllTaskInfo() {
         RequestApi.getInstance(this).execSQL(SqlStringUtil.getTaskList(TaskModel.STATU_HAVETAKE), new MyStandardCallback(this) {
             @Override
             public void onResult(MyAnalysis analysis) throws Exception {
                 String jsonList = analysis.getResult();
                 JsonAnalysis<TaskModel> jsonAnalysis = new JsonAnalysis<TaskModel>();
-                allTaskModels = jsonAnalysis.listFromJson(jsonList, TaskModel.class);
-                addOverlays(allTaskModels);
+                taskModels = jsonAnalysis.listFromJson(jsonList, TaskModel.class);
+                addOverlays(taskModels, userModels);
             }
+
             @Override
             public void onError(int type) {
 
             }
         });
     }
+
+    /**
+     * 获取全部的任务信息
+     */
+    public void getAllUserInfo() {
+        RequestApi.getInstance(this).execSQL(SqlStringUtil.selectOtherUser(ConstantUtil.getInstance().getUser_id() + ""), new MyStandardCallback(this) {
+            @Override
+            public void onResult(MyAnalysis analysis) throws Exception {
+                String jsonList = analysis.getResult();
+                JsonAnalysis<UserModel> jsonAnalysis = new JsonAnalysis<UserModel>();
+                userModels = jsonAnalysis.listFromJson(jsonList, UserModel.class);
+                addOverlays(taskModels, userModels);
+            }
+
+            @Override
+            public void onError(int type) {
+
+            }
+        });
+    }
+
     /**
      * 初始化覆盖物
      */
     private void initMarker() {
         mMarker = BitmapDescriptorFactory.fromResource(R.mipmap.maker);
+        userMarker = BitmapDescriptorFactory.fromResource(R.mipmap.user_maker);
         mMarkerLy = (RelativeLayout) findViewById(R.id.id_marker_layout);
     }
 
@@ -251,6 +280,7 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.Activity.Base
         TextView textNoneData = (TextView) findViewById(R.id.empty_view_tv);
         textNoneData.setText("你身边暂时没人使用哦，赶紧去邀请小伙伴来玩吧！");
     }
+
 
     /**
      * 初始化第二个页面的DataLoader
@@ -287,6 +317,7 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.Activity.Base
 
     /**
      * 跳转到详情页
+     *
      * @param task_id
      */
     private void goDetail(int task_id) {
@@ -314,6 +345,7 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.Activity.Base
             Log.e(TAG, taskModels.toString());
             taskListDataLoader.executeOnLoadDataSuccess(taskModels, total, taskListDataLoader.isDrawDown());
         }
+
         @Override
         public void onError(MyAnalysis analysis) {
             taskListListView.onRefreshComplete();
@@ -323,6 +355,7 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.Activity.Base
         public void onError(int type) {
         }
     };
+
     private void initTitleBar() {
         leftTabTv = (TextView) findViewById(R.id.left_tab_tv);
         leftTabTv.setText("地图查看");
@@ -331,6 +364,7 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.Activity.Base
         rightTabTv.setText("列表查看");
         rightTabTv.setOnClickListener(clickListener);
     }
+
     private OnClickListener clickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -355,19 +389,17 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.Activity.Base
                 case R.id.rl_mytaketask:
                     //我接取的任务
                     it = new Intent(MainActivity.this, TaskGetListActivity.class);
-                    startActivity(it,false);
+                    startActivity(it, false);
                     closeDrawer();
                     break;
                 case R.id.rl_mypublishtask:
                     //我发布的任务
-                    it = new Intent(MainActivity.this,TaskListActivity.class);
-                    startActivity(it,false);
+                    it = new Intent(MainActivity.this, TaskListActivity.class);
+                    startActivity(it, false);
                     closeDrawer();
                     break;
                 case R.id.tv_cancel:
-                    ll_newTask.setVisibility(View.GONE);//将其置为不可见
-                    isGetLocationOn = false;//可以点击地图获取位置信息
-                    getAllTaskInfo();
+                    changePublishstate();
                     break;
                 case R.id.tv_submit:
                     publishNewTask();
@@ -375,11 +407,11 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.Activity.Base
                 case R.id.my_info_detail:
                     //到个人中心页面
                     it = new Intent(MainActivity.this, MyInfoActivity.class);
-                    startActivity(it,false);
+                    startActivity(it, false);
                     break;
                 case R.id.rl_modifypassword:
                     it = new Intent(MainActivity.this, ModifyPswActivity.class);
-                    startActivity(it,false);
+                    startActivity(it, false);
                     break;
                 case R.id.rl_logout:
                     it = new Intent(MainActivity.this, LoginActivity.class);
@@ -393,6 +425,43 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.Activity.Base
         }
     };
 
+    /**
+     * 取消发布
+     */
+    private void changePublishstate() {
+        ll_newTask.setVisibility(View.GONE);//将其置为不可见
+        isGetLocationOn = false;//可以点击地图获取位置信息
+        getAllTaskInfo();
+    }
+
+    /**
+     * 重写定位到我的位置
+     * 这边执行的时候可以重新定位位置信息
+     */
+    @Override
+    protected void centerToMyLocation() {
+        if (mLatitude > 0 || mLongitude > 0) {
+            RequestApi.getInstance(this).execSQL(SqlStringUtil.modifyUserLoc(ConstantUtil.getInstance().getUser_id(), mLatitude, mLongitude), new MyStandardCallback(this) {
+                @Override
+                public void onResult(MyAnalysis analysis) throws Exception {
+                    ConstantUtil.getInstance().setDef_locx(String.valueOf(mLatitude));
+                    ConstantUtil.getInstance().setDef_locy(String.valueOf(mLongitude));
+                    Log.i(TAG, "更新位置信息成功！");
+                }
+
+
+                @Override
+                public void onError(int type) {
+
+                }
+            });
+        }
+        super.centerToMyLocation();
+    }
+
+    /**
+     * 发布任务
+     */
     private void publishNewTask() {
         if (etTitle.getText().toString().trim().equals("")) {
             ToastUtil.showToast(MainActivity.this, "标题不能为空！");
@@ -412,9 +481,8 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.Activity.Base
         taskModel.setTask_content(etContent.getText().toString());//内容
         taskModel.setTask_location(etLocation.getText().toString());//地点
         Log.i(TAG, taskModel.getTask_location());
-        if(taskLatLng==null)
-        {
-            ToastUtil.showToast(MainActivity.this,"选个地址吧！");
+        if (taskLatLng == null) {
+            ToastUtil.showToast(MainActivity.this, "选个地址吧！");
             return;
         }
         taskModel.setTask_locationx(String.valueOf(taskLatLng.latitude));//设置纬度
@@ -432,18 +500,20 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.Activity.Base
         loadingDialog.setLoadingText("正在发布...");
         loadingDialog.show();
     }
+
     private MyStandardCallback myStandardCallback = new MyStandardCallback(this) {
         @Override
         public void onResult(MyAnalysis analysis) throws Exception {
-            ll_newTask.setVisibility(View.GONE);//将其置为不可见
+//            ll_newTask.setVisibility(View.GONE);//将其置为不可见
             //清空已输入的数据
             etTitle.setText("");
             etContent.setText("");
             etLocation.setText("");
             ToastUtil.showToast(MainActivity.this, "发布成功！！");
-            isGetLocationOn = false;//可以点击地图获取位置信息
+//            isGetLocationOn = false;//可以点击地图获取位置信息
             loadingDialog.dismiss();
-            getAllTaskInfo();
+            changePublishstate();
+//            getAllTaskInfo();
         }
 
         @Override
@@ -479,6 +549,7 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.Activity.Base
             rightTabTv.setBackgroundResource(R.drawable.brand_mytrace_title_right_select);
             rightTabTv.setTextColor(0xffffffff);
         }
+        tooglePosition=type;
     }
 
 
@@ -517,13 +588,14 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.Activity.Base
                             .setContentTitle("收到新消息了")
                             .setContentText(userModels.get(0).getUser_name() + ":" + msgcontent)
                             .setSmallIcon(R.drawable.login_default_avatar)
-                            .setLargeIcon(ImageUtils.zoomBitmap(ImageLoader.getInstance().loadImageSync(userModels.get(0).getUser_imageurl()),40,40))
+                            .setLargeIcon(ImageUtils.zoomBitmap(ImageLoader.getInstance().loadImageSync(userModels.get(0).getUser_imageurl()), 40, 40))
                             .setContentIntent(pendingIntent)
                             .build();
                     notification.defaults |= Notification.DEFAULT_SOUND;
                     notification.defaults |= Notification.DEFAULT_VIBRATE;
                     nm.notify(Notification_ID, notification);
                 }
+
                 @Override
                 public void onError(int type) {
 
@@ -548,6 +620,7 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.Activity.Base
 //            initData();
 //        }
     }
+
     /**
      * 菜单
      *
@@ -606,5 +679,27 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.Activity.Base
         super.onDestroy();
     }
 
-
+    /**
+     * 菜单返回按键点击事件
+     * @param keyCode
+     * @param event
+     * @return
+     */
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+            if (tooglePosition==StringConstantUtils.Show_By_List)
+            {
+                toggleTab(StringConstantUtils.Show_By_BaiduMap);
+            }else if(ll_newTask.getVisibility()==View.VISIBLE)
+            {
+                changePublishstate();;
+            }else
+            {
+                finishAnimation();
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 }

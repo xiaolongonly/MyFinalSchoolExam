@@ -7,10 +7,11 @@ import java.io.Serializable;
  */
 public class TaskModel implements Comparable<TaskModel>,Serializable {
     public static final int STATU_UNTAKE=1;//未接取
-    public static final int STATU_ALL=0;//全部
+    public static final int STATU_ALL=5;//全部
     public static final int STATU_HAVETAKE=2; //已接取
     public static final int STATU_HAVEFINISH=3;// 已完成
     public static final int STATU_HAVECLOSE=4;//已关闭
+    public static final int STATU_WAITCONFIRM=0;
     private int task_id;
     private int publisher_id;
     private int picker_id;

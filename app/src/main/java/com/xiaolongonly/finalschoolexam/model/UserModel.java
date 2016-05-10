@@ -13,18 +13,10 @@ public class UserModel implements Serializable {
     private String user_qq;
     private String user_name;
     private String user_imageurl;
-    @Override
-    public String toString() {
-        return "UserModel{" +
-                "user_id=" + user_id +
-                ", user_account='" + user_account + '\'' +
-                ", user_password='" + user_password + '\'' +
-                ", user_tel='" + user_tel + '\'' +
-                ", user_qq='" + user_qq + '\'' +
-                ", user_name='" + user_name + '\'' +
-                ", user_imageurl='" + user_imageurl + '\'' +
-                '}';
-    }
+    private String def_locx;
+    private String def_locy;
+
+
 
     public String getUser_imageurl() {
         return user_imageurl;
@@ -83,5 +75,36 @@ public class UserModel implements Serializable {
 
     public void setUser_tel(String user_tel) {
         this.user_tel = user_tel;
+    }
+
+    public String getDef_locx() {
+        return def_locx;
+    }
+
+    public void setDef_locx(String def_locx) {
+        this.def_locx = def_locx;
+    }
+
+    public String getDef_locy() {
+        return def_locy;
+    }
+
+    public void setDef_locy(String def_locy) {
+        this.def_locy = def_locy;
+    }
+
+    @Override
+    public String toString() {
+        return "UserModel{" +
+                "user_id=" + user_id +
+                ", user_account='" + user_account + '\'' +
+                ", user_password='" + user_password + '\'' +
+                ", user_tel='" + user_tel + '\'' +
+                ", user_qq='" + user_qq + '\'' +
+                ", user_name='" + user_name + '\'' +
+                ", user_imageurl='" + user_imageurl + '\'' +
+                ", def_locx='" + def_locx + '\'' +
+                ", def_locy='" + def_locy + '\'' +
+                '}';
     }
 }

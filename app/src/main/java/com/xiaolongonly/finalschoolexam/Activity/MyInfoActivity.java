@@ -1,4 +1,4 @@
-package com.xiaolongonly.finalschoolexam.Activity;
+package com.xiaolongonly.finalschoolexam.activity;
 
 
 import android.app.ProgressDialog;
@@ -24,11 +24,12 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.u1city.module.base.BaseActivity;
 import com.u1city.module.common.picturetaker.PictureTakeDialog;
 import com.u1city.module.common.picturetaker.PictureTaker;
+import com.u1city.module.util.ImageUtils;
 import com.u1city.module.util.SimpleImageOption;
 import com.u1city.module.util.StringUtils;
 import com.u1city.module.util.ToastUtil;
 import com.u1city.module.widget.RoundedImageView;
-import com.xiaolongonly.finalschoolexam.Listener.ResponseListener;
+import com.xiaolongonly.finalschoolexam.listener.ResponseListener;
 import com.xiaolongonly.finalschoolexam.R;
 import com.xiaolongonly.finalschoolexam.api.RequestApi;
 import com.xiaolongonly.finalschoolexam.api.UploadApi;
@@ -105,7 +106,8 @@ public class MyInfoActivity extends BaseActivity implements OnClickListener {
             public void onPictureTaked(Bitmap bitmap) {
                 myInfoImage.setImageBitmap(bitmap);
 //                String bitmapToString = ImageUtils.bitmapToString(bitmap, 75);
-                saveData(bitmap);//pictureTaker图片选择完成之后上传图片
+                Bitmap resizeBitmap = ImageUtils.comp(bitmap);
+                saveData(resizeBitmap);//pictureTaker图片选择完成之后上传图片
             }
         });
     }
@@ -210,9 +212,6 @@ public class MyInfoActivity extends BaseActivity implements OnClickListener {
     }
 
     public void updateLogo(InputMethodManager imm) {
-        /**
-         * 侧边栏-我的资料-更换头像埋点
-         */
         popupWinDismiss();
         imm.hideSoftInputFromWindow(MyInfoActivity.this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         showPicturePickDialog();
@@ -261,7 +260,6 @@ public class MyInfoActivity extends BaseActivity implements OnClickListener {
         // 图片返回时的请求码
         switch (requestCode) {
             case REQUEST_CODE_GETIMAGE_BYCROP:
-
                 break;
             default:
                 break;

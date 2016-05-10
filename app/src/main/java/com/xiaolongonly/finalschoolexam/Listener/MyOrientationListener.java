@@ -1,11 +1,10 @@
-package com.xiaolongonly.finalschoolexam.Listener;
+package com.xiaolongonly.finalschoolexam.listener;
 
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.widget.Toast;
 
 /**
  * Created by Administrator on 2/2/2016.

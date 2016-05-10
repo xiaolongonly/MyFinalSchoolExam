@@ -1,4 +1,4 @@
-package com.xiaolongonly.finalschoolexam.Activity;
+package com.xiaolongonly.finalschoolexam.activity;
 
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
@@ -72,7 +72,6 @@ public class TaskGetListActivity extends BaseActivity implements View.OnClickLis
                 if (taskModel == null) {
                     return;
                 }
-                ToastUtil.showToastLong(TaskGetListActivity.this, taskModel.toString());
                 goDetail(taskModel.getTask_id());
             }
         });

@@ -1,4 +1,4 @@
-package com.xiaolongonly.finalschoolexam.Activity;
+package com.xiaolongonly.finalschoolexam.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -80,18 +80,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             ToastUtil.showToast(LoginActivity.this, "请输入帐号！");
             return;
         }
-        if (password.getText().toString().trim().equals("")) {
-            ToastUtil.showToast(LoginActivity.this, "请输入密码！");
-            return;
-        }
-        if(account.getText().toString().trim().length()>15)
-        {
-            ToastUtil.showToast(LoginActivity.this, "帐号过长！");
-            return;
-        }
         if(account.getText().toString().trim().length()<5)
         {
             ToastUtil.showToast(LoginActivity.this, "帐号过短！");
+            return;
+        }
+        if (password.getText().toString().trim().equals("")) {
+            ToastUtil.showToast(LoginActivity.this, "请输入密码！");
             return;
         }
         if(password.getText().toString().trim().length()>15)

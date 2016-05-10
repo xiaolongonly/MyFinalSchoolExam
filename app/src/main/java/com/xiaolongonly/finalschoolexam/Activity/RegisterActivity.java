@@ -1,4 +1,4 @@
-package com.xiaolongonly.finalschoolexam.Activity;
+package com.xiaolongonly.finalschoolexam.activity;
 
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -10,7 +10,6 @@ import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.u1city.module.base.BaseActivity;
@@ -54,10 +53,6 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
             ToastUtil.showToast(RegisterActivity.this, "请输入帐号！");
             return;
         }
-        if (password.getText().toString().trim().equals("")) {
-            ToastUtil.showToast(RegisterActivity.this, "请输入密码！");
-            return;
-        }
         if(account.getText().toString().trim().length()>15)
         {
             ToastUtil.showToast(RegisterActivity.this, "帐号过长！");
@@ -66,6 +61,10 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         if(account.getText().toString().trim().length()<5)
         {
             ToastUtil.showToast(RegisterActivity.this, "帐号过短！");
+            return;
+        }
+        if (password.getText().toString().trim().equals("")) {
+            ToastUtil.showToast(RegisterActivity.this, "请输入密码！");
             return;
         }
         if(password.getText().toString().trim().length()>15)
@@ -153,8 +152,9 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                startActivity(intent,true);
+//                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+//                startActivity(intent,true);
+                RegisterActivity.this.finishAnimation();
             }
         });
     }

@@ -1,9 +1,14 @@
-package com.xiaolongonly.finalschoolexam.Activity;
+package com.xiaolongonly.finalschoolexam.activity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -153,6 +158,7 @@ public class TaskDetailActivity extends BaseActivity implements View.OnClickList
                         rl_task_endtime.setVisibility(View.GONE);
                         if (ConstantUtil.getInstance().getUser_id() == taskModel.getPublisher_id()) {
                             //当前用户的任务
+                            tv_canceltask.setVisibility(View.INVISIBLE);
                             tv_getthistask.setText("关闭任务");
                             tv_getthistask.setOnClickListener(new View.OnClickListener() {
                                 @Override
@@ -163,7 +169,6 @@ public class TaskDetailActivity extends BaseActivity implements View.OnClickList
                                         public void onResult(MyAnalysis analysis) throws Exception {
                                             ToastUtil.showToast(TaskDetailActivity.this, "关闭成功");
                                             initData();
-                                            tv_task_statu.setTextColor(Color.YELLOW);
                                             tv_getthistask.setVisibility(View.GONE);
                                             loadingDialog.dismiss();
                                         }
@@ -178,7 +183,6 @@ public class TaskDetailActivity extends BaseActivity implements View.OnClickList
                             });
 
                         } else {
-                            ;
                             tv_getthistask.setText("接取这个任务");
                             tv_canceltask.setText("");
                             tv_canceltask.setVisibility(View.INVISIBLE);
@@ -191,7 +195,6 @@ public class TaskDetailActivity extends BaseActivity implements View.OnClickList
                                         public void onResult(MyAnalysis analysis) throws Exception {
                                             ToastUtil.showToast(TaskDetailActivity.this, "接取成功！！");
                                             initData();
-                                            tv_task_statu.setTextColor(Color.GREEN);
                                             tv_getthistask.setVisibility(View.GONE);
                                             loadingDialog.dismiss();
                                         }
@@ -246,10 +249,10 @@ public class TaskDetailActivity extends BaseActivity implements View.OnClickList
                                 tv_getthistask.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
-                                        RequestApi.getInstance(TaskDetailActivity.this).execSQL(SqlStringUtil.modifyTaskStatu(task_id, TaskModel.STATU_HAVEFINISH, getNowTime()), new MyStandardCallback(TaskDetailActivity.this) {
+                                        RequestApi.getInstance(TaskDetailActivity.this).execSQL(SqlStringUtil.modifyTaskStatu(task_id, TaskModel.STATU_WAITCONFIRM, getNowTime()), new MyStandardCallback(TaskDetailActivity.this) {
                                             @Override
                                             public void onResult(MyAnalysis analysis) throws Exception {
-                                                ToastUtil.showToast(TaskDetailActivity.this, "成功完成任务");
+                                                ToastUtil.showToast(TaskDetailActivity.this, "请等待确认！");
                                                 initData();
 //                                                tv_canceltask.setText("");
 //                                                tv_canceltask.setVisibility(View.GONE);//不可见
@@ -294,6 +297,68 @@ public class TaskDetailActivity extends BaseActivity implements View.OnClickList
                             }
                         }
                         break;
+                    case TaskModel.STATU_WAITCONFIRM:
+                        tv_task_statu.setText("待确认");
+                        tv_getthistask.setVisibility(View.GONE);
+                        tv_canceltask.setVisibility(View.INVISIBLE);
+                        if (ConstantUtil.getInstance().getUser_id() == taskModel.getPublisher_id())//当前用户发布的任务
+                        {
+                            tv_getthistask.setVisibility(View.VISIBLE);//完成任务可见
+                            tv_canceltask.setVisibility(View.VISIBLE);//放弃任务可见
+                            tv_getthistask.setText("确认是否完成");
+                            tv_getthistask.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    showConfirmDialog();
+                                }
+                            });
+                            tv_canceltask.setText("关闭任务");
+                            tv_canceltask.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+
+                                    loadingDialog.show();
+                                    RequestApi.getInstance(TaskDetailActivity.this).execSQL(SqlStringUtil.modifyTaskStatu(task_id, TaskModel.STATU_HAVECLOSE, getNowTime()), new MyStandardCallback(TaskDetailActivity.this) {
+                                        @Override
+                                        public void onResult(MyAnalysis analysis) throws Exception {
+                                            ToastUtil.showToast(TaskDetailActivity.this, "关闭成功");
+                                            initData();
+                                            loadingDialog.dismiss();
+                                        }
+
+                                        @Override
+                                        public void onError(int type) {
+                                            ToastUtil.showToast(TaskDetailActivity.this, "关闭失败");
+                                            loadingDialog.dismiss();
+                                        }
+                                    });
+                                }
+                            });
+                        } else if(ConstantUtil.getInstance().getUser_id() == taskModel.getPicker_id())
+                        {
+                            tv_canceltask.setVisibility(View.VISIBLE);
+                            tv_canceltask.setText("取消完成");
+                            tv_canceltask.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    RequestApi.getInstance(TaskDetailActivity.this).execSQL(SqlStringUtil.modifyTaskStatu(task_id, TaskModel.STATU_HAVETAKE, getNowTime()), new MyStandardCallback(TaskDetailActivity.this) {
+                                        @Override
+                                        public void onResult(MyAnalysis analysis) throws Exception {
+                                            ToastUtil.showToast(TaskDetailActivity.this, "取消完成");
+                                            initData();
+                                            loadingDialog.dismiss();
+                                        }
+                                        @Override
+                                        public void onError(int type) {
+                                            ToastUtil.showToast(TaskDetailActivity.this, "取消完成失败");
+                                            loadingDialog.dismiss();
+                                        }
+                                    });
+                                }
+                            });
+
+                        }
+                        break;
                     case TaskModel.STATU_HAVEFINISH://已完成
                         tv_task_statu.setText("已完成");
                         tv_endtime_tip.setText("完成时间：");
@@ -304,6 +369,7 @@ public class TaskDetailActivity extends BaseActivity implements View.OnClickList
                         break;
                     case TaskModel.STATU_HAVECLOSE://已关闭
                         tv_task_statu.setText("已关闭");
+                        rl_task_getterInfo.setVisibility(View.GONE);
                         tv_endtime_tip.setText("关闭时间：");
                         rl_task_endtime.setVisibility(View.VISIBLE);
                         tv_getthistask.setVisibility(View.GONE);
@@ -319,6 +385,63 @@ public class TaskDetailActivity extends BaseActivity implements View.OnClickList
             }
         });
     }
+
+    private void showConfirmDialog()
+    {
+        final AlertDialog alertDialog = new AlertDialog.Builder(TaskDetailActivity.this).create();
+        alertDialog.show();
+        alertDialog.getWindow().setContentView(R.layout.layout_dialog);// 加载自定义布局
+
+        TextView title = (TextView) alertDialog.getWindow().findViewById(R.id.tv_title);
+        title.setText("请确认任务是否被完成！");
+        TextView tvCancle= (TextView) alertDialog.getWindow().findViewById(R.id.btn_cancel);
+        tvCancle.setText("未完成");
+        TextView tvConfirm= (TextView) alertDialog.getWindow().findViewById(R.id.btn_ok);
+        tvConfirm.setText("确认完成");
+        tvCancle.setOnClickListener(new View.OnClickListener() {// 取消按键监听
+            @Override
+            public void onClick(View v) {
+                RequestApi.getInstance(TaskDetailActivity.this).execSQL(SqlStringUtil.modifyTaskStatu(task_id, TaskModel.STATU_UNTAKE, getNowTime()), new MyStandardCallback(TaskDetailActivity.this) {
+                    @Override
+                    public void onResult(MyAnalysis analysis) throws Exception {
+                        ToastUtil.showToast(TaskDetailActivity.this, "确认未完成");
+                        alertDialog.dismiss();
+                        initData();
+//                                                tv_canceltask.setText("");
+//                                                tv_canceltask.setVisibility(View.GONE);//不可见
+//                                                tv_getthistask.setVisibility(View.GONE);
+                    }
+                    @Override
+                    public void onError(int type) {
+                        ToastUtil.showToast(TaskDetailActivity.this, "确认未完成失败");
+                        alertDialog.dismiss();
+                        
+                    }
+                });
+
+            }
+        });
+        tvConfirm.setOnClickListener(new View.OnClickListener() {// 确定按键监听
+            @Override
+            public void onClick(View v) {
+                RequestApi.getInstance(TaskDetailActivity.this).execSQL(SqlStringUtil.modifyTaskStatu(task_id, TaskModel.STATU_HAVEFINISH, getNowTime()), new MyStandardCallback(TaskDetailActivity.this) {
+                    @Override
+                    public void onResult(MyAnalysis analysis) throws Exception {
+                        ToastUtil.showToast(TaskDetailActivity.this, "确认完成");
+                        initData();
+                        alertDialog.dismiss();
+                    }
+                    @Override
+                    public void onError(int type) {
+                        ToastUtil.showToast(TaskDetailActivity.this, "确认完成失败");
+                        alertDialog.dismiss();
+                    }
+                });
+
+            }
+        });
+    }
+
     private String getNowTime()
     {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

@@ -1,4 +1,4 @@
-package com.xiaolongonly.finalschoolexam.Activity;
+package com.xiaolongonly.finalschoolexam.activity;
 
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
@@ -78,7 +78,6 @@ public class TaskListActivity extends BaseActivity implements View.OnClickListen
                     return;
                 }
                 goDetail(taskModel.getTask_id());
-                ToastUtil.showToastLong(TaskListActivity.this, taskModel.toString());
             }
         });
         dataLoader.setDataSource(new DataLoader.DataSource() {

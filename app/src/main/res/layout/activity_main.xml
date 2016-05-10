@@ -145,7 +145,7 @@
             <LinearLayout
                 android:id="@+id/ll_newtask"
                 android:layout_width="match_parent"
-                android:layout_height="220dp"
+                android:layout_height="300dp"
                 android:layout_alignParentBottom="true"
                 android:background="#80ffffff"
                 android:orientation="vertical"
@@ -245,7 +245,7 @@
                 android:id="@+id/iv_center_tomyloc"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:src="@mipmap/ic_location"
+                android:src="@drawable/ic_location"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentLeft="true"
                 android:layout_marginTop="15dp"

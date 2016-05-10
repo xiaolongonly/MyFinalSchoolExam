@@ -1,4 +1,4 @@
-package com.xiaolongonly.finalschoolexam.Activity;
+package com.xiaolongonly.finalschoolexam.activity;
 
 import android.app.Activity;
 import android.app.NotificationManager;
@@ -8,36 +8,25 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.u1city.module.common.BaseAnalysis;
 import com.u1city.module.common.JsonAnalysis;
-import com.u1city.module.common.StandardCallback;
 import com.u1city.module.util.ToastUtil;
 import com.xiaolongonly.finalschoolexam.R;
 import com.xiaolongonly.finalschoolexam.adapter.ChatAdapter;
 import com.xiaolongonly.finalschoolexam.api.RequestApi;
 import com.xiaolongonly.finalschoolexam.model.ChatModel;
-import com.xiaolongonly.finalschoolexam.model.TaskModel;
 import com.xiaolongonly.finalschoolexam.model.UserModel;
 import com.xiaolongonly.finalschoolexam.service.ChatService;
 import com.xiaolongonly.finalschoolexam.utils.ConstantUtil;
 import com.xiaolongonly.finalschoolexam.utils.MyAnalysis;
 import com.xiaolongonly.finalschoolexam.utils.MyStandardCallback;
-import com.xiaolongonly.finalschoolexam.utils.ServiceUtil;
 import com.xiaolongonly.finalschoolexam.utils.SqlStringUtil;
-import com.xiaolongonly.finalschoolexam.websocketclient.client.WebSocketClient;
-import com.xiaolongonly.finalschoolexam.websocketclient.drafts.Draft;
-import com.xiaolongonly.finalschoolexam.websocketclient.drafts.Draft_10;
-
-import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -61,7 +50,7 @@ public class ChatActivity extends Activity {
     //    private boolean login=false; //这个用来判别是否登录
 //    private String chatCode;//总聊天码
 //    private String knowChatMsg;//刚发送的聊天内容
-    private SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");//全局的时间格式器
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");//全局的时间格式器
     private String userId = "0";
     private String toUserId = "0";
     private DataReceiver dataReceiver;//广播接收器
@@ -212,8 +201,8 @@ public class ChatActivity extends Activity {
         public void onReceive(Context context, Intent intent) {//重写onReceive方法
             String data = intent.getStringExtra("Chatdata");
 //            tv.setText(data);
-            String msgtime = data.substring(data.length() - 11, data.length() - 3);//获取时间戳
-            String msgcontent = data.substring(16, data.length() - 11);//获取内容
+            String msgtime = data.substring(data.length() - 22, data.length() - 3);//获取时间戳
+            String msgcontent = data.substring(16, data.length() - 22);//获取内容
             showData(msgcontent, 2, msgtime,toUserModel.getUser_name(),toUserModel.getUser_imageurl());
         }
     }

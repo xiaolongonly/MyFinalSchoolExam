@@ -40,12 +40,12 @@
         "source": "E:\\final\\u1CityModule\\build\\intermediates\\bundles\\debug\\res\\drawable-xxhdpi-v4\\indicator_arrow.png"
     },
     {
-        "merged": "E:\\final\\u1CityModule\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xxhdpi-v4\\ic_option.png",
-        "source": "E:\\final\\u1CityModule\\build\\intermediates\\bundles\\debug\\res\\drawable-xxhdpi-v4\\ic_option.png"
-    },
-    {
         "merged": "E:\\final\\u1CityModule\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xxhdpi-v4\\sym_keyboard_space.png",
         "source": "E:\\final\\u1CityModule\\build\\intermediates\\bundles\\debug\\res\\drawable-xxhdpi-v4\\sym_keyboard_space.png"
+    },
+    {
+        "merged": "E:\\final\\u1CityModule\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xxhdpi-v4\\ic_option.png",
+        "source": "E:\\final\\u1CityModule\\build\\intermediates\\bundles\\debug\\res\\drawable-xxhdpi-v4\\ic_option.png"
     },
     {
         "merged": "E:\\final\\u1CityModule\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xxhdpi-v4\\key_4.png",

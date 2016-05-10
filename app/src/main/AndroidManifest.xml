@@ -27,7 +27,7 @@
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="7usjmCEaASqPUg7GkGtM53sBjoaFP3pG" />
         <activity
-            android:name=".Activity.WelComeActivity"
+            android:name=".activity.WelComeActivity"
             android:theme="@android:style/Theme.Light.NoTitleBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -45,58 +45,58 @@
         </service>
 
         <activity
-            android:name=".Activity.LoginActivity"
+            android:name=".activity.LoginActivity"
             android:theme="@android:style/Theme.Light.NoTitleBar" />
         <activity
-            android:name=".Activity.TaskListActivity"
+            android:name=".activity.TaskListActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
             android:theme="@style/title_style"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name=".Activity.TaskGetListActivity"
+            android:name=".activity.TaskGetListActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
             android:theme="@style/title_style"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name=".Activity.MainActivity"
+            android:name=".activity.MainActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
             android:theme="@style/title_style"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name=".Activity.RegisterActivity"
+            android:name=".activity.RegisterActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
             android:theme="@style/title_style"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name=".Activity.MyInfoActivity"
+            android:name=".activity.MyInfoActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
             android:theme="@style/title_style"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name=".Activity.TaskDetailActivity"
+            android:name=".activity.TaskDetailActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
             android:theme="@style/title_style"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name=".Activity.ModifyPswActivity"
+            android:name=".activity.ModifyPswActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
             android:theme="@style/title_style"
             android:windowSoftInputMode="stateAlwaysHidden" />
 
         <activity
-            android:name=".Activity.UserInfoActivity"
+            android:name=".activity.UserInfoActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
             android:theme="@style/title_style"
             android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity android:name=".Activity.ChatActivity"
+        <activity android:name=".activity.ChatActivity"
             android:launchMode="singleTask"
             />
         <service android:name=".service.ChatService"/>

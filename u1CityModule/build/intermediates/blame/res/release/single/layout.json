@@ -1,11 +1,11 @@
 [
     {
-        "merged": "E:\\final\\u1CityModule\\build\\intermediates\\res\\merged\\release\\layout\\round_corner_with_icon_layout.xml",
-        "source": "E:\\final\\u1CityModule\\src\\main\\res\\layout\\round_corner_with_icon_layout.xml"
-    },
-    {
         "merged": "E:\\final\\u1CityModule\\build\\intermediates\\res\\merged\\release\\layout\\activity_list_default.xml",
         "source": "E:\\final\\u1CityModule\\src\\main\\res\\layout\\activity_list_default.xml"
+    },
+    {
+        "merged": "E:\\final\\u1CityModule\\build\\intermediates\\res\\merged\\release\\layout\\round_corner_with_icon_layout.xml",
+        "source": "E:\\final\\u1CityModule\\src\\main\\res\\layout\\round_corner_with_icon_layout.xml"
     },
     {
         "merged": "E:\\final\\u1CityModule\\build\\intermediates\\res\\merged\\release\\layout\\layout_city_choose.xml",
@@ -28,12 +28,12 @@
         "source": "E:\\final\\u1CityModule\\src\\main\\res\\layout\\dialog_qrcode.xml"
     },
     {
-        "merged": "E:\\final\\u1CityModule\\build\\intermediates\\res\\merged\\release\\layout\\layout_city_choose_ldy.xml",
-        "source": "E:\\final\\u1CityModule\\src\\main\\res\\layout\\layout_city_choose_ldy.xml"
-    },
-    {
         "merged": "E:\\final\\u1CityModule\\build\\intermediates\\res\\merged\\release\\layout\\dialog_shopguide_or.xml",
         "source": "E:\\final\\u1CityModule\\src\\main\\res\\layout\\dialog_shopguide_or.xml"
+    },
+    {
+        "merged": "E:\\final\\u1CityModule\\build\\intermediates\\res\\merged\\release\\layout\\layout_city_choose_ldy.xml",
+        "source": "E:\\final\\u1CityModule\\src\\main\\res\\layout\\layout_city_choose_ldy.xml"
     },
     {
         "merged": "E:\\final\\u1CityModule\\build\\intermediates\\res\\merged\\release\\layout\\item_expand_categary_second.xml",
@@ -48,12 +48,12 @@
         "source": "E:\\final\\u1CityModule\\src\\main\\res\\layout\\item_capture.xml"
     },
     {
-        "merged": "E:\\final\\u1CityModule\\build\\intermediates\\res\\merged\\release\\layout\\footer_adapterview_none_data.xml",
-        "source": "E:\\final\\u1CityModule\\src\\main\\res\\layout\\footer_adapterview_none_data.xml"
-    },
-    {
         "merged": "E:\\final\\u1CityModule\\build\\intermediates\\res\\merged\\release\\layout\\popwindow_expand_default.xml",
         "source": "E:\\final\\u1CityModule\\src\\main\\res\\layout\\popwindow_expand_default.xml"
+    },
+    {
+        "merged": "E:\\final\\u1CityModule\\build\\intermediates\\res\\merged\\release\\layout\\footer_adapterview_none_data.xml",
+        "source": "E:\\final\\u1CityModule\\src\\main\\res\\layout\\footer_adapterview_none_data.xml"
     },
     {
         "merged": "E:\\final\\u1CityModule\\build\\intermediates\\res\\merged\\release\\layout\\activity_grid_default.xml",
@@ -92,11 +92,11 @@
         "source": "E:\\final\\u1CityModule\\src\\main\\res\\layout\\item_order_type.xml"
     },
     {
-        "merged": "E:\\final\\u1CityModule\\build\\intermediates\\res\\merged\\release\\layout\\pull_to_refresh_header_vertical.xml",
-        "source": "E:\\final\\u1CityModule\\src\\main\\res\\layout\\pull_to_refresh_header_vertical.xml"
-    },
-    {
         "merged": "E:\\final\\u1CityModule\\build\\intermediates\\res\\merged\\release\\layout\\activity_photon.xml",
         "source": "E:\\final\\u1CityModule\\src\\main\\res\\layout\\activity_photon.xml"
+    },
+    {
+        "merged": "E:\\final\\u1CityModule\\build\\intermediates\\res\\merged\\release\\layout\\pull_to_refresh_header_vertical.xml",
+        "source": "E:\\final\\u1CityModule\\src\\main\\res\\layout\\pull_to_refresh_header_vertical.xml"
     }
 ]

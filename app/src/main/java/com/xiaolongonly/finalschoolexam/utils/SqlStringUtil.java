@@ -156,6 +156,18 @@ public class SqlStringUtil {
     }
 
     /**
+     * 更新当前用户位置信息
+     * @param user_id
+     * @param locx
+     * @param locy
+     * @return
+     */
+    public static String modifyUserLoc(int user_id,double locx,double locy)
+    {
+        String sql="update user set def_locx = " + locx + " , " + "def_locy = " + locy +" where user_id = " + user_id;
+        return sql;
+    }
+    /**
      * 通过id，用户旧密码，用户新密码来设置密码
      *
      * @param user_id
@@ -252,5 +264,14 @@ public class SqlStringUtil {
     {
         String sql = "select * from chat where (fromuser_id = " +fromUserId +" and touser_id = "+toUserId+") or (fromuser_id = " +toUserId +" and touser_id = "+fromUserId+")";
         return sql;
+    }
+
+    /**
+     * 除当前用户外所有用户
+     * @param user_id //当前用户id
+     * @return
+     */
+    public static String selectOtherUser(String user_id) {
+        return "select * from user where user_id not in ( " + user_id +" )";
     }
 }

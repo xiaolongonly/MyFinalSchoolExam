@@ -18,7 +18,7 @@
             android:layout_height="80dp"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:background="@drawable/myheadview"
+            android:background="@drawable/ic_default_avatar_guider"
             android:focusable="false" />
 
         <TextView

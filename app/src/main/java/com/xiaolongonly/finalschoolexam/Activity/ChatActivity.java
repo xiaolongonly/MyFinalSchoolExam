@@ -50,7 +50,7 @@ public class ChatActivity extends Activity {
     //    private boolean login=false; //这个用来判别是否登录
 //    private String chatCode;//总聊天码
 //    private String knowChatMsg;//刚发送的聊天内容
-    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");//全局的时间格式器
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");//全局的时间格式器
     private String userId = "0";
     private String toUserId = "0";
     private DataReceiver dataReceiver;//广播接收器

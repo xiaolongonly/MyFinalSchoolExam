@@ -35,8 +35,6 @@
                 />
         </LinearLayout>
 
-        <View style="@style/ViewBoldSolidLine" />
-
         <LinearLayout
             android:id="@+id/ll_untake_tasks"
             style="@style/fillX"
@@ -89,6 +87,31 @@
 
         <View style="@style/ViewBoldSolidLine" />
 
+        <LinearLayout
+            android:id="@+id/ll_waitcomfirm_tasks"
+            style="@style/fillX"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="13dp"
+            android:paddingLeft="20dp"
+            android:paddingTop="13dp">
+
+            <TextView
+                android:id="@+id/tv_waitcomfirm_tasks_type"
+                style="@style/wrap"
+                android:drawablePadding="10dp"
+                android:text="待确认"
+                android:textColor="@color/tasks_type_txt_color"
+                android:textSize="15sp" />
+            <View
+                android:id="@+id/iv_waitcomfirm_tasks_type"
+                android:layout_width="14dp"
+                android:layout_height="10dp"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/tasks_type_pic_selector"
+                />
+        </LinearLayout>
+        <View style="@style/ViewBoldSolidLine" />
         <LinearLayout
             android:id="@+id/ll_havefinish_tasks"
             style="@style/fillX"

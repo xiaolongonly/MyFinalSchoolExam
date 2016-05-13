@@ -16,7 +16,7 @@
             android:layout_height="80dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:background="@drawable/nv1"
+            android:background="@drawable/ic_default_avatar_guider"
             android:focusable="false" />/
 
         <TextView

@@ -163,14 +163,14 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="5dp"
                         android:layout_weight="1"
                         android:background="@drawable/new_task_btn"
                         android:gravity="center"
                         android:paddingBottom="5dp"
-                        android:layout_marginLeft="5dp"
                         android:paddingTop="5dp"
-                        android:textColor="@color/white"
                         android:text="取消"
+                        android:textColor="@color/white"
                         android:textSize="20sp" />
 
                     <EditText
@@ -190,14 +190,14 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
+                        android:layout_marginRight="5dp"
                         android:layout_weight="1"
                         android:background="@drawable/new_task_btn"
-                        android:paddingBottom="5dp"
-                        android:layout_marginRight="5dp"
-                        android:paddingTop="5dp"
                         android:gravity="center"
-                        android:textColor="@color/white"
+                        android:paddingBottom="5dp"
+                        android:paddingTop="5dp"
                         android:text="确定"
+                        android:textColor="@color/white"
                         android:textSize="20sp" />
                 </LinearLayout>
 
@@ -237,20 +237,29 @@
                         android:background="#80ffffff"
                         android:hint="点击地图选择任务位置"
                         android:paddingLeft="5dp"
-                        android:textSize="20sp"
-                        />
+                        android:textSize="20sp" />
                 </LinearLayout>
             </LinearLayout>
+
             <ImageView
                 android:id="@+id/iv_center_tomyloc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="15dp"
+                android:src="@drawable/center_to_user_selector" />
+
+            <ImageView
+                android:id="@+id/iv_publish"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:src="@drawable/ic_location"
+                android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
-                android:layout_alignParentLeft="true"
+                android:layout_marginRight="15dp"
                 android:layout_marginTop="15dp"
-                android:layout_marginLeft="15dp"
-                />
+                android:src="@drawable/ic_flag" />
         </RelativeLayout>
 
         <LinearLayout
@@ -297,39 +306,49 @@
 
                 <View style="@style/ViewSoildLine" />
 
-                <RelativeLayout
-                    android:id="@+id/rl_publish_newtask"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="13dp"
-                    android:paddingTop="23dp">
+                <!--<RelativeLayout-->
+                    <!--android:id="@+id/rl_publish_newtask"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:paddingBottom="13dp"-->
+                    <!--android:paddingTop="23dp">-->
 
-                    <TextView
-                        android:id="@+id/textView01"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="55dp"
-                        android:drawablePadding="25dp"
-                        android:gravity="center"
-                        android:text="发布新任务"
-                        android:textColor="#505050"
-                        android:textSize="16sp" />
-                </RelativeLayout>
+                    <!--<TextView-->
+                        <!--android:id="@+id/textView01"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginLeft="55dp"-->
+                        <!--android:drawablePadding="25dp"-->
+                        <!--android:gravity="center"-->
+                        <!--android:text="发布新任务"-->
+                        <!--android:textColor="#505050"-->
+                        <!--android:textSize="16sp" />-->
+                <!--</RelativeLayout>-->
 
-                <View style="@style/ViewSoildLine" />
+                <!--<View style="@style/ViewSoildLine" />-->
 
                 <RelativeLayout
                     android:id="@+id/rl_mytaketask"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="13dp"
-                    android:paddingTop="23dp">
+                    android:layout_marginBottom="13dp"
+                    android:layout_marginTop="23dp">
 
+                    <ImageView
+                        android:id="@+id/iv_myaccepted"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/ic_myaccepttask"
+                        android:layout_marginLeft="15dp"
+                        android:layout_centerVertical="true"
+                        />
                     <TextView
                         android:id="@+id/textView02"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="55dp"
+                        android:layout_toRightOf="@id/iv_myaccepted"
+                        android:layout_marginLeft="25dp"
                         android:drawablePadding="25dp"
                         android:text="我接收的任务"
                         android:textColor="#505050"
@@ -342,14 +361,24 @@
                     android:id="@+id/rl_mypublishtask"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="13dp"
-                    android:paddingTop="23dp">
+                    android:layout_marginBottom="13dp"
+                    android:layout_marginTop="23dp">
 
+                    <ImageView
+                        android:id="@+id/iv_mypublished"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/ic_mypublishtask"
+                        android:layout_marginLeft="15dp"
+                        android:layout_centerVertical="true"
+                        />
                     <TextView
                         android:id="@+id/textView1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="55dp"
+                        android:layout_toRightOf="@id/iv_mypublished"
+                        android:layout_marginLeft="25dp"
                         android:drawablePadding="25dp"
                         android:text="我发布的任务"
                         android:textColor="#505050"
@@ -362,14 +391,24 @@
                     android:id="@+id/rl_modifypassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="13dp"
-                    android:paddingTop="23dp">
+                    android:layout_marginBottom="13dp"
+                    android:layout_marginTop="23dp">
 
+                    <ImageView
+                        android:id="@+id/iv_modifypsw"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/ic_modifypassword"
+                        android:scaleType="fitXY"
+                        android:layout_marginLeft="15dp"
+                        android:layout_centerVertical="true"
+                        />
                     <TextView
                         android:id="@+id/textView3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="55dp"
+                        android:layout_toRightOf="@id/iv_modifypsw"
+                        android:layout_marginLeft="25dp"
                         android:drawablePadding="25dp"
                         android:text="修改密码"
                         android:textColor="#505050"
@@ -382,14 +421,23 @@
                     android:id="@+id/rl_logout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="13dp"
-                    android:paddingTop="23dp">
-
+                    android:layout_marginBottom="13dp"
+                    android:layout_marginTop="23dp">
+                    <ImageView
+                        android:id="@+id/iv_exit"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/ic_exit"
+                        android:layout_marginLeft="15dp"
+                        android:layout_centerVertical="true"
+                        />
                     <TextView
                         android:id="@+id/textView2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="55dp"
+                        android:layout_toRightOf="@id/iv_exit"
+                        android:layout_marginLeft="25dp"
                         android:drawablePadding="25dp"
                         android:text="退出登录"
                         android:textColor="#505050"

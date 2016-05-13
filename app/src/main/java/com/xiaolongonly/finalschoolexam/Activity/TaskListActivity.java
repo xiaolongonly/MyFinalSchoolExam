@@ -37,7 +37,7 @@ public class TaskListActivity extends BaseActivity implements View.OnClickListen
      */
     private TextView title;
     // 券类型
-    private int level = 0;
+    private int level = 5;
     private int publisherid = ConstantUtil.getInstance().getUser_id();
 
     private DataLoader dataLoader;
@@ -67,19 +67,19 @@ public class TaskListActivity extends BaseActivity implements View.OnClickListen
 //        initEmptyView();// 初始化无数据视图
         final MyTaskListAdapter adapter = new MyTaskListAdapter(this);
         dataLoader.setAdapter(adapter); // 继承U1cityAdapter的适配器
-        pullToRefreshListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (adapter.getCount() == position - 1) {
-                    return;
-                }
-                TaskModel taskModel = (TaskModel) adapter.getItem(position - 1);
-                if (taskModel == null) {
-                    return;
-                }
-                goDetail(taskModel.getTask_id());
-            }
-        });
+//        pullToRefreshListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                if (adapter.getCount() == position - 1) {
+//                    return;
+//                }
+//                TaskModel taskModel = (TaskModel) adapter.getItem(position - 1);
+//                if (taskModel == null) {
+//                    return;
+//                }
+//                goDetail(taskModel.getTask_id());
+//            }
+//        });
         dataLoader.setDataSource(new DataLoader.DataSource() {
             @Override
             public void onDataPrepare(boolean b) {
@@ -89,16 +89,12 @@ public class TaskListActivity extends BaseActivity implements View.OnClickListen
         dataLoader.setFooter(new View(TaskListActivity.this));
     }
 
-    private void goDetail(int task_id) {
-        Intent intent = new Intent(TaskListActivity.this, TaskDetailActivity.class);
-        intent.putExtra("task_id",task_id);
-        startActivity(intent,false);
-    }
+
     private void initTitle() {
         title = (TextView) findViewById(R.id.tv_title);
         switch (level) {
             case 0:
-                title.setText("全部");
+                title.setText("待确认");
                 break;
             case 1:
                 title.setText("未接取");
@@ -111,6 +107,9 @@ public class TaskListActivity extends BaseActivity implements View.OnClickListen
                 break;
             case 4:
                 title.setText("已关闭");
+                break;
+            case 5:
+                title.setText("全部");
                 break;
         }
         title.setTextSize(20);
@@ -184,18 +183,22 @@ public class TaskListActivity extends BaseActivity implements View.OnClickListen
         LinearLayout havetaketasksLL = (LinearLayout) view.findViewById(R.id.ll_havetake_tasks);
         LinearLayout havefinishtasksLL = (LinearLayout) view.findViewById(R.id.ll_havefinish_tasks);
         LinearLayout haveclosetasksLL = (LinearLayout) view.findViewById(R.id.ll_haveclose_tasks);
+        LinearLayout waitComfirmtasksLL = (LinearLayout) view.findViewById(R.id.ll_waitcomfirm_tasks);
+//        findViewById(R.id.ll_waitcomfirm_tasks).setVisibility(View.GONE);//不需要显示待确认
         final TextView allRb = (TextView) view.findViewById(R.id.tv_all_tasks_type);
         final TextView untakeRb = (TextView) view.findViewById(R.id.tv_untake_tasks_type);
         final TextView havetakeRb = (TextView) view.findViewById(R.id.tv_havetake_tasks_type);
         final TextView havefinishRb = (TextView) view.findViewById(R.id.tv_havefinish_tasks_type);
         final TextView havecloseRb = (TextView) view.findViewById(R.id.tv_haveclose_tasks_type);
+        final TextView waitComfirmRb = (TextView) view.findViewById(R.id.tv_waitcomfirm_tasks_type);
         final View allRbiv = view.findViewById(R.id.iv_all_tasks_type);
         final View untakeRbiv = view.findViewById(R.id.iv_untake_tasks_type);
         final View havetakeRbiv = view.findViewById(R.id.iv_havetake_tasks_type);
         final View havefinishRbiv = view.findViewById(R.id.iv_havefinish_tasks_type);
         final View havecloseRbiv = view.findViewById(R.id.iv_haveclose_tasks_type);
+        final View waitComfirmRbiv = view.findViewById(R.id.iv_waitcomfirm_tasks_type);
         switch (level) {
-            case 0:
+            case 5:
                 allRb.setSelected(true);
                 allRbiv.setSelected(true);
                 break;
@@ -214,6 +217,10 @@ public class TaskListActivity extends BaseActivity implements View.OnClickListen
             case 4:
                 havecloseRb.setSelected(true);
                 havecloseRbiv.setSelected(true);
+                break;
+            case 0:
+                waitComfirmRb.setSelected(true);
+                waitComfirmRbiv.setSelected(true);
                 break;
         }
         LinearLayout popwinLayout = (LinearLayout) view.findViewById(R.id.ll_popwin_layout);
@@ -235,7 +242,7 @@ public class TaskListActivity extends BaseActivity implements View.OnClickListen
                 havecloseRb.setSelected(false);
                 title.setText("全部");
                 pop.dismiss();
-                level = 0;
+                level = 5;
                 dataLoader.setDataSource(new DataLoader.DataSource() {
                     @Override
                     public void onDataPrepare(boolean b) {
@@ -321,7 +328,25 @@ public class TaskListActivity extends BaseActivity implements View.OnClickListen
                 startLoading();
             }
         });
-
+        waitComfirmtasksLL.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                untakeRb.setSelected(false);
+                havetakeRb.setSelected(false);
+                havefinishRb.setSelected(false);
+                havecloseRb.setSelected(true);
+                title.setText("待确认");
+                pop.dismiss();
+                level = 0;
+                dataLoader.setDataSource(new DataLoader.DataSource() {
+                    @Override
+                    public void onDataPrepare(boolean b) {
+                        RequestApi.getInstance(TaskListActivity.this).execSQL(SqlStringUtil.pageindex(SqlStringUtil.getTaskListByPublisherid(publisherid,level),dataLoader.getIndexPage(), dataLoader.getPageSize()), myStandardCallback);
+                    }
+                });
+                startLoading();
+            }
+        });
     }
 
     MyStandardCallback myStandardCallback = new MyStandardCallback(TaskListActivity.this) {

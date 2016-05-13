@@ -170,7 +170,7 @@ public class MyInfoActivity extends BaseActivity implements OnClickListener {
             return;
         }
         if (StringUtils.isEmpty(userQQ.getText().toString())) {
-            ToastUtil.showToast(MyInfoActivity.this, "QQ");
+            ToastUtil.showToast(MyInfoActivity.this, "请输入QQ");
             return;
         }
         if (StringUtils.isEmpty(userTel.getText().toString())) {

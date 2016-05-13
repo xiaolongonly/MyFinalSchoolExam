@@ -114,7 +114,7 @@ public class SqlStringUtil {
      */
     public static String getTaskListByPickerid(int picker_id, int level) {
         String sql;
-        if (level == 0) {
+        if (level == 5) {
             sql = "select * from task where picker_id = " + appendValue(String.valueOf(picker_id));
             return sql;
         }
@@ -131,7 +131,7 @@ public class SqlStringUtil {
     public static String getTaskListByPublisherid(int publisher_id,int level)
     {
         String sql;
-        if (level == 0) {
+        if (level == 5) {
             sql = "select * from task where publisher_id = " + appendValue(String.valueOf(publisher_id));
             return sql;
         }

@@ -175,7 +175,7 @@ public class TaskDetailActivity extends BaseActivity implements View.OnClickList
 
                                         @Override
                                         public void onError(int type) {
-                                            ToastUtil.showToast(TaskDetailActivity.this, "关闭失败");
+                                            ToastUtil.showToast(TaskDetailActivity.this, "关闭失败，请重试！");
                                             loadingDialog.dismiss();
                                         }
                                     });
@@ -193,7 +193,7 @@ public class TaskDetailActivity extends BaseActivity implements View.OnClickList
                                     RequestApi.getInstance(TaskDetailActivity.this).execSQL(SqlStringUtil.modifySP(task_id, TaskModel.STATU_HAVETAKE, ConstantUtil.getInstance().getUser_id()), new MyStandardCallback(TaskDetailActivity.this) {
                                         @Override
                                         public void onResult(MyAnalysis analysis) throws Exception {
-                                            ToastUtil.showToast(TaskDetailActivity.this, "接取成功！！");
+                                            ToastUtil.showToast(TaskDetailActivity.this, "接取成功！");
                                             initData();
                                             tv_getthistask.setVisibility(View.GONE);
                                             loadingDialog.dismiss();
@@ -201,7 +201,7 @@ public class TaskDetailActivity extends BaseActivity implements View.OnClickList
 
                                         @Override
                                         public void onError(int type) {
-                                            ToastUtil.showToast(TaskDetailActivity.this, "接取成功！！");
+                                            ToastUtil.showToast(TaskDetailActivity.this, "接取失败，请重试！");
                                         }
                                     });
                                 }
@@ -232,7 +232,7 @@ public class TaskDetailActivity extends BaseActivity implements View.OnClickList
 
                                         @Override
                                         public void onError(int type) {
-                                            ToastUtil.showToast(TaskDetailActivity.this, "关闭失败");
+                                            ToastUtil.showToast(TaskDetailActivity.this, "关闭失败，请重试！");
                                             loadingDialog.dismiss();
                                         }
                                     });
@@ -252,7 +252,7 @@ public class TaskDetailActivity extends BaseActivity implements View.OnClickList
                                         RequestApi.getInstance(TaskDetailActivity.this).execSQL(SqlStringUtil.modifyTaskStatu(task_id, TaskModel.STATU_WAITCONFIRM, getNowTime()), new MyStandardCallback(TaskDetailActivity.this) {
                                             @Override
                                             public void onResult(MyAnalysis analysis) throws Exception {
-                                                ToastUtil.showToast(TaskDetailActivity.this, "请等待确认！");
+                                                ToastUtil.showToast(TaskDetailActivity.this, "请等待发布者确认！");
                                                 initData();
 //                                                tv_canceltask.setText("");
 //                                                tv_canceltask.setVisibility(View.GONE);//不可见
@@ -262,7 +262,7 @@ public class TaskDetailActivity extends BaseActivity implements View.OnClickList
 
                                             @Override
                                             public void onError(int type) {
-                                                ToastUtil.showToast(TaskDetailActivity.this, "完成任务失败");
+                                                ToastUtil.showToast(TaskDetailActivity.this, "完成任务失败，请重试！");
                                                 loadingDialog.dismiss();
                                             }
                                         });
@@ -328,7 +328,7 @@ public class TaskDetailActivity extends BaseActivity implements View.OnClickList
 
                                         @Override
                                         public void onError(int type) {
-                                            ToastUtil.showToast(TaskDetailActivity.this, "关闭失败");
+                                            ToastUtil.showToast(TaskDetailActivity.this, "关闭失败，请重试！");
                                             loadingDialog.dismiss();
                                         }
                                     });
@@ -350,7 +350,7 @@ public class TaskDetailActivity extends BaseActivity implements View.OnClickList
                                         }
                                         @Override
                                         public void onError(int type) {
-                                            ToastUtil.showToast(TaskDetailActivity.this, "取消完成失败");
+                                            ToastUtil.showToast(TaskDetailActivity.this, "取消失败，请重试！");
                                             loadingDialog.dismiss();
                                         }
                                     });
@@ -413,7 +413,7 @@ public class TaskDetailActivity extends BaseActivity implements View.OnClickList
                     }
                     @Override
                     public void onError(int type) {
-                        ToastUtil.showToast(TaskDetailActivity.this, "确认未完成失败");
+                        ToastUtil.showToast(TaskDetailActivity.this, "确认失败，请重试！");
                         alertDialog.dismiss();
                         
                     }
@@ -433,7 +433,7 @@ public class TaskDetailActivity extends BaseActivity implements View.OnClickList
                     }
                     @Override
                     public void onError(int type) {
-                        ToastUtil.showToast(TaskDetailActivity.this, "确认完成失败");
+                        ToastUtil.showToast(TaskDetailActivity.this, "确认失败，请重试！");
                         alertDialog.dismiss();
                     }
                 });

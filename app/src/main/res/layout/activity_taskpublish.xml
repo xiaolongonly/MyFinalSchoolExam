@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    >
+
+        <RelativeLayout
+            android:id="@+id/rl_task_title"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#FFFFFF">
+
+            <TextView
+                android:id="@+id/tv_tip_title"
+                style="@style/PersonInofTvLeft2"
+                android:text="标题："
+                android:textColor="#343434"
+                android:textSize="16sp" />
+            <EditText
+                android:id="@+id/et_task_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/tv_tip_title"
+                android:background="@null"
+                android:textColor="#B4B4B4"
+                android:layout_centerVertical="true"
+                android:textSize="15sp" />
+
+
+        </RelativeLayout>
+    <View
+        style="@style/ViewSoildLine"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp" />
+        <RelativeLayout
+            android:id="@+id/rl_tsak_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:background="#FFFFFF">
+
+            <TextView
+                android:id="@+id/tv_content_title"
+                style="@style/PersonInofTvLeft2"
+                android:text="内容："
+                android:textColor="#343434"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/et_task_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/tv_content_title"
+                android:background="@null"
+                android:textColor="#B4B4B4"
+                android:textSize="15sp" />
+
+        </RelativeLayout>
+        <View
+            style="@style/ViewSoildLine"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp" />
+        <RelativeLayout
+            android:id="@+id/rl_task_location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:background="#FFFFFF">
+
+            <TextView
+                android:id="@+id/tv_task_location"
+                style="@style/PersonInofTvLeft2"
+                android:text="地址："
+                android:textColor="#343434"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/et_task_location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/tv_task_location"
+                android:background="@null"
+                android:textColor="#B4B4B4"
+                android:textSize="15sp" />
+
+        </RelativeLayout>
+</LinearLayout>

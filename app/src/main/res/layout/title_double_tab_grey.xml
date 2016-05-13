@@ -52,5 +52,4 @@
         <View style="@style/ViewSoildLine"
             android:layout_alignParentBottom="true"/>
 
-		        
 </RelativeLayout>

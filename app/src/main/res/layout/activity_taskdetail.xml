@@ -106,7 +106,7 @@
 
             <TextView
                 style="@style/PersonInofTvLeft2"
-                android:text="创建者信息："
+                android:text="创建者："
                 android:textColor="#343434"
                 android:textSize="16sp" />
 
@@ -202,23 +202,25 @@
                 android:id="@+id/tv_gettask"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
+                android:background="@drawable/register_user_btn"
+                android:padding="5dp"
                 android:textSize="16sp"
                 android:layout_marginRight="27dp"
                 android:layout_centerVertical="true"
-                android:textColor="@android:color/holo_green_dark"
                 android:text="接取任务"
+                android:textColor="@color/blue"
                 android:layout_toLeftOf="@+id/tv_canceltask"
                 />
             <TextView
                 android:id="@+id/tv_canceltask"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
+                android:padding="5dp"
                 android:textSize="16sp"
+                android:background="@drawable/register_user_btn"
                 android:layout_marginRight="27dp"
                 android:layout_centerVertical="true"
-                android:textColor="@android:color/darker_gray"
+                android:textColor="@color/blue"
                 android:visibility="invisible"
                 android:layout_alignParentRight="true"
                 />
@@ -236,7 +238,7 @@
 
             <TextView
                 style="@style/PersonInofTvLeft2"
-                android:text="接取者信息："
+                android:text="接取者："
                 android:textColor="#343434"
                 android:textSize="16sp" />
 
@@ -244,7 +246,7 @@
                 android:id="@+id/tv_task_getter"
                 style="@style/PersonInofEtRight2"
                 android:gravity="right"
-                android:hint="接取者信息"
+                android:hint="接取者"
                 android:maxLength="15"
                 android:singleLine="true"
                 android:inputType="number"

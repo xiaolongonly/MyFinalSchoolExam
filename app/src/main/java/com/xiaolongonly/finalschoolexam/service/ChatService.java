@@ -106,6 +106,7 @@ public class ChatService extends Service{
             @Override
             public void onClose(int code, String reason, boolean remote) {
                 Log.i(TAG, "服务器连接断开，错误码" + code + "原因：" + reason);
+                ChatService.this.stopSelf();
             }
 
             @Override

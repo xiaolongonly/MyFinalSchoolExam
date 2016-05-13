@@ -37,7 +37,7 @@ public class TaskGetListActivity extends BaseActivity implements View.OnClickLis
      */
     private TextView title;
     // 券类型
-    private int level = 0;
+    private int level = 5;
     private int pickerid = ConstantUtil.getInstance().getUser_id();
     private DataLoader dataLoader;
     private PullToRefreshListView pullToRefreshListView;
@@ -62,19 +62,19 @@ public class TaskGetListActivity extends BaseActivity implements View.OnClickLis
         dataLoader.setEmptyView(R.layout.empty_view_custom_default);// 如果不切换显示无数据提示的话，可以不设置
         final MyTaskListAdapter adapter = new MyTaskListAdapter(this);
         dataLoader.setAdapter(adapter); // 继承U1cityAdapter的适配器
-        pullToRefreshListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (adapter.getCount() == position - 1) {
-                    return;
-                }
-                TaskModel taskModel = (TaskModel) adapter.getItem(position - 1);
-                if (taskModel == null) {
-                    return;
-                }
-                goDetail(taskModel.getTask_id());
-            }
-        });
+//        pullToRefreshListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                if (adapter.getCount() == position - 1) {
+//                    return;
+//                }
+//                TaskModel taskModel = (TaskModel) adapter.getItem(position - 1);
+//                if (taskModel == null) {
+//                    return;
+//                }
+//                goDetail(taskModel.getTask_id());
+//            }
+//        });
         dataLoader.setDataSource(new DataLoader.DataSource() {
             @Override
             public void onDataPrepare(boolean b) {
@@ -93,12 +93,12 @@ public class TaskGetListActivity extends BaseActivity implements View.OnClickLis
     private void initTitle() {
         title = (TextView) findViewById(R.id.tv_title);
         switch (level) {
-            case 0:
+            case 5:
                 title.setText("全部");
                 break;
-//            case 1:
-//                title.setText("未接取");
-//                break;
+            case 0:
+                title.setText("待确认");
+                break;
             case 2:
                 title.setText("已接取");
                 break;
@@ -181,24 +181,27 @@ public class TaskGetListActivity extends BaseActivity implements View.OnClickLis
         LinearLayout havetaketasksLL = (LinearLayout) view.findViewById(R.id.ll_havetake_tasks);
         LinearLayout havefinishtasksLL = (LinearLayout) view.findViewById(R.id.ll_havefinish_tasks);
         LinearLayout haveclosetasksLL = (LinearLayout) view.findViewById(R.id.ll_haveclose_tasks);
+        LinearLayout waitComfirmtasksLL = (LinearLayout) view.findViewById(R.id.ll_waitcomfirm_tasks);
         final TextView allRb = (TextView) view.findViewById(R.id.tv_all_tasks_type);
         final TextView untakeRb = (TextView) view.findViewById(R.id.tv_untake_tasks_type);
         final TextView havetakeRb = (TextView) view.findViewById(R.id.tv_havetake_tasks_type);
         final TextView havefinishRb = (TextView) view.findViewById(R.id.tv_havefinish_tasks_type);
         final TextView havecloseRb = (TextView) view.findViewById(R.id.tv_haveclose_tasks_type);
+        final TextView waitComfirmRb = (TextView) view.findViewById(R.id.tv_waitcomfirm_tasks_type);
         final View allRbiv = view.findViewById(R.id.iv_all_tasks_type);
         final View untakeRbiv = view.findViewById(R.id.iv_untake_tasks_type);
         final View havetakeRbiv = view.findViewById(R.id.iv_havetake_tasks_type);
         final View havefinishRbiv = view.findViewById(R.id.iv_havefinish_tasks_type);
         final View havecloseRbiv = view.findViewById(R.id.iv_haveclose_tasks_type);
+        final View waitComfirmRbiv = view.findViewById(R.id.iv_waitcomfirm_tasks_type);
         switch (level) {
-            case 0:
+            case 5:
                 allRb.setSelected(true);
                 allRbiv.setSelected(true);
                 break;
-            case 1:
-                untakeRb.setSelected(true);
-                untakeRbiv.setSelected(true);
+            case 0:
+                waitComfirmRb.setSelected(true);
+                waitComfirmRbiv.setSelected(true);
                 break;
             case 2:
                 havetakeRb.setSelected(true);
@@ -232,7 +235,7 @@ public class TaskGetListActivity extends BaseActivity implements View.OnClickLis
                 havecloseRb.setSelected(false);
                 title.setText("全部");
                 pop.dismiss();
-                level = 0;
+                level = 5;
                 dataLoader.setDataSource(new DataLoader.DataSource() {
                     @Override
                     public void onDataPrepare(boolean b) {
@@ -290,6 +293,25 @@ public class TaskGetListActivity extends BaseActivity implements View.OnClickLis
                 title.setText("已关闭");
                 pop.dismiss();
                 level = 4;
+                dataLoader.setDataSource(new DataLoader.DataSource() {
+                    @Override
+                    public void onDataPrepare(boolean b) {
+                        RequestApi.getInstance(TaskGetListActivity.this).execSQL(SqlStringUtil.pageindex(SqlStringUtil.getTaskListByPickerid(pickerid, level),dataLoader.getIndexPage(), dataLoader.getPageSize()), myStandardCallback);
+                    }
+                });
+                startLoading();
+            }
+        });
+        waitComfirmtasksLL.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                untakeRb.setSelected(false);
+                havetakeRb.setSelected(false);
+                havefinishRb.setSelected(false);
+                havecloseRb.setSelected(true);
+                title.setText("待确认");
+                pop.dismiss();
+                level = 0;
                 dataLoader.setDataSource(new DataLoader.DataSource() {
                     @Override
                     public void onDataPrepare(boolean b) {

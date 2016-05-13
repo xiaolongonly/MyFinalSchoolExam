@@ -56,6 +56,8 @@ import com.xiaolongonly.finalschoolexam.utils.ServiceUtil;
 import com.xiaolongonly.finalschoolexam.utils.SqlStringUtil;
 import com.xiaolongonly.finalschoolexam.utils.StringConstantUtils;
 
+import org.w3c.dom.Text;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -66,10 +68,10 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.activity.Base
     public static int Notification_ID = 1001;
     /**
      * actionBar的圆角按钮
+     * 标题栏相关
      */
     private TextView leftTabTv;
     private TextView rightTabTv;
-
     //列表相关
     private PullToRefreshListView taskListListView;
     private DataLoader taskListDataLoader;
@@ -89,19 +91,21 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.activity.Base
     private LinearLayout ll_newTask;
     //先把publisherId默认为1后期有做登录再做关联
     public int publisherId;
-    //新任务相关
-    private EditText etTitle;
-    private EditText etContent;
-    private EditText etLocation;
+//    //新任务相关
+//    private EditText etTitle;
+//    private EditText etContent;
+//    private EditText etLocation;
     private LoadingDialog loadingDialog;//加载弹窗
     //    private List<TaskModel> allTaskModels = new ArrayList<TaskModel>();
-    private ImageView iv_head_btn;//
+    private ImageView iv_head_btn;//标题栏头像
+    private ImageView ivPublish;
     private ImageView ivCenterToMyLoc;//定位到自身位置图标显示
     private Intent serviceIntent;//服务Intent
     private DataReceiver dataReceiver;//广播接收器
     private List<TaskModel> taskModels = new ArrayList<TaskModel>();//用来存放当前集合
     private List<UserModel> userModels = new ArrayList<UserModel>();//用来存放当前集合
     private int tooglePosition;
+    private boolean isInPublish=false;//是否处于发布状态
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //在使用SDK各组件之前初始化context信息，传入ApplicationContext
@@ -160,7 +164,7 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.activity.Base
      */
     private void initDrawerLayout() {
         //发布新任务
-        findViewById(R.id.rl_publish_newtask).setOnClickListener(clickListener);
+//        findViewById(R.id.rl_publish_newtask).setOnClickListener(clickListener);
         //我接收的任务
         findViewById(R.id.rl_mytaketask).setOnClickListener(clickListener);
         //我发布的任务
@@ -171,9 +175,9 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.activity.Base
         findViewById(R.id.tv_cancel).setOnClickListener(clickListener);
         findViewById(R.id.tv_submit).setOnClickListener(clickListener);
         findViewById(R.id.rl_modifypassword).setOnClickListener(clickListener);
-        etTitle = (EditText) findViewById(R.id.et_newtask_title);
-        etContent = (EditText) findViewById(R.id.et_newtask_content);
-        etLocation = (EditText) findViewById(R.id.et_newtask_location);
+//        etTitle = (EditText) findViewById(R.id.et_newtask_title);
+//        etContent = (EditText) findViewById(R.id.et_newtask_content);
+//        etLocation = (EditText) findViewById(R.id.et_newtask_location);
 
     }
 
@@ -199,6 +203,8 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.activity.Base
                 centerToMyLocation();
             }
         });
+        ivPublish= (ImageView) findViewById(R.id.iv_publish);
+        ivPublish.setOnClickListener(clickListener);
         iv_head_btn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -213,6 +219,7 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.activity.Base
             }
         });
         findViewById(R.id.my_info_detail).setOnClickListener(clickListener);
+
         toggleTab(StringConstantUtils.Show_By_BaiduMap);
         initDrawerLayout();
         getAllTaskInfo();
@@ -299,20 +306,20 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.activity.Base
             }
         });
         taskListDataLoader.setFooter(new View(MainActivity.this));
-        taskListListView.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (taskListadapter.getCount() == position - 1) {
-                    return;
-                }
-                TaskModel taskModel = (TaskModel) taskListadapter.getItem(position - 1);
-                if (taskModel == null) {
-                    return;
-                }
-                goDetail(taskModel.getTask_id());
-//                ToastUtil.showToastLong(MainActivity.this, taskModel.toString());
-            }
-        });
+//        taskListListView.setOnItemClickListener(new OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                if (taskListadapter.getCount() == position - 1) {
+//                    return;
+//                }
+//                TaskModel taskModel = (TaskModel) taskListadapter.getItem(position - 1);
+//                if (taskModel == null) {
+//                    return;
+//                }
+//                goDetail(taskModel.getTask_id());
+////                ToastUtil.showToastLong(MainActivity.this, taskModel.toString());
+//            }
+//        });
     }
 
     /**
@@ -379,13 +386,13 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.activity.Base
                     Debug.i(TAG, "right_tab_tv is click");
                     toggleTab(StringConstantUtils.Show_By_List);
                     break;
-                case R.id.rl_publish_newtask:
-                    //这边需要显示一个正在发布的dialog而且旁边不能被点击在取消或者finish之前isGetLocationOn这个参数都要设置为true
-                    ll_newTask.setVisibility(View.VISIBLE);//将其置为可见
-                    toggleTab(StringConstantUtils.Show_By_BaiduMap);
-                    isGetLocationOn = true;//可以点击地图获取位置信息
-                    closeDrawer();
-                    break;
+//                case R.id.rl_publish_newtask:
+//                    //这边需要显示一个正在发布的dialog而且旁边不能被点击在取消或者finish之前isGetLocationOn这个参数都要设置为true
+//                    ll_newTask.setVisibility(View.VISIBLE);//将其置为可见
+//                    toggleTab(StringConstantUtils.Show_By_BaiduMap);
+//                    isGetLocationOn = true;//可以点击地图获取位置信息
+//                    closeDrawer();
+//                    break;
                 case R.id.rl_mytaketask:
                     //我接取的任务
                     it = new Intent(MainActivity.this, TaskGetListActivity.class);
@@ -398,12 +405,12 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.activity.Base
                     startActivity(it, false);
                     closeDrawer();
                     break;
-                case R.id.tv_cancel:
-                    changePublishstate();
-                    break;
-                case R.id.tv_submit:
-                    publishNewTask();
-                    break;
+//                case R.id.tv_cancel:
+//                    changePublishstate();
+//                    break;
+//                case R.id.tv_submit:
+//                    publishNewTask();
+//                    break;
                 case R.id.my_info_detail:
                     //到个人中心页面
                     it = new Intent(MainActivity.this, MyInfoActivity.class);
@@ -417,7 +424,16 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.activity.Base
                     it = new Intent(MainActivity.this, LoginActivity.class);
                     ConstantUtil.setUserModel(new UserModel());//清空缓存数据
                     it.putExtra("logout", "logout");
+                    ServiceUtil.stopService(MainActivity.this,serviceIntent);
                     startActivity(it, true);
+                    break;
+                case R.id.iv_publish:
+                    if(isInPublish) {
+                        canclePublish();
+                    }else
+                    {
+                        toPulishState();
+                    }
                     break;
                 default:
                     break;
@@ -425,14 +441,30 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.activity.Base
         }
     };
 
-    /**
-     * 取消发布
-     */
-    private void changePublishstate() {
-        ll_newTask.setVisibility(View.GONE);//将其置为不可见
-        isGetLocationOn = false;//可以点击地图获取位置信息
-        getAllTaskInfo();
+    private void toPulishState() {
+        ToastUtil.showToast(this, "点击地图选个位置发任务吧！");
+        toggleTab(StringConstantUtils.Show_By_BaiduMap);//切换到百度地图页
+        isInPublish=true;
+        isGetLocationOn = true;//可以点击地图获取位置信息
+        ivPublish.setImageResource(R.drawable.ic_flag_hover);
+        closeDrawer();
     }
+
+    private void canclePublish() {
+        ToastUtil.showToast(this, "取消发布!");
+        isInPublish=false;
+        isGetLocationOn =false;
+        ivPublish.setImageResource(R.drawable.ic_flag);
+    }
+
+//    /**
+//     * 取消发布
+//     */
+//    private void changePublishstate() {
+//        ll_newTask.setVisibility(View.GONE);//将其置为不可见
+//        isGetLocationOn = false;//可以点击地图获取位置信息
+//        getAllTaskInfo();
+//    }
 
     /**
      * 重写定位到我的位置
@@ -459,74 +491,74 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.activity.Base
         super.centerToMyLocation();
     }
 
-    /**
-     * 发布任务
-     */
-    private void publishNewTask() {
-        if (etTitle.getText().toString().trim().equals("")) {
-            ToastUtil.showToast(MainActivity.this, "标题不能为空！");
-            return;
-        }
-        if (etContent.getText().toString().trim().equals("")) {
-            ToastUtil.showToast(MainActivity.this, "写点任务内容呗！");
-            return;
-        }
-        if (etLocation.getText().toString().trim().equals("")) {
-            ToastUtil.showToast(MainActivity.this, "描述一下地点啊，方便人家找！");
-            return;
-        }
-        TaskModel taskModel = new TaskModel();
-        taskModel.setPublisher_id(publisherId);
-        taskModel.setTask_title(etTitle.getText().toString());//标题
-        taskModel.setTask_content(etContent.getText().toString());//内容
-        taskModel.setTask_location(etLocation.getText().toString());//地点
-        Log.i(TAG, taskModel.getTask_location());
-        if (taskLatLng == null) {
-            ToastUtil.showToast(MainActivity.this, "选个地址吧！");
-            return;
-        }
-        taskModel.setTask_locationx(String.valueOf(taskLatLng.latitude));//设置纬度
-        taskModel.setTask_locationy(String.valueOf(taskLatLng.longitude));//设置经度
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Calendar nowTime = Calendar.getInstance();
-        String startTime = sdf.format(nowTime.getTime());
-//        nowTime.add(Calendar.HOUR, 5);
-//        String endTime = sdf.format(nowTime.getTime());
-//        System.out.println(sdf.format(nowTime.getTime()));
-        taskModel.setTask_createtime(startTime);//起止时间
-//        taskModel.setTask_endtime(endTime);
-        RequestApi.getInstance(MainActivity.this).execSQL(SqlStringUtil.insertIntoTableTask(taskModel), myStandardCallback);
-        loadingDialog = new LoadingDialog(MainActivity.this);
-        loadingDialog.setLoadingText("正在发布...");
-        loadingDialog.show();
-    }
-
-    private MyStandardCallback myStandardCallback = new MyStandardCallback(this) {
-        @Override
-        public void onResult(MyAnalysis analysis) throws Exception {
-//            ll_newTask.setVisibility(View.GONE);//将其置为不可见
-            //清空已输入的数据
-            etTitle.setText("");
-            etContent.setText("");
-            etLocation.setText("");
-            ToastUtil.showToast(MainActivity.this, "发布成功！！");
-//            isGetLocationOn = false;//可以点击地图获取位置信息
-            loadingDialog.dismiss();
-            changePublishstate();
-//            getAllTaskInfo();
-        }
-
-        @Override
-        public void onError(MyAnalysis baseAnalysis) {
-            ToastUtil.showToast(MainActivity.this, "发布失败！！");
-            loadingDialog.dismiss();
-        }
-
-        @Override
-        public void onError(int type) {
-
-        }
-    };
+//    /**
+//     * 发布任务
+//     */
+//    private void publishNewTask() {
+//        if (etTitle.getText().toString().trim().equals("")) {
+//            ToastUtil.showToast(MainActivity.this, "标题不能为空！");
+//            return;
+//        }
+//        if (etContent.getText().toString().trim().equals("")) {
+//            ToastUtil.showToast(MainActivity.this, "写点任务内容呗！");
+//            return;
+//        }
+//        if (etLocation.getText().toString().trim().equals("")) {
+//            ToastUtil.showToast(MainActivity.this, "描述一下地点啊，方便人家找！");
+//            return;
+//        }
+//        TaskModel taskModel = new TaskModel();
+//        taskModel.setPublisher_id(publisherId);
+//        taskModel.setTask_title(etTitle.getText().toString());//标题
+//        taskModel.setTask_content(etContent.getText().toString());//内容
+//        taskModel.setTask_location(etLocation.getText().toString());//地点
+//        Log.i(TAG, taskModel.getTask_location());
+//        if (taskLatLng == null) {
+//            ToastUtil.showToast(MainActivity.this, "选个地址吧！");
+//            return;
+//        }
+////        taskModel.setTask_locationx(String.valueOf(taskLatLng.latitude));//设置纬度
+////        taskModel.setTask_locationy(String.valueOf(taskLatLng.longitude));//设置经度
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        Calendar nowTime = Calendar.getInstance();
+//        String startTime = sdf.format(nowTime.getTime());
+////        nowTime.add(Calendar.HOUR, 5);
+////        String endTime = sdf.format(nowTime.getTime());
+////        System.out.println(sdf.format(nowTime.getTime()));
+//        taskModel.setTask_createtime(startTime);//起止时间
+////        taskModel.setTask_endtime(endTime);
+//        RequestApi.getInstance(MainActivity.this).execSQL(SqlStringUtil.insertIntoTableTask(taskModel), myStandardCallback);
+//        loadingDialog = new LoadingDialog(MainActivity.this);
+//        loadingDialog.setLoadingText("正在发布...");
+//        loadingDialog.show();
+//    }
+//
+//    private MyStandardCallback myStandardCallback = new MyStandardCallback(this) {
+//        @Override
+//        public void onResult(MyAnalysis analysis) throws Exception {
+////            ll_newTask.setVisibility(View.GONE);//将其置为不可见
+//            //清空已输入的数据
+//            etTitle.setText("");
+//            etContent.setText("");
+//            etLocation.setText("");
+//            ToastUtil.showToast(MainActivity.this, "发布成功！！");
+////            isGetLocationOn = false;//可以点击地图获取位置信息
+//            loadingDialog.dismiss();
+//            changePublishstate();
+////            getAllTaskInfo();
+//        }
+//
+//        @Override
+//        public void onError(MyAnalysis baseAnalysis) {
+//            ToastUtil.showToast(MainActivity.this, "发布失败！！");
+//            loadingDialog.dismiss();
+//        }
+//
+//        @Override
+//        public void onError(int type) {
+//
+//        }
+//    };
 
     /**
      * 点击标签，选择地图显示还是ListView列表显示
@@ -571,7 +603,7 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.activity.Base
         public void onReceive(Context context, Intent intent) {//重写onReceive方法
             String data = intent.getStringExtra("Chatdata");//获取广播返回数据
             final int useId = Integer.valueOf(data.substring(1, 8));
-            final String msgcontent = data.substring(16, data.length() - 11);//获取内容
+            final String msgcontent = data.substring(16, data.length() - 22);//获取内容
             RequestApi.getInstance(MainActivity.this).execSQL(SqlStringUtil.getuserInfoByUserid(useId), new MyStandardCallback(MainActivity.this) {
                 @Override
                 public void onResult(MyAnalysis analysis) throws Exception {
@@ -587,7 +619,7 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.activity.Base
                     Notification notification = new Notification.Builder(MainActivity.this)
                             .setContentTitle("收到新消息了")
                             .setContentText(userModels.get(0).getUser_name() + ":" + msgcontent)
-                            .setSmallIcon(R.drawable.login_default_avatar)
+                            .setSmallIcon(R.drawable.ic_login_default_avatar)
                             .setLargeIcon(ImageUtils.zoomBitmap(ImageLoader.getInstance().loadImageSync(userModels.get(0).getUser_imageurl()), 40, 40))
                             .setContentIntent(pendingIntent)
                             .build();
@@ -675,7 +707,7 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.activity.Base
 
     @Override
     protected void onDestroy() {
-//        ServiceUtil.stopService(this, serviceIntent);//需要在退出时结束服务
+        ServiceUtil.stopService(this, serviceIntent);//需要在退出时结束服务
         super.onDestroy();
     }
 
@@ -691,15 +723,23 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.activity.Base
             if (tooglePosition==StringConstantUtils.Show_By_List)
             {
                 toggleTab(StringConstantUtils.Show_By_BaiduMap);
-            }else if(ll_newTask.getVisibility()==View.VISIBLE)
-            {
-                changePublishstate();;
             }else
             {
-                finishAnimation();
+//                finishAnimation();
+                moveTaskToBack(true);
             }
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.i(TAG,"00000000000");
+        getAllTaskInfo();
+        isInPublish=false;
+        isGetLocationOn =false;
+        ivPublish.setImageResource(R.drawable.ic_flag);
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

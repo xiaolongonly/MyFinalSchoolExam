@@ -19,6 +19,7 @@
             android:background="#FFFFFF">
 
             <TextView
+                android:id="@+id/tv_task_title_tip"
                 style="@style/PersonInofTvLeft2"
                 android:text="标题："
                 android:textColor="#343434"
@@ -26,8 +27,10 @@
 
             <TextView
                 android:id="@+id/tv_task_title"
-                style="@style/PersonInofEtRight2"
-                android:gravity="right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/tv_task_title_tip"
                 android:hint=""
                 android:singleLine="true"
                 android:textColor="#B4B4B4"
@@ -76,6 +79,7 @@
             android:paddingTop="16dp"
             android:paddingBottom="16dp"
             android:background="#FFFFFF">
+
             <TextView
                 android:id="@+id/tv_location_title"
                 style="@style/PersonInofTvLeft2"
@@ -105,6 +109,7 @@
             android:background="#FFFFFF">
 
             <TextView
+                android:id="@+id/tv_task_creator_title"
                 style="@style/PersonInofTvLeft2"
                 android:text="创建者："
                 android:textColor="#343434"
@@ -112,8 +117,10 @@
 
             <TextView
                 android:id="@+id/tv_task_creator"
-                style="@style/PersonInofEtRight2"
-                android:gravity="right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/tv_task_creator_title"
                 android:hint="创建者"
                 android:singleLine="true"
                 android:inputType="number"
@@ -132,6 +139,7 @@
             android:layout_height="50dp"
             android:background="#FFFFFF">
             <TextView
+                android:id="@+id/tv_creattime_title"
                 style="@style/PersonInofTvLeft2"
                 android:text="创建时间："
                 android:textColor="#343434"
@@ -139,9 +147,11 @@
 
             <TextView
                 android:id="@+id/tv_task_createtime"
-                style="@style/PersonInofEtRight2"
-                android:gravity="right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/tv_creattime_title"
                 android:hint="这特么是创建时间"
+                android:layout_centerVertical="true"
                 android:singleLine="true"
                 android:inputType="number"
                 android:textColor="#B4B4B4"
@@ -169,8 +179,10 @@
 
             <TextView
                 android:id="@+id/tv_task_endtime"
-                style="@style/PersonInofEtRight2"
-                android:gravity="right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/tv_endtime_tip"
+                android:layout_centerVertical="true"
                 android:hint="这特么是结束时间"
                 android:singleLine="true"
                 android:inputType="number"
@@ -237,6 +249,7 @@
             android:background="#FFFFFF">
 
             <TextView
+                android:id="@+id/tv_task_getter_title"
                 style="@style/PersonInofTvLeft2"
                 android:text="接取者："
                 android:textColor="#343434"
@@ -244,8 +257,10 @@
 
             <TextView
                 android:id="@+id/tv_task_getter"
-                style="@style/PersonInofEtRight2"
-                android:gravity="right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/tv_task_getter_title"
+                android:layout_centerVertical="true"
                 android:hint="接取者"
                 android:maxLength="15"
                 android:singleLine="true"

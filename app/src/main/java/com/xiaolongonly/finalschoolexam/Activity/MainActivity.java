@@ -707,7 +707,7 @@ public class MainActivity extends com.xiaolongonly.finalschoolexam.activity.Base
 
     @Override
     protected void onDestroy() {
-        ServiceUtil.stopService(this, serviceIntent);//需要在退出时结束服务
+//        ServiceUtil.stopService(this, serviceIntent);//需要在退出时结束服务
         super.onDestroy();
     }
 
